@@ -1,0 +1,65 @@
+{% load static %}
+{% load permission_tags %}
+ <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+
+
+        <a class="navbar-brand" href="{% url 'almacen:index' %}">Hogar</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse mg_rigth_20" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto mr-5">
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'almacen:index' %}">Home <span class="sr-only"></span></a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
+                        Almacen
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="{% url 'almacen:index' %}">Listado</a>
+                        <a class="dropdown-item" href="{% url 'almacen:add' %}">Agregar</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
+                        Usuario
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <div class="center text-center">
+                            <img src="{{ request.user.avatar.url }}" class="profile_picture">
+                            <p>{{ request.user.username }} {{ request.user.email }}</p>
+
+                        </div>
+                                                {% if request.user|has_role:'admin' %}
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="{% url 'user:list' %}">Lista <i class="badge tiny material-icons">list</i></a>
+                            <a class="dropdown-item" href="{% url 'user:add' %}">Agregar <i class="badge tiny material-icons">add</i></a>
+                        {% endif %}
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{% url 'user:index' %}">Modificar <i class="badge tiny material-icons">settings</i></a>
+                        <a class="dropdown-item" href="{% url 'account_logout' %}">Lougout <i
+                                class="badge tiny material-icons">power_settings_new</i></a>
+
+
+                    </div>
+                </li>
+            <li class="nav-item">
+
+  <a class="nav-link"  href="{% url 'lista:lista'%}">
+    Listas
+  </a>
+
+            </li>
+                <li class="nav-item"><a href="#" data-target="slide-out" class="sidenav-trigger nav-link">Side Nav</a>
+                </li>
+                {% block navExtraItem %} {% endblock navExtraItem%}
+            </ul>
+        </div>
+
+
+    </nav>

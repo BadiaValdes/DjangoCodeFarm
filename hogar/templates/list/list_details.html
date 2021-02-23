@@ -1,0 +1,110 @@
+{% extends 'layout.html' %}
+
+
+
+{% block content %}
+    <div class="container">
+        <h4 class="center">{{ object.nb }} </h4>
+        <table class="table table-hover" id="table_list">
+            <thead>
+            <tr>
+                <th>Numero</th>
+                <th>Nombre_Item</th>
+                <th>Estado</th>
+                <th>
+                    <form action="{% url 'lista:item_eliminar' %}" method="post" name="delete_form" id="delete_form">
+                        {% csrf_token %}
+                        <button class="btn btn-outline-danger" disabled name="delete" id="delete_btn"
+                                onclick="return confirm('Desea Eliminar')">Eliminar
+                        </button>
+                    </form>
+                </th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for it in item %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ it.nb }}</td>
+                    <td> <span data-toggle="dropdown" aria-haspopup="true"
+                               aria-expanded="false"><a data-toggle="tooltip"
+                                                        title="{{ it.state.nb }}"
+                                                        class="btn btn-primary action_detail"
+                                                        href="#">{{ it.state.nb }}</a></span>
+
+                        <div class="dropdown-menu">
+                            {% for st in state %}
+                                {% for st_id in st.tipo.all %}
+                                    {% if st_id.id == object.tipo.id and st.id != it.state.id %}
+                                        <a class="dropdown-item" style="width: 70% !important;"
+                                           href="{% url 'lista:item_change_details' object.id it.id st.id %}">{{ st.nb }}
+                                            <i class="badge tiny material-icons">{{ st.icon }}</i> </a>
+                                    {% endif %}
+                                {% endfor %}
+
+                            {% endfor %}
+
+                        </div>
+                    </td>
+                    <td>
+                        <div class="btn-group-toggle" data-toggle="buttons">
+                            <label class="btn btn-outline-danger">
+                                <input type="checkbox" form="delete_form" name="delete" onchange="check(this)"
+                                       value="{{ it.id }}"> Seleccionar
+                            </label>
+                        </div>
+
+                </tr>
+            {% empty %}
+                <td>No hay item registradas</td>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript">
+
+        var count = 0
+
+
+        function check(e) {
+            if (e.checked) {
+                count++
+
+            } else if (count > 0)
+                count--
+            if (count > 0) {
+                let del = document.getElementById("delete_btn");
+                del.disabled = false
+            } else {
+                let del = document.getElementById("delete_btn");
+                del.disabled = true
+
+            }
+            console.log(count)
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            let elems = document.querySelectorAll('select');
+            let instances = M.FormSelect.init(elems);
+        });
+
+
+        $(document).ready(function () {
+            let table = $('#table_list').DataTable({
+                "columnDefs": [{
+                    "targets": [3],
+                    "orderable": false,
+                },
+                    {"targets": [3, 2, 0],
+                    "searchable": false,}]
+            });
+
+        });
+
+
+    </script>
+{% endblock %}

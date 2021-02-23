@@ -1,0 +1,242 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+
+{% block content %}
+    <div class="width_90">
+        <div class="row pd_bottom_50 mg_top_50">
+            <div class="col-lg-4 col-md-4 col-sm-12">
+                <div class="card bg-primary text-white w-100 rounded_20">
+                    <div class="card-body center">
+                        <h5 class="card-title">Dinero Actual</h5>
+                        <h4 class="card-text">{{ dineroActual }}$</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-12">
+                <div class="card w-100 bg-dark text-white rounded_20">
+
+                    <div class="card-body center">
+                        <h5 class="card-title">Fecha </h5>
+                        <h4 class="card-text hover_cursor" data-toggle="modal" data-target="#exampleModal">
+
+                            {{ date_search }}<span class="material-icons">keyboard_arrow_down</span></h4>
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-12">
+                <div class="card w-100 text-white  bg-secondary  rounded_20">
+                    <div class="card-body center">
+                        <h5 class="card-title">Salario Mes</h5>
+                        <h4 class="card-text">{{ salario }}$</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="center m-4">
+            <h4 class="text-wrap">Operaciones
+            </h4>
+        </div>
+        <div class="row">
+
+
+            <table class="table">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Tipo de operación</th>
+                    <th scope="col">Cantidad</th>
+                    <th scope="col">Fecha de operación</th>
+                    <th scope="col">Descripcion</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for obj in operaciones %}
+                    <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>{{ obj.tipo_op }}</td>
+                        <td>{{ obj.amount }}</td>
+                        <td>{{ obj.fecha_operacion }}</td>
+                        <td>{{ obj.des }}</td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <th scope="row">No existen operaciones</th>
+
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Seleccionar Operaciones</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" action="{% url 'economia:index' %}" id="date_form">
+                        {% csrf_token %}
+                        <input type="date" class="form-control" required id="date" name="date" value="{{ date }}">
+                        <label> Tipo de busqueda </label>
+                        <select id="tipo" name="tipo" class=" form-control">
+                            <option value="1">Dia/Mes/Año</option>
+                            <option value="2">Mes</option>
+                            <option value="3">Año</option>
+                        </select>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="hoy" class="btn btn-secondary">hoy</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" form="date_form" class="btn btn-primary">Buscar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block footer %}
+    <div class="fixed right bottom_postions">
+        <div class="row">
+
+            <ul class="float_button">
+                <li class="first_element"><a class="tiny btn btn-primary material-icons">menu</a>
+                    <ul>
+                        <li><a data-toggle="tooltip"
+                               data-placement="top"
+                               title="Adicionar Pago del Mes"
+                               class="btn btn-outline-success material-icons"
+                               href="{% url 'economia:create_salario' %}">attach_money</a></li>
+                        <li><a data-toggle="tooltip"
+                               data-placement="top"
+                               title="Adicionar Operacion"
+                               class="btn btn-outline-dark  material-icons"
+                               href="{% url 'economia:create_op' %}">swap_horiz</a></li>
+                        <li><a data-toggle="tooltip"
+                               data-placement="top"
+                               title="Adicionar Deuda" class="btn btn-outline-danger  material-icons"
+                               href="{% url 'economia:create_deuda' %}">add</a></li>
+
+                    </ul>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+
+    <div id="bottom_menu" class=" center bottom_postions_center ">
+
+
+        <div class="list_float">
+            <a id="link" class="btn btn-dark material-icons">keyboard_arrow_up</a>
+
+            <div class="row second_screen btn-group-vertical" id="second_screen" style="width:300px;">
+
+                <a class="btn btn-outline-primary col-lg-12">Ver operaciones</a>
+                <a href="{% url 'economia:list_deudas' %}" class="btn btn-outline-primary col-lg-12 ">Ver deaudas</a>
+                <a href="{% url 'economia:list_salario' %}" class="btn btn-outline-primary col-lg-12 ">Ver salarios</a>
+
+
+            </div>
+        </div>
+
+
+    </div>
+
+
+{% endblock footer %}
+
+{% block js %}
+    <script type="text/javascript">
+
+        let fecha = new Date;
+        let day = fecha.getDate()
+        let month = fecha.getMonth() + 1
+        let year = fecha.getFullYear()
+
+        if (day < 10) {
+            day = '0' + day
+        }
+        if (month < 10) {
+            month = '0' + month
+        }
+        let today = year + '-' + month + '-' + day
+        let date = document.getElementById('date');
+
+        date.setAttribute("max", today)
+        console.log(date)
+
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+
+        let click = false
+
+        $('#link').click(function () {
+            let second_screen = document.getElementById('second_screen');
+            let link = document.getElementById('link');
+
+            if (!click) {
+                link.innerText = 'keyboard_arrow_down';
+                second_screen.classList.add('second_screen2');
+                second_screen.classList.remove('second_screen3');
+                click = true;
+            } else {
+                second_screen.classList.remove('second_screen2');
+                second_screen.classList.add('second_screen3');
+                link.innerText = 'keyboard_arrow_up';
+                click = false;
+            }
+        })
+
+
+        $('.second_screen').mouseleave(function () {
+            let second_screen = document.getElementById('second_screen');
+            let link = document.getElementById('link');
+            link.innerText = 'keyboard_arrow_up';
+            second_screen.classList.remove('second_screen2');
+            second_screen.classList.add('second_screen3');
+            click = false;
+        })
+
+        $('#hoy').click(function () {
+
+            let fecha = new Date;
+
+            let day = fecha.getDate()
+            let month = fecha.getMonth() + 1
+            let year = fecha.getFullYear()
+
+            if (day < 10) {
+                day = '0' + day
+            }
+            if (month < 10) {
+                month = '0' + month
+            }
+            let today = year + '-' + month + '-' + day
+
+            console.log(today)
+
+            date.value = today
+
+        })
+
+    </script>
+
+{% endblock %}
+
+
+
+
+

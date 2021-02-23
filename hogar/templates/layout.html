@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    {% load static %}
+
+
+    <meta charset="UTF-8">
+    <title>Hogar{% block title %} {% endblock %}</title>
+    {% block css %}
+    {% endblock css %}
+    {% include 'partial/_css.html' %}
+    {% include 'partial/_script.html' %}
+</head>
+<body>
+
+<header>
+
+    {% include 'partial/_navbar.html' %}
+
+
+</header>
+
+{% include 'side_nav.html' %}
+
+{% block content %}
+
+{% endblock %}
+
+
+
+{% block footer %}
+{% endblock footer %}
+
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+        var elems = document.querySelectorAll('.sidenav');
+        var instances = M.Sidenav.init(elems);
+    });
+</script>
+
+{% block js %}
+{% endblock %}
+</body>
+</html>

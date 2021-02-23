@@ -1,0 +1,91 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block content %}
+
+    <table class="table table-hover" id="table_list">
+        <thead>
+        <tr>
+            <th>Numero</th>
+            <th>Cantidad</th>
+            <th>Fecha de depósito</th>
+            <th>Modificar</th>
+            <th>Detalles</th>
+            <th>
+                <form action="{% url 'lista:state_eliminar' %}" method="post" name="delete_form" id="delete_form">
+                    {% csrf_token %}
+                    <button class="btn btn-outline-danger" disabled name="delete" id="delete_btn">Eliminar</button>
+                </form>
+            </th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for obj in object_list %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ obj.amount }}</td>
+                <td>
+                    {{ obj.fecha_deposito }}
+                </td>
+                <td><a class="btn btn-outline-primary" href="{% url 'lista:state_update' obj.id %}">Modificar</a>
+                </td>
+                 <td><a class="btn btn-outline-success" href="{% url 'economia:salario_details' obj.id%}">Detalles</a>
+                </td>
+                <td>
+                    <div class="btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-outline-danger">
+                            <input type="checkbox" form="delete_form" name="delete" onchange="check(this)"
+                                   value="{{ obj.id }}"> Seleccionar
+                        </label>
+                    </div>
+
+            </tr>
+        {% empty %}
+            <td>No hay marcas registradas</td>
+        {% endfor %}
+        </tbody>
+    </table>
+    <div class="container">
+        <a href="{% url 'economia:create_salario' %}" class="btn btn-outline-primary btn-block"> Adicionar </a>
+
+    </div>
+{% endblock %}
+
+
+{% block js %}
+    <script type="text/javascript">
+        var count = 0
+
+
+        function check(e) {
+            if (e.checked) {
+                count++
+
+            } else if (count > 0)
+                count--
+            if (count > 0) {
+                let del = document.getElementById("delete_btn");
+                del.disabled = false
+            } else {
+                let del = document.getElementById("delete_btn");
+                del.disabled = true
+
+            }
+            console.log(count)
+        }
+
+        $(document).ready(function () {
+            let table = $('#table_list').DataTable({
+                "columnDefs": [{
+                    "targets": [3, 4, 5],
+                     "searchable": false,
+                    "orderable": false,
+                },
+                  ]
+            });
+
+        });
+
+    </script>
+
+{% endblock %}

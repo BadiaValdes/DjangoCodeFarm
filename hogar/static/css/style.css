@@ -1,0 +1,269 @@
+.profile_picture {
+    height: 50px !important;
+    width: 50px !important;
+    margin: 0 auto !important;
+    border-radius: 50%;
+}
+
+.profile_picture_100 {
+    height: 100px !important;
+    width: 100px !important;
+    margin: 0 auto !important;
+    border-radius: 50%;
+}
+
+.profile_picture_200 {
+    height: 200px !important;
+    width: 200px !important;
+    margin: 0 auto !important;
+    border-radius: 50%;
+}
+
+.profile_picture_300 {
+    height: 300px !important;
+    width: 300px !important;
+    margin: 0 auto !important;
+    border-radius: 50%;
+}
+
+.mg_top_100 {
+    margin-top: 100px !important;
+}
+
+.mg_top_10 {
+    margin-top: 10px !important;
+}
+
+.mg_top_50 {
+    margin-top: 50px !important;
+}
+
+.pd_bottom_50 {
+    padding-bottom: 50px !important;
+}
+
+
+.mg_top_bottom_30 {
+    margin-top: 30px !important;
+    margin-bottom: 30px !important;
+}
+
+
+@media (min-width: 570px) {
+    .mg_top_bottom_50 {
+        margin-top: 128px !important;
+        margin-bottom: 128px !important;
+    }
+}
+
+
+.mg_rigth_20 {
+    margin-right: 20px !important;
+}
+
+.width_50 {
+    margin: 0 auto;
+    width: 30% !important;
+}
+
+.width_80 {
+    margin: 0 auto !important;
+    width: 50% !important;
+}
+
+.width_90 {
+    margin: 0 auto !important;
+    width: 90% !important;
+
+}
+
+.brd_round {
+    border-radius: 20px 20px 20px 20px !important;
+}
+
+.brd_round_up {
+    border-radius: 20px 20px 0px 0px !important;
+}
+
+.brd_round_down {
+    border-radius: 0px 0px 20px 20px !important;
+}
+
+.brd_up {
+    border-top: 2px solid gray !important;
+}
+
+.nav_logo {
+    width: 150px !important;
+    height: 150px !important;
+    border-radius: 200px 200px 200px 200px !important;
+}
+
+@media (min-width: 990px) {
+    .dropdown:hover .dropdown-menu {
+        display: block;
+        margin-top: 0;
+    / / remove the gap so it doesn 't close
+    }
+
+}
+
+.link {
+    text-decoration: none !important;
+}
+
+.link:hover {
+    color: white;
+}
+
+.selectmultiple {
+    height: 200px !important;
+}
+
+.action_red:hover {
+    background: red !important;
+    border-color: red !important;
+}
+
+.action_detail:hover {
+    background: #5e35b1 !important;
+    border-color: #5e35b1 !important;
+}
+
+* {
+    scrollbar-color: #343a40 black !important;
+    scrollbar-width: thin !important;
+
+}
+
+.danger {
+}
+
+.danger:hover {
+    cursor: pointer !important;
+    color: red !important
+}
+
+.rounded_20{
+    border-radius: 20px;
+}
+
+.rounded_50{
+    border-radius: 50%;
+}
+
+.bg-almost-green{
+    background-color: rgba(110,255,138,0.68);
+}
+
+.hover_cursor:hover{
+    cursor: pointer;
+    color: rgba(97,226,255,0.68);
+}
+
+.hover_cursor:hover span{
+    color: inherit;
+}
+
+.hover_red:hover {
+    background-color: red !important;
+}
+
+.hover_green:hover
+{
+    background-color: green !important;
+}
+
+
+.bottom_postions{
+    position: fixed !important;
+    right: 1%;
+    bottom: 0vh !important;
+}
+
+
+.bottom_postions_center
+{
+    position: fixed !important;
+    left: 50%;
+    bottom: 0vh !important;
+}
+
+.first_element{z-index: 2}
+
+.first_element ul{
+    position: absolute;
+    z-index: 1;
+
+    transition: opacity ease-out 1s, bottom ease-in 0.5s;
+    bottom: 4.3vh;
+    opacity:  0%;
+}
+
+.first_element ul li{
+    margin-bottom: 10px;
+    font-size: 5px !important;
+}
+
+.first_element:hover ul {
+    opacity: 1;
+bottom: 5vh;
+
+
+}
+
+/*
+Animación
+@keyframes opacity_change {
+    0% {
+    bottom: 4.3vh;}
+    100% {
+    bottom: 5vh;}
+}
+Usar transition para un visual mas bonito
+
+*/
+
+.second_screen{
+    position: absolute;
+    z-index: 1;
+    visibility: hidden;
+    bottom: 3vh;
+    left: -11.5vh;
+    opacity:  0%;
+    transition: opacity ease-in 1s, bottom ease-in 0.5s, visibility linear 0.5s;
+}
+
+.second_screen2{
+bottom: 5vh;
+    visibility: visible;
+opacity: 100%;
+
+}
+
+.second_screen3{
+
+ visibility: hidden;
+    bottom: 3vh;
+    left: -11.5vh;
+    opacity:  0%;
+}
+
+.invalid-feedback{
+    color: white;
+    padding: 10px;
+    background-color: black;
+    border: red 2px solid;
+    /*animation: move 1s infinite alternate;
+    animation-delay: 0.5s ;*/
+    }
+
+@keyframes move {
+    from {
+        transform: scale(1);
+    }
+    to {
+        transform: scale(0.9);
+    }
+
+}

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <title>Lista {% block ExtraTitle %}{% endblock ExtraTitle %}</title>
+    {% include '../partial/_css.html' %}
+</head>
+<body>
+{% include '../partial/_navbar.html'%}
+{% block content %}
+{% endblock content %}
+
+{% include '../side_nav.html' %}
+
+<script src="{% static 'js/materialize.js' %}" type="text/javascript"></script>
+{% include '../partial/_script.html' %}
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+        var elems = document.querySelectorAll('.sidenav');
+        var instances = M.Sidenav.init(elems);
+    });
+</script>
+{% block js %}
+{% endblock js %}
+</body>
+</html>

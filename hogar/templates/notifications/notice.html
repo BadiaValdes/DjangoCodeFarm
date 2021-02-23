@@ -1,0 +1,51 @@
+<div class="col-md-12 grid-margin stretch-card mb-2">
+    <div class="card aligner-wrapper">
+        <div class="card-body pb-2 pt-0">
+            {% if notice.level == 'success' %}
+                <div class="absolute left top bottom h-100 v-strock-2 bg-success"></div>
+            {% elif notice.level == 'info'%}
+                <div class="absolute left top bottom h-100 v-strock-2 bg-info"></div>
+            {% elif notice.level == 'warning'%}
+                <div class="absolute left top bottom h-100 v-strock-2 bg-warning"></div>
+            {% elif notice.level == 'error'%}
+                <div class="absolute left top bottom h-100 v-strock-2 bg-danger"></div>
+            {% endif %}
+            <div class="container-fluid">
+                <div class="row mt-3">
+                    <div class="col-10">
+                        <div class="d-flex">
+                            <h6 class="text-gray"> {{ notice.verb }} </h6>
+                        </div>
+
+                        <p class="text-gray ellipsis mb-0"> {{ notice.description }}</p>
+
+                        <div class="row text-gray d-md-flex">
+                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 d-flex">
+                                <small class="mr-2 mb-0 text-muted">{{ notice.timesince }} ago</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-2 d-xl-flex ml-auto">
+                        <div class="m-auto">
+                            {% if notice.unread %}
+                                <a class="btn btn-link p-0" data-toggle="tooltip" title="Mark as read" href={% url 'notifications:mark_as_read' notice.slug %}>
+                                    <h3 style="color:black;"><i class="mdi mdi-eye-outline"></i></h3>
+                                </a>
+                            {% else %}
+                                <a class="btn btn-link p-0" data-toggle="tooltip" title="Mark as unread" href={% url 'notifications:mark_as_unread' notice.slug %}>
+                                    <h3><i class="mdi mdi-eye-check"></i></h3>
+                                </a>
+                            {% endif %}
+                        </div>
+                        <div class="m-auto">
+                            <a class="btn btn-link p-0" data-toggle="tooltip" title="Delete" href={% url 'notifications:delete' notice.slug %}>
+                                <h3 style="color:red;"><i class="mdi mdi-delete"></i></h3>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

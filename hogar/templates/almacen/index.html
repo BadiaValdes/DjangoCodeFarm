@@ -1,0 +1,81 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+
+{% block content %}
+
+    <div class="container">
+        <div class="mg_top_50">
+
+
+            <form action="{% url 'almacen:index' %}" method="post">{% csrf_token %}
+
+
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                            <select class="custom-select" name="search_type" id="search_type">
+                            <option value="all">Todos</option>
+                            <option value="marca">Marca</option>
+                            <option value="tipo">Tipo</option>
+                            <option value="ubicacion">Ubicacion</option>
+                        </select>
+                    </div>
+
+                    <input type="search" class="form-control" style="padding-left: 20px" placeholder="{% if not search %}Buscar Producto{% else %}{{ search_type }}:{{ search_text }} {% endif %}"
+                           name="search">
+                {% if not search %}
+                        <div class="input-group-append">
+                        <button type="submit" class="btn  btn-outline-secondary">Buscar</button>
+                        </div>
+                    {% endif %}
+                    {% if search %}
+                        <div class="input-group-append">
+                            <a href="{% url 'almacen:index' %}" class="input-group-text btn btn-outline-dark"
+                               id="basic-addon2">Volver</a>
+                        </div>
+                    {% endif %}
+                </div>
+
+
+            </form>
+        </div>
+
+
+
+        {% if producto %}
+
+
+            <div class="row">
+                {% for prod in producto %}
+                    {% include 'almacen/producto.html' %}
+                {% endfor %}
+            </div>
+        {% else %}
+
+            <h3>Ningun producto almacenado</h3>
+
+
+        {% endif %}
+
+
+    </div>
+
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript">
+
+    </script>
+
+    <script type="text/javascript">
+        {% if not producto %}
+            let del = document.getElementById("delete_btn");
+            del.classList.add("disabled")
+        {% endif %}
+    </script>
+{% endblock %}
+
+
+
+
+

@@ -1,0 +1,73 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block navExtraItem %}
+    <li class="nav-item active">
+        <a class="nav-link btn btn-outline-primary" href="{% url 'almacen:reporte_download' file.slug_url %}">Descargar</a>
+    </li>
+{% endblock navExtraItem %}
+
+
+{% block content %}
+    <div class="container text-center">
+    <h3>{{ file.nombre }}</h3>
+        <canvas id="canvas_pdf" class="col-lg-6"></canvas>
+
+    <a class="btn btn-outline-primary col-lg-6" href="{% url 'almacen:reporte_download' file.slug_url %}">Descargar</a>
+
+    </div>
+
+{% endblock %}
+
+
+{% block js %}
+    <script src="{% static 'js/pdf.js' %}"></script>
+    <script>
+        var loadingTask = pdfjsLib.getDocument('/{{ file.file_path }}');
+        loadingTask.promise.then(function (pdf) {
+            pdf.getPage(1).then(function (page) {
+                var scale = 1;
+                var viewport = page.getViewport({scale: scale,});
+
+                var canvas = document.getElementById('canvas_pdf');
+                var context = canvas.getContext('2d');
+                canvas.height = viewport.height;
+                canvas.width = viewport.width;
+
+                var renderContext = {
+                    canvasContext: context,
+                    viewport: viewport
+                };
+                page.render(renderContext);
+            });
+        });
+
+        /* function handlePages(page)
+ {
+     //This gives us the page's dimensions at full scale
+     var viewport = page.getViewport( 1 );
+
+     //We'll create a canvas for each page to draw it on
+     var canvas = document.createElement( "canvas" );
+     canvas.style.display = "block";
+     var context = canvas.getContext('2d');
+     canvas.height = viewport.height;
+     canvas.width = viewport.width;
+
+     //Draw it on the canvas
+     page.render({canvasContext: context, viewport: viewport});
+
+     //Add it to the web page
+     document.body.appendChild( canvas );
+
+     //Move to next page
+     currPage++;
+     if ( thePDF !== null && currPage <= numPages )
+     {
+         thePDF.getPage( currPage ).then( handlePages );
+     }
+ }*/
+
+    </script>
+
+{% endblock %}

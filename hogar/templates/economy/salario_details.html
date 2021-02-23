@@ -1,0 +1,133 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+
+{% block content %}
+    <div class="width_90">
+        <div class="row pd_bottom_50 mg_top_50">
+            <div class="col-lg-4 col-md-4 col-sm-12">
+                <div class="card bg-primary text-white w-100 rounded_20">
+                    <div class="card-body center">
+                        <h5 class="card-title">Dinero depositado</h5>
+                        <h4 class="card-text">{{ dineroDepositado }}$</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-12">
+                <div class="card w-100 bg-dark text-white rounded_20">
+
+                    <div class="card-body center">
+                        <h5 class="card-title">Fecha de deposito </h5>
+                        <h4 class="card-text">
+                            {{ deposito }}
+                        </h4>
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-12">
+                <div class="card w-100 text-white  bg-secondary  rounded_20">
+                    <div class="card-body center">
+                        <h5 class="card-title">Resto fin de mes</h5>
+                        <h4 class="card-text">{{ restoSalario }}</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-12">
+                <div class="card w-100 text-white  bg-secondary  rounded_20">
+                    <div class="card-body center">
+                        <h5 class="card-title">Cantidad de operaciones</h5>
+                        <h4 class="card-text">{{ cantOperaciones }}</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-12">
+                <div class="card w-100 text-white  bg-secondary  rounded_20">
+                    <div class="card-body center">
+                        <h5 class="card-title">Cant. OP. Salida</h5>
+                        <h4 class="card-text">{{ cantOperacionesSalida }}</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-12">
+                <div class="card w-100 text-white  bg-secondary  rounded_20">
+                    <div class="card-body center">
+                        <h5 class="card-title">Cant. OP. Entrada</h5>
+                        <h4 class="card-text">{{ cantOperacionesEntrada }}</h4>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="center m-4">
+            <h4 class="text-wrap">Operaciones
+            </h4>
+        </div>
+        <div class="row">
+
+
+            <table class="table">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Tipo de operación</th>
+                    <th scope="col">Cantidad</th>
+                    <th scope="col">Fecha de operación</th>
+                    <th scope="col">Descripcion</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for obj in operaciones %}
+                    <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>{{ obj.tipo_op }}</td>
+                        <td>{{ obj.amount }}</td>
+                        <td>{{ obj.fecha_operacion }}</td>
+                        <td>{{ obj.des }}</td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <th scope="row">No existen operaciones</th>
+
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block footer %}
+    <div class="fixed right bottom_postions">
+        <div class="row">
+
+            <ul class="float_button">
+                <li class="first_element"><a href="{% url 'economia:list_salario' %}" class="tiny btn btn-primary material-icons">arrow_back</a>
+
+                </li>
+            </ul>
+
+        </div>
+    </div>
+
+
+
+{% endblock footer %}
+
+{% block js %}
+    <script type="text/javascript">
+
+
+
+    </script>
+
+{% endblock %}
+
+
+
+
+

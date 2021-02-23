@@ -1,0 +1,35 @@
+[[source]]
+url = "http://localhost:8081/repository/pypi-proxy/simple"
+verify_ssl = false
+name = "pypi-proxy"
+
+[packages]
+django = "*"
+pillow = "*"
+psycopg2 = "*"
+django-allauth = "*"
+django-crispy-forms = "*"
+django-analytical = "*"
+django-extensions = "*"
+django-role-permissions = "*"
+django-filter = "*"
+django-notifications-hq = "*"
+reportlab = "*"
+weasyprint = "*"
+xhtml2pdf = "*"
+django-cron = "*"
+django-export-xls = "*"
+sqlparse = "*"
+django-crontab = "*"
+django-autocomplete-light = "*"
+django-kronos = "*"
+fabric = "*"
+djangorestframework = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.8"
+
+[pipenv]
+allow_prereleases = true

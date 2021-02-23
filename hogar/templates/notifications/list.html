@@ -1,0 +1,76 @@
+{% load static %}
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>
+        Almacen | {% block title %}Notificaciones{% endblock %}
+    </title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- plugins:css -->
+    <!-- endinject -->
+    <!-- Plugin css for this page -->
+    <!-- End Plugin css for this page -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="{% static 'assets/css/shared/style.css' %}">
+    <!-- endinject -->
+    <!-- Layout styles -->
+    <link rel="stylesheet" href="{% static 'assets/css/demo_2/style.css' %}">
+    <!-- End Layout styles -->
+    <link rel="shortcut icon" href="{% static 'assets/images/favicon.png' %}"/>
+    <!-- Specific CSS goes HERE -->
+    <link rel="stylesheet" href="{% static 'custom/css/styles.css' %}">
+    {% block stylesheets %}{% endblock stylesheets %}
+</head>
+<body>
+<div class="container-scroller {% block layout %}{% endblock layout %}">
+
+    <div class="container-fluid page-body-wrapper px-0">
+        <div class="main-panel col-12">
+            <div class="content-wrapper px-xl-4 px-lg-4 px-md-3 px-sm-2 px-2">
+
+                <div class="card p-4">
+                    <ul class="nav nav-pills">
+                        <li class="nav-item">
+                            <a class="nav-link btn-secondary mr-2 " href={% url 'notifications:all' %}>All</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link btn-secondary" href={% url 'notifications:unread' %}>Unread</a>
+                        </li>
+
+                        <div class="ml-auto">
+                            <a class="btn btn-link" href={% url 'notifications:mark_all_as_read' %}>Mark all as read</a>
+                        </div>
+                    </ul>
+                </div>
+
+                <div class="tab-content mt-2 mb-3">
+                    <div class="tab-content">
+                        <div class="notifications-list">
+                            <ul class="notifications pl-xl-2 pl-0">
+                                {% for notice in notifications %}
+                                    {% include 'notifications/../../../../../../.local/share/virtualenvs/env1-X6Hvyawx/lib/python3.8/site-packages/notifications/templates/notifications/notice.html' %}
+                                {% empty %}
+                                    <div class="m-2 mt-5 text-center">
+                                        You don't have notifications.
+                                    </div>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Specific JS goes HERE -->
+{% block javascripts %}
+
+{% endblock javascripts %}
+</body>
+</html>

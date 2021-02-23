@@ -1,0 +1,198 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block content %}
+
+    <table class="table table-hover" id="table_pos">
+        <thead>
+        <tr>
+            <th>Numero</th>
+            <th>Nombre</th>
+            <th>Fecha</th>
+            <th>Otro</th>
+            <th>Direccion</th>
+            <th>
+                <form action="{% url 'almacen:reporte_del' %}" method="post" name="delete_form" id="delete_form">
+                    {% csrf_token %}
+                    <button class="btn btn-outline-danger" disabled name="delete" id="delete_btn">Eliminar</button>
+                </form>
+            </th>
+
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for repo in object_list %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ repo.nombre }}</td>
+                <td>{{ repo.fecha_creacion }}</td>
+                <td><a href="{% url 'almacen:reporte_response' repo.slug_url %}" target="_blank">
+                    <button class="btn btn-outline-info">Ver</button>
+                </a></td>
+                <td><a href="{% url 'almacen:reporte_download' repo.slug_url %}">
+                    <button class="btn btn-outline-info">Descargar</button>
+                </a></td>
+                <td>
+                    <div class="btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-outline-danger">
+                            <input type="checkbox" form="delete_form" name="delete" onchange="check(this)"
+                                   value="{{ repo.id }}"> Seleccionar
+                        </label>
+                    </div>
+
+            </tr>
+        {% empty %}
+            <td>No hay marcas registradas</td>
+        {% endfor %}
+        </tbody>
+    </table>
+    <div class="container text-center">
+        <div class="row">
+            <div class="col-lg-6">
+                <label>
+                    <select class="form-control " id="date" name="date" aria-label="Default select example">
+                    <option>Todos los meses</option>
+                    <option>January</option>
+                    <option>February</option>
+                    <option>March</option>
+                    <option>April</option>
+                    <option>May</option>
+                    <option>June</option>
+                    <option>July</option>
+                    <option>August</option>
+                    <option>September</option>
+                    <option>October</option>
+                    <option>November</option>
+                    <option>December</option>
+                </select>
+                </label>
+            </div>
+            <div class="col-lg-6">
+                <label><input type="text" id="year" placeholder="Year" name="year"></label>
+            </div>
+        </div>
+
+
+    </div>
+
+
+
+
+
+{% endblock %}
+
+
+{% block js %}
+    <script type="text/javascript">
+        var count = 0
+
+
+        function check(e) {
+            if (e.checked) {
+                count++
+
+            } else if (count > 0)
+                count--
+            if (count > 0) {
+                let del = document.getElementById("delete_btn");
+                del.disabled = false
+            } else {
+                let del = document.getElementById("delete_btn");
+                del.disabled = true
+
+            }
+            console.log(count)
+        }
+
+
+        /* Custom filtering function which will search data in column four between two values */
+
+        $(document).ready(function () {
+            let table = $('#table_pos').DataTable({
+                "columnDefs": [{
+                    "targets": [3, 4, 0],
+                    "searchable": false,
+                }]
+            });
+            $('#date').change(function () {
+                table.draw();
+            });
+            $('#year').keyup(function () {
+                table.draw();
+            });
+        });
+
+        $.fn.dataTable.ext.search.push(
+            function (settings, data, dataIndex) {
+                let date = $('#date').val();
+                let month = 'ZERO'
+                console.log(date[1])
+                switch (date) {
+                    case 'January':
+                        month = "Jan";
+                        break;
+                    case 'February':
+                        month = "Feb";
+                        break;
+                    case 'March':
+                        month = "Mar";
+                        break;
+                    case 'April':
+                        month = "Apr";
+                        break;
+                    case 'May':
+                        month = "May";
+                        break;
+                    case 'June':
+                        month = "Jun";
+                        break;
+                    case 'July':
+                        month = "Jul";
+                        break;
+                    case 'August':
+                        month = "Aug";
+                        break;
+                    case 'September':
+                        month = "Sept";
+                        break;
+                    case 'October':
+                        month = "Oct";
+                        break;
+                    case 'November':
+                        month = "Nov";
+                        break;
+                    case 'December':
+                        month = "Dec";
+                        break;
+                    default:
+                        month = " ";
+                        break;
+
+                }
+                let date_table = data[2] || 0; // use data for the age column
+                console.log(month)
+                console.log(date_table.includes(month))
+                if (date_table.includes(month)) {
+                    console.log('entre')
+                    return true;
+                }
+                return false;
+            }
+        );
+
+        $.fn.dataTable.ext.search.push(
+            function (settings, data, dataIndex) {
+                let year = $('#year').val()
+                let date_table = data[2] || 0; // use data for the age column
+                if (date_table.includes(year)) {
+                    console.log('entre')
+                    return true;
+                }
+                return false;
+            }
+        );
+
+
+    </script>
+
+{% endblock %}

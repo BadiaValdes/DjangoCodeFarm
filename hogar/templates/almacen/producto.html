@@ -1,0 +1,51 @@
+         <div class="col col-lg-4 col-md-6 col-sm-12">
+                    <div class="card blue-grey darken-1 clear">
+
+                        <div class="card-image waves-effect waves-block waves-light">
+                            <img class="activator" src="{{ prod.photo.url }}"/>
+                            <span class="card-title"><label><input form="delete_form" type="checkbox" name="delete" value="{{prod.id}}" onclick="check(this)" ><span ></span></label></span>
+                        </div>
+                        <div class="card-content">
+
+                            <p class="card-title activator grey-text text-darken-4">{{ prod.nombre }}<i class="material-icons right">more_vert</i></p>
+                        </div>
+                         <div class="card-reveal">
+                             <span class="card-title grey-text text-darken-4">{{ prod.nombre }}<i class="material-icons right">close</i></span>
+                             <h5>Datos</h5>
+                             <ul>
+                                 <li>Marca: {{ prod.marca }}</li>
+                                 <li>Tipo: {{ prod.tipo}}</li>
+                                 <li>Cantidad: {{ prod.cantidad }}</li>
+                                 <li>Ubicacion: {{ prod.ubicacion }}</li>
+
+                             </ul>
+                             <form method="post" action="{% url 'almacen:delete' prod.id %}">{% csrf_token %}<button class="btn btn-outline-primary" type="submit" onclick="return confirm('Desea Eliminar')">Eliminar</button></form>
+
+                        </div>
+                    </div>
+                </div>
+
+         <script type="text/javascript">
+             var count = 0
+               function check(e)
+               {
+                   if(e.checked) {
+                       count++
+                   }
+                   else if(count > 0 )
+                       count --
+                    if(count > 0)
+                    {
+                        let del = document.getElementById("delete_btn");
+                        del.classList.remove("disabled")
+                    }
+                    else
+                    {
+                                            let del = document.getElementById("delete_btn");
+                    del.classList.add("disabled")
+                    }
+               }
+
+
+         </script>
+

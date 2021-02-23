@@ -1,0 +1,72 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block content %}
+<a href="{% url 'almacen:marca_add' %}" class="btn btn-outline-primary"> Adicionar </a>
+<a href="{% url 'almacen:report_marca' %}" class="btn btn-outline-primary"> Reporte </a>
+    <a href="{% url 'almacen:report_marca2' %}" class="btn btn-outline-primary"> Reporte </a>
+    <table  class="table table-hover" id="table_list">
+        <thead>
+        <tr>
+            <th>Numero</th>
+            <th>Nombre</th>
+            <th>Modificar</th>
+            <th>
+                <form action="{% url 'almacen:marca_del' %}" method="post" name="delete_form" id="delete_form">
+                    {% csrf_token %}
+                    <button class="btn btn-outline-danger" disabled name="delete" id="delete_btn">Eliminar</button>
+                </form>
+            </th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for marca in object_list %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ marca.nombre }}</td>
+                <td><a class="btn btn-outline-primary" href="{% url 'almacen:marca_update' marca.id %}">Modificar</a>
+                </td>
+                <td><div class="btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-outline-danger">
+                        <input type="checkbox" form="delete_form" name="delete" onchange="check(this)" value="{{ marca.id }}"> Seleccionar
+                    </label>
+                </div>
+
+            </tr>
+        {% empty %}
+            <td>No hay marcas registradas</td>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
+
+
+{% block js %}
+    <script type="text/javascript">
+        var count = 0
+
+
+        function check(e) {
+            if (e.checked) {
+                count++
+
+            } else if (count > 0)
+                count--
+            if (count > 0) {
+                let del = document.getElementById("delete_btn");
+                del.disabled = false
+            } else {
+                let del = document.getElementById("delete_btn");
+                del.disabled = true
+
+            }
+            console.log(count)
+        }
+
+        $(document).ready( function () {
+    $('#table_list').DataTable();
+} );
+    </script>
+
+{% endblock %}

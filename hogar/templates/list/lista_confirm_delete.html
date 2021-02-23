@@ -1,0 +1,60 @@
+{% extends './base.html' %}
+{% block content %}
+    <div class="width_90 ">
+        <div class="mg_top_50 ">
+            <div class="row row-cols-1 row-cols-md-2 row-cols-sm-2 row-cols-lg-4">
+                <div class="col mb-4">
+                    <div class="card">
+                        <div class="mg_top_bottom_50">
+                            <div class="card-body text-center">
+                                <a class="btn btn-outline-primary" href="{% url 'lista:lista_add' %}"><i class="material-icons large">add</i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% for l in list %}
+                    <div class="col mb-4">
+                        <div class="card">
+                            <div class="card-header text-center"><h3>{{ l.nb }}</h3></div>
+                            <div class="card-body">
+                               <div class="btn-group  btn-group-lg btn-block"> <a href="{% url 'lista:item_add' pk=l.id %}" class="btn btn-outline-primary ">Add Item</a><a href="{% url 'lista:lista_delete' l.id%}" onclick=" return  confirm('Desea eliminar esta lista?');" class="btn btn-outline-danger">Delete List</a></div>
+                                <div class="overflow-auto" style="height: 200px;">
+                                    <ul class="list-group list-group-flush">
+                                        {% for i in item %}
+                                            {% if i.list.id == l.id %}
+                                                <li class="list-group-item list-group-item-action">{{ i.nb }} <span
+                                                        class="float-right material-icons"><a data-toggle="tooltip"
+                                                                                              data-placement="top"
+                                                                                              title="See More"
+                                                                                              class="link"
+                                                                                              href="#">remove_red_eye</a> </span>
+                                                </li>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+
+            </div>
+        </div>
+
+    </div>
+{% endblock content %}
+
+{% block js %}
+    <script type="text/javascript">
+        function del(){
+            return  confirm("Desea eliminar esta lista?");
+
+        }
+
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+{% endblock js %}

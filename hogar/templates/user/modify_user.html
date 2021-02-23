@@ -1,0 +1,28 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% load crispy_forms_tags %}
+{% block title %} Perfil | Update{% endblock title %}
+{% block content %}
+ <div class="container width_50 mg_top_50">
+    <div class="card">
+        <div class="card-header text-center bg-dark">
+            <h4>Modificar Datos</h4>
+        </div>
+        <div class="card-body">
+                    <form method="post"  enctype="multipart/form-data">
+                    {% crispy form %}
+                    <br>
+                        <div class="card-footer">
+                            <input type="submit" class="btn btn-block btn-outline-primary" value="Create Product">
+                        </div>
+
+                </form>
+        </div>
+    </div>
+ </div>
+
+
+
+
+{% endblock %}

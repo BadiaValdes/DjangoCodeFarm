@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <title>Almacen</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'almacen/css/materialize.min.css' %}">
+</head>
+<body>
+
+<header >
+
+      <nav class="blue-grey" >
+        <div class="nav-wrapper">
+          <a href="{% url 'almacen:index' %}" class="brand-logo">Almacen</a>
+          <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <li> <a href="{% url 'almacen:add' %}" class="waves-effect waves-light btn-large">Adicionar</a></li>
+              <li><form action="{% url 'almacen:del' %}" id="delete_form" method="post">{% csrf_token %}<button id="delete_btn" class="disabled waves-effect waves-light btn-large" onclick="return confirm('Desea eliminar los productos?')">Eliminar</button></form> </li>
+          </ul>
+        </div>
+      </nav>
+
+
+</header>
+
+         {%block content%}
+
+        {% endblock %}
+
+
+
+<footer>
+
+</footer>
+
+<script src="{% static 'almacen/js/materialize.js' %}" type="text/javascript"></script>
+{% block js %}
+{% endblock %}
+</body>
+</html>

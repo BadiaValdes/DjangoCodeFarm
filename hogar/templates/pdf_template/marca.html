@@ -1,0 +1,33 @@
+<html>
+<head>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/w3.css' %}">
+  <title>Test</title>
+
+<style>
+
+</style>
+</head>
+<body>
+<h1 class="w3-center">Marca Reporte</h1>
+<table class="w3-table-all">
+        <thead >
+        <tr class="w3-green ">
+            <th>Numero</th>
+            <th>Nombre</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for marca in marca %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ marca.nombre }}</td>
+            </tr>
+        {% empty %}
+            <td>No hay marcas registradas</td>
+        {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

@@ -1,0 +1,109 @@
+{% extends './base.html' %}
+{% block content %}
+    <div class="width_90 ">
+        <div class="mg_top_50 ">
+            <div class="row row-cols-1 row-cols-md-2 row-cols-sm-2 row-cols-lg-4">
+                <div class="col mb-4">
+                    <div class="card">
+                        <div class="mg_top_bottom_50">
+                            <div class="card-body text-center">
+                                <a class="btn btn-outline-primary" href="{% url 'lista:lista_add' %}"><i
+                                        class="material-icons large">add</i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% for l in list %}
+                    <div class="col mb-4">
+                        <div class="card">
+                            <div class="card-header text-center">
+
+                               <h4>{{ l.nb }} </h4>
+                               <span class="text-muted">{{ l.tipo }}</span>
+                            </div>
+                            <div class="card-body">
+                                <form method="post" action="{% url 'lista:lista_delete' l.id %}"
+                                      onsubmit="return confirm('Desea eliminar la lista?')">{% csrf_token %}
+                                    <div class="btn-group  btn-group-lg btn-block">
+
+                                        <a href="{% url 'lista:item_add' pk=l.id %}" class="btn btn-outline-primary ">Add
+                                            Item</a>
+                                        <a href="{% url 'lista:lista_details' l.id %}" class="btn btn-outline-primary action_detail">Detalles
+                                        </a>
+                                        <button type="submit" class="btn btn-outline-primary action_red"
+                                                value="Eliminar">Eliminar
+                                        </button>
+
+
+                                    </div>
+                                </form>
+                                <div class="overflow-auto mg_top_10" style="height: 200px;">
+                                    <ul class="list-group list-group-flush">
+                                        {% for i in item %}
+                                            {% if i.list.id == l.id %}
+
+                                                <li class="list-group-item list-group-item-action">{{ i.nb }} <span
+                                                        class="float-right ">
+                                                    <form method="post" action="{% url 'lista:item_delete' i.id %}"
+                                                          onsubmit="return confirm('Desea eliminar el item?')">
+                                                        {% csrf_token %}
+
+                                                    <span data-toggle="dropdown" aria-haspopup="true"
+                                                            aria-expanded="false"><a data-toggle="tooltip"
+                                                       title="{{ i.state.nb }}"
+                                                       class="link material-icons"
+                                                       href="#">{{i.state.icon}}</a></span>
+
+                                                      <div class="dropdown-menu">
+                                                          {% for st in state  %}
+                                                              {% for st_id in st.tipo.all %}
+                                                                  {% if st_id.id == l.tipo.id and st.id != i.state.id %}
+                                                                            <a class="dropdown-item" href="{% url 'lista:item_change' i.id st.id%}"><span class="badge large material-icons">{{ st.icon}}</span> {{ st.nb }}</a>
+                                                                  {% endif %}
+                                                                  {% endfor %}
+
+                                                          {% endfor %}
+                                                      </div>
+                                                <a data-toggle="tooltip"
+                                                   data-placement="top"
+                                                   title="Eliminar"
+                                                   class="link danger material-icons"
+                                                   onclick="let c = confirm('Desea Eliminar el item?'); if(c) this.closest('form').submit(); return false;"
+                                                >delete_forever</a>
+                                                    </form>
+                                                </span>
+                                                </li>
+
+                                            {% endif %}
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                {% endfor %}
+
+
+            </div>
+        </div>
+
+    </div>
+
+
+    </div>
+{% endblock content %}
+
+{% block js %}
+    <script type="text/javascript">
+        function del() {
+            return confirm("Desea eliminar esta lista?");
+
+        }
+
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+{% endblock js %}

@@ -1,0 +1,23 @@
+{% extends 'layout.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+    <div class="container">
+        <div class="row" style="width: 40%">
+                <form method="post"  enctype="multipart/form-data">{% csrf_token %}
+                    {% crispy form %}
+                    <br>
+                <input type="submit" class="btn waves-effect btn-large" value="Update Product">
+                </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript">
+
+            let del = document.getElementById("delete_btn");
+            del.classList.add("disabled")
+    </script>
+{% endblock %}

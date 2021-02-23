@@ -1,0 +1,27 @@
+{% load static %}
+{% load notifications_tags %}
+{% notifications_unread as unread_count %}
+
+
+<ul id="slide-out" class="sidenav">
+    <div class="list-group" id="list-tab" role="tablist">
+        <div id="accordion">
+            <li data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" class="list-group-item list-group-item-action"><a   >
+                Nomencladores <i class="material-icons tiny">keyboard_arrow_down</i>
+            </a></li>
+        </div>
+        <div id="collapseOne" class="collapse" style="overflow-y: auto" aria-labelledby="headingOne" data-parent="#accordion">
+
+            <li class="list-group-item"><a href="{% url 'almacen:producto_tipo_list' %}">Productos Tipo</a></li>
+            <li class="list-group-item"><a href="{% url 'almacen:marca_list' %}">Marcas</a></li>
+            <li class="list-group-item"><a href="{% url 'almacen:ubicacion_list' %}">Ubicaciones</a></li>
+             <li class="list-group-item"><a href="{% url 'lista:state_add' %}">Estados</a></li>
+            <li class="list-group-item"><a href="{% url 'lista:tipo_add' %}">Tipos</a></li>
+
+
+        </div>
+    </div>
+    <li class="list-group-item"><a href="{% url 'almacen:reporte_list' %}">Reportes</a></li>
+    <button class="sidenav-close btn btn-outline-primary btn-block">Cerrar</button>
+</ul>
+

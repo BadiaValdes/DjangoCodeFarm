@@ -1,0 +1,19 @@
+{% extends 'layout.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+    <div class="container">
+        <div class="row" style="width: 40%">
+                <form method="post"  enctype="multipart/form-data">
+                    {% crispy form %}
+                    <br>
+                <input type="submit" class="btn btn-outline-primary" value="Annadir Estado">
+                </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+
+{% endblock %}
