@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ['*']
 INSTALLED_APPS = [
 
     # Installed apps
+    'dashboard',
     'almacen',
     'economia',
     'user',
@@ -120,7 +121,6 @@ WSGI_APPLICATION = 'hogar.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        # 'NAME': 'habilis',
         'NAME': 'hogar',
         'USER': 'hogar_user',
         # 'HOST': 'localhost',
@@ -195,12 +195,12 @@ ACCOUNT_EMAIL_REQUIRED = True
 # EMAIL_HOST = 'mail.escuela.com'
 # EMAIL_USE_TLS = True
 # EMAIL_PORT = 25
-# EMAIL_HOST_USER = 'no-reply@scintra.com'
-# EMAIL_HOST_PASSWORD = 'S0p0rt32018$'
-# DEFAULT_FROM_EMAIL = 'no-reply@scintra.com'
+# EMAIL_HOST_USER = '@.com'
+# EMAIL_HOST_PASSWORD = 'xxxxxx'
+# DEFAULT_FROM_EMAIL = '@.com'
 
 
-FILE_PATH_FIELD_DIRECTORY = BASE_DIR / 'media/pdf_repo/'
+#FILE_PATH_FIELD_DIRECTORY = BASE_DIR / 'media/pdf_repo/'
 #CRONTAB_DJANGO_MANAGE_PATH = os.path.join(BASE_DIR, 'manage.py')
 #CRONTAB_DJANGO_PROJECT_NAME = 'hogar'
 #CRONTAB_DJANGO_SUFFIX = '2>&1'
@@ -221,19 +221,19 @@ FILE_PATH_FIELD_DIRECTORY = BASE_DIR / 'media/pdf_repo/'
    #     'schedule': crontab(minute=1),
     #}, }
 
-ENV_PATH = os.path.join(BASE_DIR, '.env')
+# ENV_PATH = os.path.join(BASE_DIR, '.env')
 
-KRONOS_PREFIX = 'pipenv shell'
+# KRONOS_PREFIX = 'pipenv shell'
 
     #.format(os.path.join(BASE_DIR, '.env_constants'))
 #KRONOS_POSTFIX = '>> /var/log/cron.log 2>&1'
 
-CRONTAB_DJANGO_MANAGE_PATH = '/home/emilio/proyectos/env1/hogar/manage.py'
+# CRONTAB_DJANGO_MANAGE_PATH = '/home/emilio/proyectos/env1/hogar/manage.py'
 
     #'~/proyectos/env1/hogar/manage.py'
 
-CRONTAB_DJANGO_PREFIX = 'pipenv shell'
+#CRONTAB_DJANGO_PREFIX = 'pipenv shell'
 
-CRONJOBS = [
-    ('* * * * *', 'almacen.cron.pdf_gen', '>> ~/proyectos/env1/hogar/file.txt'),
-]
+# CRONJOBS = [
+#     ('* * * * *', 'almacen.cron.pdf_gen', '>> ~/proyectos/env1/hogar/file.txt'),
+# ]

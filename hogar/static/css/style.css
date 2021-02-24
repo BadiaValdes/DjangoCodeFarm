@@ -77,6 +77,12 @@
 
 }
 
+.width_99 {
+    margin: 0 auto !important;
+    width: 100% !important;
+
+}
+
 .brd_round {
     border-radius: 20px 20px 20px 20px !important;
 }
@@ -266,4 +272,21 @@ opacity: 100%;
         transform: scale(0.9);
     }
 
+}
+
+.hide_overflow_x{
+    overflow-x: hidden !important;
+}
+
+.radio_border{
+    border-radius: 10px 10px 10px 10px;
+}
+
+.chart_height{
+    height: 100px;
+    width: 100px;
+}
+
+.text_responsive{
+    font-size:3vw !important;
 }
