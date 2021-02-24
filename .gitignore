@@ -1,3 +1,7 @@
 .idea
+.anotaciones
 /Pipfile.lock
-
+/hogar/almacen/migrations
+/hogar/compra/migrations
+/hogar/economia/migrations
+/hogar/listas/migrations
