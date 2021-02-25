@@ -49,7 +49,6 @@
 
     <script>
 
-
         var ctx = document.getElementById('firstChart').getContext('2d');
         var chart = new Chart(ctx, {
             type: 'doughnut',
@@ -70,21 +69,21 @@
                 }]
             },
             options: {
-                 scales: {
-            yAxes: [{
-                stacked: true
-            }]
-        },
+                scales: {
+                    yAxes: [{
+                        stacked: true
+                    }]
+                },
                 onresize: beforePrintHandler(),
                 //responsive: false for manual resize
             }
         });
 
-    chart.canvas.parentNode.style.minWidth = '200px';
-    chart.canvas.parentNode.style.minHeight = '200px';
+        chart.canvas.parentNode.style.minWidth = '200px';
+        chart.canvas.parentNode.style.minHeight = '200px';
 
 
-var ctx = document.getElementById('secondChart').getContext('2d');
+        var ctx = document.getElementById('secondChart').getContext('2d');
         var chart2 = new Chart(ctx, {
             type: 'pie',
             data: {
@@ -103,31 +102,31 @@ var ctx = document.getElementById('secondChart').getContext('2d');
                 }]
             },
             options: {
-                 scales: {
-            yAxes: [{
-                stacked: true
-            }]
-        },
+                scales: {
+                    yAxes: [{
+                        stacked: true
+                    }]
+                },
                 onresize: beforePrintHandler(),
                 //responsive: false for manual resize
             }
         });
 
-    chart2.canvas.parentNode.style.minWidth = '200px';
-    chart2.canvas.parentNode.style.minHeight = '200px';
+        chart2.canvas.parentNode.style.minWidth = '200px';
+        chart2.canvas.parentNode.style.minHeight = '200px';
 
 
-var ctx = document.getElementById('thirdChart').getContext('2d');
+        var ctx = document.getElementById('thirdChart').getContext('2d');
         var chart3 = new Chart(ctx, {
-            type: 'line',
+            type: 'bar',
             data: {
                 labels: [{% for sal in salario %}'{{ sal.fecha_deposito }}',{% endfor %}],
                 datasets: [{
-                     label: "Salario",
-                    data: [{% for sal in salario %}{{ sal.amount }},{% endfor %}],
+                    label: "Salario",
+                    data: [{% for sal in salario %}{{ sal.amount }}, {% endfor %}],
                     backgroundColor: [
                         {% for sal in salario %}
-                           'rgba(255, 99, 132, 0.2)',
+                            'rgba(255, 99, 132, 0.2)',
                         {% endfor %}
 
 
@@ -138,8 +137,28 @@ var ctx = document.getElementById('thirdChart').getContext('2d');
                         {% endfor %}
                     ],
                     borderWidth: 3,
-                    fill: false,
-                }]
+                },
+                    {
+                        label: "Salario",
+                        data: [{% for sal in salario %}{{ sal.amount }}, {% endfor %}],
+
+                        backgroundColor: [
+                            {% for sal in salario %}
+                                'black',
+                            {% endfor %}
+
+
+                        ],
+                        borderColor: [
+                            {% for sal in salario %}
+                                'rgba(0, 0, 0, 1)',
+                            {% endfor %}
+                        ],
+                        borderWidth: 4,
+
+                        fill: 'origin',
+                        type: 'line',
+                    }]
             },
             options: {
 
@@ -148,17 +167,15 @@ var ctx = document.getElementById('thirdChart').getContext('2d');
             }
         });
 
-    chart3.canvas.parentNode.style.minWidth = '200px';
-    chart3.canvas.parentNode.style.minHeight = '200px';
+        chart3.canvas.parentNode.style.minWidth = '200px';
+        chart3.canvas.parentNode.style.minHeight = '200px';
 
 
-
-
-    function beforePrintHandler () {
-    for (var id in Chart.instances) {
-        Chart.instances[id].resize();
-    }
-}
+        function beforePrintHandler() {
+            for (var id in Chart.instances) {
+                Chart.instances[id].resize();
+            }
+        }
 
     </script>
 {% endblock %}

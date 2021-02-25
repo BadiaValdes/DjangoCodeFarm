@@ -18,6 +18,7 @@ def index(request):
         deudas_liquidadas = Deudas.objects.filter(estado__iexact='Liquidada').count()
         deudas_pendientes = Deudas.objects.filter(estado__iexact='Pendiente').count()
         salario = Salario.objects.all()
+
         context = {
             'salida': salida,
             'entrada': entrada,
