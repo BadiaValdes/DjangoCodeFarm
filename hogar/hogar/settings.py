@@ -32,6 +32,9 @@ ALLOWED_HOSTS = ['*']
 INSTALLED_APPS = [
 
     # Installed apps
+    'channels',
+    'channels_redis',
+    'chat',
     'dashboard',
     'almacen',
     'economia',
@@ -55,15 +58,13 @@ INSTALLED_APPS = [
     'rolepermissions',
     'analytical',
 
-    #'almacen.apps.AlmacenConfig',
+    # 'almacen.apps.AlmacenConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
-
 
 ]
 
@@ -114,6 +115,23 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'hogar.wsgi.application'
+ASGI_APPLICATION = 'hogar.asgi.application'
+
+# I need install redis channels ->> pipenv install channels_redis
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}
+
+# CHANNEL_LAYERS = {
+#     'default': {
+#         'BACKEND': 'channels.layers.InMemoryChannelLayer',
+#     },
+# }
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
@@ -200,39 +218,39 @@ ACCOUNT_EMAIL_REQUIRED = True
 # DEFAULT_FROM_EMAIL = '@.com'
 
 
-#FILE_PATH_FIELD_DIRECTORY = BASE_DIR / 'media/pdf_repo/'
-#CRONTAB_DJANGO_MANAGE_PATH = os.path.join(BASE_DIR, 'manage.py')
-#CRONTAB_DJANGO_PROJECT_NAME = 'hogar'
-#CRONTAB_DJANGO_SUFFIX = '2>&1'
-#CRONTAB_DJANGO_PREFIX = 'pipenv run'
-#CRONJOBS = [
+# FILE_PATH_FIELD_DIRECTORY = BASE_DIR / 'media/pdf_repo/'
+# CRONTAB_DJANGO_MANAGE_PATH = os.path.join(BASE_DIR, 'manage.py')
+# CRONTAB_DJANGO_PROJECT_NAME = 'hogar'
+# CRONTAB_DJANGO_SUFFIX = '2>&1'
+# CRONTAB_DJANGO_PREFIX = 'pipenv run'
+# CRONJOBS = [
 #    ('* * * * *', 'almacen.cron.cron_job', '>> ~/file.log'),
-#]
+# ]
 
-#from celery.schedules import crontab
+# from celery.schedules import crontab
 
-#CELERY_TIMEZONE = "Cuba/Havana"
-#CELERY_TASK_TRACK_STARTED = True
-#CELERY_TASK_TIME_LIMIT = 30 * 60
+# CELERY_TIMEZONE = "Cuba/Havana"
+# CELERY_TASK_TRACK_STARTED = True
+# CELERY_TASK_TIME_LIMIT = 30 * 60
 
-#CELERY_BEAT_SCHEDULE = {
- #   'pdf_gen': {
-  #      'task': 'almacen.view.pdf_gen',
-   #     'schedule': crontab(minute=1),
-    #}, }
+# CELERY_BEAT_SCHEDULE = {
+#   'pdf_gen': {
+#      'task': 'almacen.view.pdf_gen',
+#     'schedule': crontab(minute=1),
+# }, }
 
 # ENV_PATH = os.path.join(BASE_DIR, '.env')
 
 # KRONOS_PREFIX = 'pipenv shell'
 
-    #.format(os.path.join(BASE_DIR, '.env_constants'))
-#KRONOS_POSTFIX = '>> /var/log/cron.log 2>&1'
+# .format(os.path.join(BASE_DIR, '.env_constants'))
+# KRONOS_POSTFIX = '>> /var/log/cron.log 2>&1'
 
 # CRONTAB_DJANGO_MANAGE_PATH = '/home/emilio/proyectos/env1/hogar/manage.py'
 
-    #'~/proyectos/env1/hogar/manage.py'
+# '~/proyectos/env1/hogar/manage.py'
 
-#CRONTAB_DJANGO_PREFIX = 'pipenv shell'
+# CRONTAB_DJANGO_PREFIX = 'pipenv shell'
 
 # CRONJOBS = [
 #     ('* * * * *', 'almacen.cron.pdf_gen', '>> ~/proyectos/env1/hogar/file.txt'),

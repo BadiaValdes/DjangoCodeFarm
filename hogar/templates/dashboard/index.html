@@ -39,12 +39,41 @@
                 </div>
             </div>
         </div>
+    <input type="button" onclick="clic()" id="con" class="btn btn-outline-success btn-block" value="Hola">
 
     </div>
 {% endblock %}
 
 {% block js %}
     <script src="{% static 'js/Chart.bundle.min.js' %}"></script>
+    <script>
+
+        let socket = new WebSocket( 'ws://'
+            + window.location.host
+            + '/ws/test/');
+
+        socket.onopen = function (e){
+            alert('Connection');
+        }
+
+        socket.onmessage = function(e){
+           const data = JSON.parse(e.data);
+            console.log(data);
+        }
+
+        socket.onclose = function (e){
+            alert('Clossed')
+        }
+
+        function clic() {
+            for (let i = 0; i < 10; i++){
+                socket.send(JSON.stringify({
+                    'value': Math.floor(Math.random() * 10)
+            }))}}
+
+
+
+    </script>
 
 
     <script>
@@ -84,7 +113,7 @@
 
 
         var ctx = document.getElementById('secondChart').getContext('2d');
-        var chart2 = new Chart(ctx, {
+        var dataOBJ = {
             type: 'pie',
             data: {
                 labels: ['Deudas Pendientes', 'Deudas Liquidadas'],
@@ -110,10 +139,11 @@
                 onresize: beforePrintHandler(),
                 //responsive: false for manual resize
             }
-        });
-
-        chart2.canvas.parentNode.style.minWidth = '200px';
-        chart2.canvas.parentNode.style.minHeight = '200px';
+        }
+        //var chart2 = new Chart(ctx, dataOBJ);
+        window.myLiny = new Chart(ctx, dataOBJ);
+       window.myLiny.canvas.parentNode.style.minWidth = '200px';
+        window.myLiny.canvas.parentNode.style.minHeight = '200px';
 
 
         var ctx = document.getElementById('thirdChart').getContext('2d');

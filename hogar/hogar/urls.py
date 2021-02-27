@@ -22,9 +22,10 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('almacen/', include('almacen.urls')),
+    path('chat/', include('chat.urls')),
     path('compra/', include('compra.urls')),
     path('user/', include('user.urls')),
-    path('list/',include('listas.urls')),
+    path('list/', include('listas.urls')),
     path('economia/', include('economia.urls')),
     path('notifications/', include('notifications.urls', namespace='notifications')),
     path('accounts/', include('allauth.urls')),
