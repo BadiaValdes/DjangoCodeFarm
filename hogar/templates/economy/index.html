@@ -144,7 +144,7 @@
             <div class="row second_screen btn-group-vertical" id="second_screen" style="width:300px;">
 
                 <a href="{% url 'economia:list_op' %}" class="btn btn-outline-primary col-lg-12">Ver operaciones</a>
-<a id="socketAction" class="btn btn-outline-primary col-lg-12">Action Socket</a>
+<a id="socketAction" onclick="clic()" class="btn btn-outline-primary col-lg-12">Action Socket</a>
                 <a href="{% url 'economia:list_deudas' %}" class="btn btn-outline-primary col-lg-12 ">Ver deaudas</a>
                 <a href="{% url 'economia:list_salario' %}" class="btn btn-outline-primary col-lg-12 ">Ver salarios</a>
 
@@ -159,6 +159,23 @@
 {% endblock footer %}
 
 {% block js %}
+    <script>
+
+      const socket = new WebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/test/'
+        );
+
+
+        function clic() {
+            socket.send(JSON.stringify({
+                'value': Math.floor(Math.random() * 10)
+            }))
+        }
+
+
+    </script>
     <script type="text/javascript">
 
         let fecha = new Date;

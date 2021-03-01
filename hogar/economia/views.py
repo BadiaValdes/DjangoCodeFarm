@@ -15,6 +15,10 @@ from django.urls import reverse_lazy
 from django.conf import settings
 from django.utils.timezone import now
 from .util import DineroActual
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
+
+
 # Create your views here.
 
 @login_required
@@ -23,17 +27,17 @@ def index(request):
     if request.user is not None:
         date_search = ""
         if request.POST:
-            date = request.POST.get("date") #para capturar los parámetros post o get Se debe poner al final get("NombreDelInput")
+            date = request.POST.get(
+                "date")  # para capturar los parámetros post o get Se debe poner al final get("NombreDelInput")
             tipo = request.POST.get('tipo')
             date_split = date.split('-')
 
-
             if tipo == '2':
-               op = Operaciones.objects.filter(fecha_operacion__month=date_split[1])
-               date_search = 'Mes: {0}'.format(date_split[1])
+                op = Operaciones.objects.filter(fecha_operacion__month=date_split[1])
+                date_search = 'Mes: {0}'.format(date_split[1])
             elif tipo == '3':
-               op = Operaciones.objects.filter(fecha_operacion__year=date_split[0])
-               date_search = 'Año   : {0}'.format(date_split[0])
+                op = Operaciones.objects.filter(fecha_operacion__year=date_split[0])
+                date_search = 'Año   : {0}'.format(date_split[0])
             else:
                 op = Operaciones.objects.filter(fecha_operacion=date)
                 date_search = date
@@ -43,7 +47,9 @@ def index(request):
             op = Operaciones.objects.filter(fecha_operacion=date)
             date_search = now().date().strftime('%Y-%m-%d')
 
-
+        # this code below is for channel activation outside the consumer
+        # channel_layer = get_channel_layer()
+        # async_to_sync(channel_layer.group_send)("dashboard", {"type": "chat_message", "value":"155"})
         context = {
             'date': date,
             'date_search': date_search,
@@ -54,5 +60,3 @@ def index(request):
         return render(request, '../templates/economy/index.html', context)
     else:
         return HttpResponse('Not user found')
-
-

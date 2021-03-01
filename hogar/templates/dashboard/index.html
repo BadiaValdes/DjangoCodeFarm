@@ -55,11 +55,13 @@
 
         socket.onmessage = function(e) {
             const data = JSON.parse(e.data);
-            document.getElementById('con').value = (data.value);
+            document.getElementById('con').value = (data['sal']['val6']);
+            alert('Hola mundo');
+            console.log(data);
         };
 
         socket.onclose = function(e) {
-            console.error('Chat socket closed unexpectedly');
+            console.error('Socket closed unexpectedly');
             console.error(e.reason)
         };
 
