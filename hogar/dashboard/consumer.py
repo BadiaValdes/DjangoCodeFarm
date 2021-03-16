@@ -83,6 +83,7 @@ class DashConsumer(AsyncWebsocketConsumer):
     # Receive message from WebSocket
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
+
         value = text_data_json['value']
         #salario = await self.get_salario() //OLD
 
@@ -104,18 +105,19 @@ class DashConsumer(AsyncWebsocketConsumer):
     # Receive message from room group
     # and send it to the view
     async def chat_message(self, event):
-        message = event['value']
+        #message = event['value']
         #salario = json.loads(event['sal'])
         # I can do it by this way because the salario does not depends of
         # any value apart of the one which is in the database
         salario = await self.get_salario()
+        fecha = await self.get_fecha()
         text_data = json.dumps({
-            'value': message,
             'sal': salario,
+            'fech': fecha,
         })
-        print(self.channel_name)
+        #print(self.channel_name)
 
-        print(salario)
+        #print(salario)
         # Send message to WebSocket
         await self.send(text_data)
 
@@ -123,13 +125,27 @@ class DashConsumer(AsyncWebsocketConsumer):
     @database_sync_to_async
     def get_salario(self):
         data = {}
+        print(self.scope['session']['hola'])
         sal = Salario.objects.all()
         for idx, s in enumerate(sal):
             data['val' + idx.__str__()] = s.amount
-        salario = serializers.serialize('json', Salario.objects.all())
-        ss = json.dumps(data)
+
+        #salario = serializers.serialize('json', Salario.objects.all())
+        #ss = json.dumps(data)
         return data
     # this is weird but, I have to turn into json to pass the salari form
     # get_salario al reciver.
     # when the chat_message enters in the process, I have to turn into python and turn that into json again
     # for more than one value
+
+    @database_sync_to_async
+    def get_fecha(self):
+        data = {}
+        sal = Salario.objects.all()
+        for idx, s in enumerate(sal):
+            data['fecha' + idx.__str__()] = s.fecha_deposito.year.__str__() + ' / ' + s.fecha_deposito.month.__str__()
+
+        #print(data)
+        #salario = serializers.serialize('json', Salario.objects.all())
+        #ss = json.dumps(data)
+        return data

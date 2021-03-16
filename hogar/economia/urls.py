@@ -35,6 +35,7 @@ urlpatterns = [
     path('salario/add/', salario.CreateSalario.as_view(), name='create_salario'),
     path('salario/', salario.SalarioList.as_view(), name='list_salario'),
     re_path('salario/(?P<pk>[0-9a-f]{32})', salario.SalarioDetailView.as_view(), name='salario_details'),
+    path('salario/elim/', salario.SalarioEliminar, name='del'),
 
     # deudas
     path('deuda/add', deudas.CreateDeuda.as_view(), name='create_deuda'),

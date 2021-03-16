@@ -39,7 +39,6 @@
                 </div>
             </div>
         </div>
-        <input type="button" onclick="clic()" id="con" class="btn btn-outline-success btn-block" value="Hola">
     </div>
 {% endblock %}
 
@@ -47,36 +46,7 @@
     <script src="{% static 'js/Chart.bundle.min.js' %}"></script>
     <script>
 
-      const socket = new WebSocket(
-            'ws://'
-            + window.location.host
-            + '/ws/test/'
-        );
 
-        socket.onmessage = function(e) {
-            const data = JSON.parse(e.data);
-            document.getElementById('con').value = (data['sal']['val6']);
-            alert('Hola mundo');
-            console.log(data);
-        };
-
-        socket.onclose = function(e) {
-            console.error('Socket closed unexpectedly');
-            console.error(e.reason)
-        };
-
-
-        function clic() {
-            socket.send(JSON.stringify({
-                'value': Math.floor(Math.random() * 10)
-            }))
-        }
-
-
-    </script>
-
-
-    <script>
 
         var ctx = document.getElementById('firstChart').getContext('2d');
         var chart = new Chart(ctx, {
@@ -147,13 +117,15 @@
 
 
         var ctx = document.getElementById('thirdChart').getContext('2d');
-        var chart3 = new Chart(ctx, {
+
+
+        let dataOBJ2 = {
             type: 'bar',
             data: {
-                labels: [{% for sal in salario %}'{{ sal.fecha_deposito }}',{% endfor %}],
+                labels: [],
                 datasets: [{
                     label: "Salario",
-                    data: [{% for sal in salario %}{{ sal.amount }}, {% endfor %}],
+                    data: [],
                     backgroundColor: [
                         {% for sal in salario %}
                             'rgba(255, 99, 132, 0.2)',
@@ -168,37 +140,17 @@
                     ],
                     borderWidth: 3,
                 },
-                    {
-                        label: "Salario",
-                        data: [{% for sal in salario %}{{ sal.amount }}, {% endfor %}],
-
-                        backgroundColor: [
-                            {% for sal in salario %}
-                                'black',
-                            {% endfor %}
-
-
-                        ],
-                        borderColor: [
-                            {% for sal in salario %}
-                                'rgba(0, 0, 0, 1)',
-                            {% endfor %}
-                        ],
-                        borderWidth: 4,
-
-                        fill: 'origin',
-                        type: 'line',
-                    }]
+                ]
             },
             options: {
 
                 onresize: beforePrintHandler(),
                 //responsive: false for manual resize
             }
-        });
-
-        chart3.canvas.parentNode.style.minWidth = '200px';
-        chart3.canvas.parentNode.style.minHeight = '200px';
+        };
+        window.myLiny2 = new Chart(ctx, dataOBJ2);
+        window.myLiny2.canvas.parentNode.style.minWidth = '200px';
+        window.myLiny2.canvas.parentNode.style.minHeight = '200px';
 
 
         function beforePrintHandler() {
@@ -206,6 +158,45 @@
                 Chart.instances[id].resize();
             }
         }
+
+        const socket = new WebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/test/'
+        );
+
+
+        socket.onopen = function (e) {
+            socket.send(JSON.stringify({
+                'value': 'data',
+            }));
+        }
+
+        socket.onmessage = function (e) {
+            const data = JSON.parse(e.data);
+            //document.getElementById('con').value = (data['sal']);
+            //console.log(data)
+            let dataObjectNew = dataOBJ2['data']['datasets'][0]['data']
+            let dataObjectLabel = dataOBJ2['data']['labels']
+            //console.log(dataObjectLabel)
+            dataObjectNew.length = 0
+            dataObjectLabel.length = 0
+            for (let [key, value] of Object.entries(data.sal))
+                dataObjectNew.push(value)
+
+            for (let [key, value] of Object.entries(data.fech))
+                dataObjectLabel.push(value)
+
+            dataOBJ2['data']['datasets'][0]['data'] = dataObjectNew
+            dataOBJ2['data']['labels'] = dataObjectLabel
+            window.myLiny2.update()
+        };
+
+        socket.onclose = function (e) {
+            console.error('Socket closed unexpectedly');
+            console.error(e.reason)
+        };
+
 
     </script>
 {% endblock %}

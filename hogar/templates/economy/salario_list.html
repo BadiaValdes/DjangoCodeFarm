@@ -11,7 +11,7 @@
             <th>Modificar</th>
             <th>Detalles</th>
             <th>
-                <form action="{% url 'lista:state_eliminar' %}" method="post" name="delete_form" id="delete_form">
+                <form action="{% url 'economia:del' %}" method="post" name="delete_form" id="delete_form">
                     {% csrf_token %}
                     <button class="btn btn-outline-danger" disabled name="delete" id="delete_btn">Eliminar</button>
                 </form>

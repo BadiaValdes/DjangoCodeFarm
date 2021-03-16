@@ -50,6 +50,8 @@ def index(request):
             search_text = False
         context = {'producto': producto, 'search': search, 'user': request.user, 'search_type': search_type,
                    'search_text': search_text}
+        request.session['hola'] = {}
+        # Para guardar un dictionario en una session, es necesario hacer despues un request.session.modified = True
         return render(request, '../templates/almacen/index.html', context)
     else:
         return HttpResponse('Not user found')

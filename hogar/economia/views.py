@@ -48,15 +48,27 @@ def index(request):
             date_search = now().date().strftime('%Y-%m-%d')
 
         # this code below is for channel activation outside the consumer
-        # channel_layer = get_channel_layer()
-        # async_to_sync(channel_layer.group_send)("dashboard", {"type": "chat_message", "value":"155"})
+        channel_layer = get_channel_layer()
+        async_to_sync(channel_layer.group_send)("dashboard", {"type": "chat_message"})
+        try:
+            cantidad = Salario.objects.latest('fecha_deposito').cantidad()
+        except:
+            cantidad = 0
+
+        print(cantidad)
+
         context = {
             'date': date,
             'date_search': date_search,
             'operaciones': op,
-            'salario': Salario.objects.last().cantidad(),
+            'salario': cantidad,
             'dineroActual': DineroActual(),
         }
+        # print(request.session['hola'])
+        # request.session['hola']['val1'] = 555;
+        # request.session['hola']['val2'] = 668;
+        # print(request.session['hola'])
+        #request.session.modified = True
         return render(request, '../templates/economy/index.html', context)
     else:
         return HttpResponse('Not user found')

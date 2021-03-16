@@ -16,6 +16,8 @@ from django.views import generic
 from django.urls import reverse_lazy
 from django.conf import settings
 from django.utils.timezone import now
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
 # Create your views here.
 
 class CreateSalario(LoginRequiredMixin, CreateView):
@@ -28,7 +30,11 @@ class CreateSalario(LoginRequiredMixin, CreateView):
         object = form.save(commit=False)
         object.user = self.request.user
         object.save()
+        channel_layer = get_channel_layer()
+        async_to_sync(channel_layer.group_send)("dashboard", {"type": "chat_message"})
         return super(CreateSalario, self).form_valid(form)
+
+
 
 
 class SalarioList(LoginRequiredMixin, ListView):
@@ -63,3 +69,14 @@ class SalarioDetailView(LoginRequiredMixin, DetailView):
         #context['cantDeudasLiquidadas'] = Deudas.objects.filter(salario=salarioID, estado__exact='Liquidada').count()
         #context['cantDeudasPendientes'] = Deudas.objects.filter(salario=salarioID, estado__exact='Pendiente').count()
         return context
+
+@login_required
+def SalarioEliminar(request):
+    if (request.POST.getlist('delete')):
+        datos = request.POST.getlist('delete')
+        for dat in datos:
+            Salario.objects.filter(id=dat).delete()
+
+        channel_layer = get_channel_layer()
+        async_to_sync(channel_layer.group_send)("dashboard", {"type": "chat_message"})
+    return redirect('/economia/salario/')
