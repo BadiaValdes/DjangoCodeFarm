@@ -31,8 +31,9 @@ class CreateSalario(LoginRequiredMixin, CreateView):
         object.user = self.request.user
         object.save()
         channel_layer = get_channel_layer()
-        async_to_sync(channel_layer.group_send)("dashboard", {"type": "chat_message"})
+        async_to_sync(channel_layer.group_send)("dashboard", {"type": "chat_message", "value" : { "cant":object.amount, "fecha": object.fecha_deposito.strftime('%m-%Y'), 'deuda': 0}})
         return super(CreateSalario, self).form_valid(form)
+
 
 
 

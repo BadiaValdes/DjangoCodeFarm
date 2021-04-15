@@ -1,74 +1,133 @@
 {% extends 'layout.html' %}
-
-
-
+{% load static %}
 {% block content %}
-    <div class="container">
-        <h4 class="center">{{ object.nb }} </h4>
-        <table class="table table-hover" id="table_list">
-            <thead>
-            <tr>
-                <th>Numero</th>
-                <th>Nombre_Item</th>
-                <th>Estado</th>
-                <th>
-                    <form action="{% url 'lista:item_eliminar' %}" method="post" name="delete_form" id="delete_form">
-                        {% csrf_token %}
-                        <button class="btn btn-outline-danger" disabled name="delete" id="delete_btn"
-                                onclick="return confirm('Desea Eliminar')">Eliminar
-                        </button>
-                    </form>
-                </th>
-            </tr>
-            </thead>
+    {% if user != object.user %}
+        {% include  '../notAccess.html' %}
 
-            <tbody>
-            {% for it in item %}
+
+    {% else %}
+
+        <div class="container">
+            <h4 class="center">{{ object.nb }} </h4>
+            <table class="table table-hover col" id="table_list">
+                <thead>
                 <tr>
-                    <td>{{ forloop.counter }}</td>
-                    <td>{{ it.nb }}</td>
-                    <td> <span data-toggle="dropdown" aria-haspopup="true"
-                               aria-expanded="false"><a data-toggle="tooltip"
-                                                        title="{{ it.state.nb }}"
-                                                        class="btn btn-primary action_detail"
-                                                        href="#">{{ it.state.nb }}</a></span>
+                    <th>Numero</th>
+                    <th>Nombre_Item</th>
+                    <th>Estado</th>
+                    <th class="center">
+                        <form action="{% url 'lista:item_eliminar' %}" method="post" name="delete_form"
+                              id="delete_form">
+                            {% csrf_token %}
+                            Acciones:
+                            <button class="btn btn-sm btn-outline-danger bi bi-trash-fill" disabled name="delete" id="delete_btn"
+                                    onclick="return confirm('Desea Eliminar')">
+                            </button>
+                        </form>
+                    </th>
+                </tr>
+                </thead>
 
-                        <div class="dropdown-menu">
-                            {% for st in state %}
-                                {% for st_id in st.tipo.all %}
-                                    {% if st_id.id == object.tipo.id and st.id != it.state.id %}
-                                        <a class="dropdown-item" style="width: 70% !important;"
-                                           href="{% url 'lista:item_change_details' object.id it.id st.id %}">{{ st.nb }}
-                                            <i class="badge tiny material-icons">{{ st.icon }}</i> </a>
-                                    {% endif %}
+                <tbody>
+                {% for it in item %}
+                    <tr>
+                        <td class="align-middle">{{ forloop.counter }}</td>
+                        <td class="align-middle">{{ it.nb }}</td>
+                        <td class="align-middle"> <span data-toggle="dropdown" aria-haspopup="true"
+                                                        aria-expanded="false"><a data-toggle="tooltip"
+                                                                                 title="{{ it.state.nb }}"
+                                                                                 class="btn btn-primary action_detail"
+                                                                                 href="#">{{ it.state.nb }}</a></span>
+
+                            <div class="dropdown-menu">
+                                {% for st in state %}
+                                    {% for st_id in st.tipo.all %}
+                                        {% if st_id.id == object.tipo.id and st.id != it.state.id %}
+                                            <a class="dropdown-item" style="width: 70% !important;"
+                                               href="{% url 'lista:item_change_details' object.id it.id st.id %}">{{ st.nb }}
+                                                <i class="badge tiny material-icons">{{ st.icon }}</i> </a>
+                                        {% endif %}
+                                    {% endfor %}
+
                                 {% endfor %}
 
-                            {% endfor %}
+                            </div>
+                        </td>
+                        <td class="align-middle center">
+                            <div class="btn-group-toggle btn-group" data-toggle="buttons">
+                                <a class="btn detalles btn-outline-secondary" id="{{ it.id }}" href="#"
+                                   data-catid="{{ it.id }}"
+                                   data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Destalles</a>
+                                <label class="btn btn-outline-danger">
+                                    <input type="checkbox" form="delete_form" name="delete" onchange="check(this)"
+                                           value="{{ it.id }}"> Seleccionar
+                                </label>
 
-                        </div>
-                    </td>
-                    <td>
-                        <div class="btn-group-toggle" data-toggle="buttons">
-                            <label class="btn btn-outline-danger">
-                                <input type="checkbox" form="delete_form" name="delete" onchange="check(this)"
-                                       value="{{ it.id }}"> Seleccionar
-                            </label>
-                        </div>
+                            </div>
+                        </td>
+                        {#                        <td class="align-middle">#}
+                        {#                            {% if it.customProperty is not None %}#}
+                        {#                                {% for key,value in it.To_json.items %}#}
+                        {#                                    <p class="">{{ key }} --> {{ value }}</p>#}
+                        {#                                {% endfor %}#}
+                        {#                            {% else %}#}
+                        {#                                <p>No hay elemento</p>#}
+                        {#                            {% endif %}#}
+                        {#                        </td>#}
 
-                </tr>
-            {% empty %}
-                <td>No hay item registradas</td>
-            {% endfor %}
-            </tbody>
-        </table>
+
+                    </tr>
+                {% empty %}
+                    <td>No hay item registradas</td>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+
+    <div class="modal fade " id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header center">
+                    <h5 class="modal-title " id="exampleModalLabel">Detalles del item</h5>
+                    <button onclick="clean()" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body row align-items-center">
+
+                    <div class=" col-6">
+                        <img src="#" id="modalIMG" class="img_modal"/>
+                    </div>
+                    <div class="align-middle col-6">
+                        <ul class="list-group list-group-flush" id="propiedades">
+
+
+                        </ul>
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="clean()">Close
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}
+
 
 {% block js %}
     <script type="text/javascript">
 
         var count = 0
-
+        let exampleModalLabel = document.getElementById("exampleModalLabel");
+        let modalIMG = document.getElementById("modalIMG");
+        let propiedades = document.getElementById("propiedades");
+        let list = document.createElement("li");
+        let textNode = document.createTextNode("Hola Mundo");
 
         function check(e) {
             if (e.checked) {
@@ -99,12 +158,60 @@
                     "targets": [3],
                     "orderable": false,
                 },
-                    {"targets": [3, 2, 0],
-                    "searchable": false,}]
+                    {
+                        "targets": [3, 2, 0],
+                        "searchable": false,
+                    }]
             });
 
         });
 
+        $('.detalles').click(function () {
+            var catid;
+            catid = $(this).attr("data-catid");
+            $.ajax({
+                type: "GET",
+                url: "item",
+                data: {
+                    item_id: catid
+                },
+                success: function (data) {
+
+                    for (x in data.custom) {
+                        list = document.createElement("li");
+                        textNode = document.createTextNode("Hola")
+                        list.classList.add('list-group-item')
+                        textNode.data = `${x}: ${data.custom[x]}`
+                        list.appendChild(textNode);
+                        propiedades.appendChild(list);
+                    }
+                    list = document.createElement("li");
+                    textNode = document.createTextNode("Hola");
+                    list.classList.add('list-group-item')
+                    textNode.data = `Estado ${data.estado}`
+                    list.appendChild(textNode);
+                    propiedades.appendChild(list);
+                    exampleModalLabel.textContent = data.nb;
+                    modalIMG.src = data.img;
+                    console.log(`Hola ${textNode.data}`)
+                }
+            })
+        })
+
+        {#function sleep(ms) {#}
+        {#    return new Promise(resolve => setTimeout(resolve, ms))#}
+        {#}#}
+        {##}
+        {#function clean() {#}
+        {#    sleep(500).then(() => {#}
+        {#        propiedades.innerHTML = ""#}
+        {#    })#}
+        {#}#}
+
+        $('#exampleModal').on('hidden.bs.modal', function (e) {
+ propiedades.innerHTML = ""
+})
 
     </script>
 {% endblock %}
+

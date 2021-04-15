@@ -56,6 +56,7 @@
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 from economia.models import Salario
+from economia.models import Deudas
 from channels.db import database_sync_to_async
 from django.core import serializers
 
@@ -86,36 +87,35 @@ class DashConsumer(AsyncWebsocketConsumer):
 
         value = text_data_json['value']
         #salario = await self.get_salario() //OLD
-
-
         # Send message to room group
         # this send the values to type method that were declare below
         # that method is the one who is going to process the info and send it to the view
         # here is only for the values that comes for the view
+        #print(self.receive('dashboard'))
         await self.channel_layer.group_send(
             self.room_name,
             {
                 'type': 'chat_message',
                 'value': value,
                 #'sal': salario, //OLD
-
             }
         )
 
     # Receive message from room group
     # and send it to the view
     async def chat_message(self, event):
-        #message = event['value']
+        message = event['value']
         #salario = json.loads(event['sal'])
         # I can do it by this way because the salario does not depends of
         # any value apart of the one which is in the database
-        salario = await self.get_salario()
-        fecha = await self.get_fecha()
+        salario = message['cant']
+        fecha = message['fecha']
+        deuda = message['deuda']
         text_data = json.dumps({
             'sal': salario,
             'fech': fecha,
+            'deuda': deuda,
         })
-        #print(self.channel_name)
 
         #print(salario)
         # Send message to WebSocket
@@ -123,10 +123,14 @@ class DashConsumer(AsyncWebsocketConsumer):
 
     # solo el salario de los ususarios
     @database_sync_to_async
-    def get_salario(self):
+    def get_salario(self, value):
         data = {}
-        print(self.scope['session']['hola'])
+        print(value)
+        #print(self.scope['session']['hola'])
+        #sal = Salario.objects.last()
         sal = Salario.objects.all()
+        #print(sal.amount)
+        #data['salario'] = sal.amount
         for idx, s in enumerate(sal):
             data['val' + idx.__str__()] = s.amount
 
@@ -141,11 +145,26 @@ class DashConsumer(AsyncWebsocketConsumer):
     @database_sync_to_async
     def get_fecha(self):
         data = {}
+        #sal = Salario.objects.latest('fecha_deposito')
         sal = Salario.objects.all()
-        for idx, s in enumerate(sal):
-            data['fecha' + idx.__str__()] = s.fecha_deposito.year.__str__() + ' / ' + s.fecha_deposito.month.__str__()
 
-        #print(data)
+        for idx, s in enumerate(sal):
+
+             data['fecha' + idx.__str__()] = s.fecha_deposito.strftime("%m-%Y")
+        #fecha = sal.fecha_deposito.year.__str__() + ' / ' + sal.fecha_deposito.month.__str__()
+        #data['fecha'] = fecha
+        #salario = serializers.serialize('json', Salario.objects.all())
+        #ss = json.dumps(data)
+        return data
+
+    @database_sync_to_async
+    def get_deudas(self):
+        data = {}
+        pendiente = Deudas.objects.filter(estado__iexact='Pendiente').count()
+        liquidada = Deudas.objects.filter(estado__iexact='Liquidada').count()
+        data['pendiente' ] = pendiente
+        data['liquidado'] = liquidada
+
         #salario = serializers.serialize('json', Salario.objects.all())
         #ss = json.dumps(data)
         return data

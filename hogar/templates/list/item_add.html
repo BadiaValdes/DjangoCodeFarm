@@ -5,24 +5,41 @@
 {% block content %}
     <div class="container">
         <div class="row" style="width: 40%">
-                <form method="post"  enctype="multipart/form-data">
-                    {% crispy form %}
-                    <br>
+            <form method="post" enctype="multipart/form-data">
+                {% crispy form %}
+                <br>
+                {% for field, type in custom_Field %}
+                    <div class="form-group">
+                        {% if type == "textarea" %}
+                            <textarea id="extraData" name="extraData" placeholder="{{ field }}"></textarea>
+                        {% else %}
+                            <label for="extraData">{{ field }}</label>
+                            <input type="{{ type }}" class="form-control" id="extraData" name="extraData"
+                                   placeholder="{{ field }}">
+                        {% endif %}
+
+
+                    </div>
+                {% endfor %}
                 <input type="submit" class="btn btn-outline-primary" value="Annadir Item">
                 <input type="hidden" id="list_type" value="{{ list_id }}">
-                </form>
+            </form>
         </div>
     </div>
+
 {% endblock %}
 
 {% block js %}
     <script type="text/javascript">
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             let elems = document.querySelectorAll('select');
             let instances = M.FormSelect.init(elems);
-          });
+        });
 
-                    let del = document.getElementById("delete_btn");
-            del.classList.add("disabled")
+
+        let del = document.getElementById("delete_btn");
+        del.classList.add("disabled")
+
+
     </script>
 {% endblock %}

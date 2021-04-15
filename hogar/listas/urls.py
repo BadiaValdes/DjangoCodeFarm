@@ -28,19 +28,22 @@ urlpatterns = [
     path('', views.index, name='lista'),
     path('add', list.ListaCreateView.as_view(), name='lista_add'),
     path('delete', list.ListaEliminar, name='lista_eliminar'),
+    path('detail_list/item', item.ItemDetail, name="item_details"),
     re_path('eliminar_lista/(?P<pk>[0-9a-f]{32})', list.ListaDeleteView.as_view(), name='lista_delete'),
     re_path('update_lista/(?P<pk>[0-9a-f]{32})', list.ListaUpdateView.as_view(), name='lista_update'),
     re_path('detail_list/(?P<pk>[0-9a-f]{32})', list.ListaDetailView.as_view(), name='lista_details'),
 
     # item
     re_path('item/add/(?P<pk>[0-9a-f]{32})', item.ItemCreateView.as_view(), name='item_add'),
+
     # path('item/add', item.ItemCreateView.as_view(), name='item_add'),
     path('item/delete', item.ItemEliminar, name='item_eliminar'),
     re_path('item/eliminar/(?P<pk>[0-9a-f]{32})', item.ItemDeleteView.as_view(), name='item_delete'),
     re_path('item/update/(?P<pk>[0-9a-f]{32})', item.ItemUpdateView.as_view(), name='item_update'),
     re_path('item/state/(?P<pk_item>[0-9a-f]{32})/(?P<pk_state>[0-9a-f]{32})', views.change_sate,
             name='item_change'),
-    re_path('item/state2/(?P<pk_list>[0-9a-f]{32})/(?P<pk_item>[0-9a-f]{32})/(?P<pk_state>[0-9a-f]{32})', views.change_sate_details,
+    re_path('item/state2/(?P<pk_list>[0-9a-f]{32})/(?P<pk_item>[0-9a-f]{32})/(?P<pk_state>[0-9a-f]{32})',
+            views.change_sate_details,
             name='item_change_details'),
 
     # tipo

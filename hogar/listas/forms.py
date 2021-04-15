@@ -1,5 +1,6 @@
 from django import forms
 from .models import Tipo, State, Lista, Item
+
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Row, Column
 
@@ -41,7 +42,7 @@ class ItemForm (forms.ModelForm):
     class Meta:
         model = Item
         fields = "__all__"
-        exclude = ('user', 'list')
+        exclude = ('user', 'list', 'customProperty')
 
     def __init__(self, *args, **kwargs):
         list_type = kwargs.pop('list', None)

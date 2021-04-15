@@ -1,6 +1,7 @@
+from django.forms import model_to_dict
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponse, HttpResponseRedirect
-
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+import json
 from django.views.generic.edit import DeleteView, CreateView, UpdateView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
@@ -34,6 +35,8 @@ class ItemCreateView(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['list_id'] = self.kwargs['pk']
+        list = Lista.objects.filter(id__contains=self.kwargs['pk']).first().Get_custom_Test()
+        context['custom_Field'] = list
         return context
 
     # metodo que sobreescribe el comportamiento de la inicializacion del formulario
@@ -45,6 +48,16 @@ class ItemCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         object = form.save(commit=False)
         object.user = self.request.user
+        data = self.request.POST.getlist('extraData')
+        #data2 = self.kwargs['extraData']
+        print("data 1 {}".format(data))
+        newData = {}
+        custom_Field_List = Lista.objects.filter(id__contains=self.kwargs['pk']).first().Get_custom_Test()
+        for idx, (field,type) in enumerate(custom_Field_List):
+            newData[field] = data[idx]
+        print(custom_Field_List)
+        object.customProperty = json.dumps(newData)
+        #print("data 2 {}".format(data2))
         li = Lista.objects.filter(id__contains=self.kwargs['pk']).first()
         object.list = li
         object.save()
@@ -73,3 +86,19 @@ def ItemEliminar(request):
         for dat in datos:
             Item.objects.filter(id=dat).delete()
     return redirect(reverse_lazy('lista:lista'))
+
+@login_required
+def ItemDetail(request):
+    if request.method == 'GET':
+        item_id = request.GET['item_id']
+        item = Item.objects.get(id = item_id)
+        item_custom = item.To_json()
+        data = {
+            "nb" : item.nb,
+            "img": item.img.url,
+            "estado":item.state.nb,
+            "custom":item_custom,
+        }
+        return JsonResponse(data)
+    else:
+        return HttpResponse("Bad!")

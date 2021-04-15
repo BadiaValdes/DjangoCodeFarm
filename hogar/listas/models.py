@@ -1,9 +1,9 @@
 from django.db import models
-
+from django.contrib.postgres.fields import ArrayField
 from django.utils.crypto import get_random_string
 from django.utils.timezone import now
 from django.conf import settings
-
+import json
 import uuid
 import os
 
@@ -63,9 +63,16 @@ class Lista(models.Model):
                                unique=True)
     tipo = models.ForeignKey(Tipo, on_delete=models.CASCADE, null=False)
     user = models.ForeignKey('user.User', on_delete=models.CASCADE, null=True)
+    #custom_Field = models.JSONField(null=True, blank=True)
+    custom_Test = ArrayField(models.CharField(max_length=15), size=10, blank=True, null=True)
+    custom_Test2 = ArrayField(ArrayField(models.CharField(max_length=15), size=3, blank=True, null=True), size=10, blank=True, null=True)
 
     def __str__(self):
         return self.nb
+
+    def Get_custom_Test (self):
+        return self.custom_Test2
+
 
 
 class Item(models.Model):
@@ -76,6 +83,14 @@ class Item(models.Model):
     list = models.ForeignKey(Lista, on_delete=models.CASCADE, null=True, blank=False)
     state = models.ForeignKey(State, on_delete=models.CASCADE, null=True, blank=False)
     user = models.ForeignKey('user.User', on_delete=models.CASCADE, null=True)
+    customProperty = models.JSONField(null=True, blank=True)
 
     def __str__(self):
         return self.nb
+
+
+    def To_json(self):
+        if self.customProperty is not None:
+            return json.loads(self.customProperty)
+        else:
+            return '0'

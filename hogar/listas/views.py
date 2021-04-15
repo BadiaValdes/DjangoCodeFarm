@@ -38,11 +38,9 @@ def index(request):
             'item': item,
             'state': state,
         }
-        print(request.session['hola'])
         # Lo mimo para el eliminar, es necesario modificar el estado del request.sessions.modified a TRUE
         # del request.session['hola']['val2']
         # request.session.modified = True
-        print(request.session['hola'])
         return render(request, 'list/list.html', contex)
 
 

@@ -46,6 +46,7 @@
     <script src="{% static 'js/Chart.bundle.min.js' %}"></script>
     <script>
 
+        let max_val = []
 
 
         var ctx = document.getElementById('firstChart').getContext('2d');
@@ -68,11 +69,7 @@
                 }]
             },
             options: {
-                scales: {
-                    yAxes: [{
-                        stacked: true
-                    }]
-                },
+
                 onresize: beforePrintHandler(),
                 //responsive: false for manual resize
             }
@@ -80,7 +77,7 @@
 
         chart.canvas.parentNode.style.minWidth = '200px';
         chart.canvas.parentNode.style.minHeight = '200px';
-
+        let myLine
 
         var ctx = document.getElementById('secondChart').getContext('2d');
         var dataOBJ = {
@@ -88,7 +85,7 @@
             data: {
                 labels: ['Deudas Pendientes', 'Deudas Liquidadas'],
                 datasets: [{
-                    data: [{{ deudas_pendientes }}, {{ deudas_liquidadas }}],
+                    data: [{{deudas_pendientes}}, {{deudas_liquidadas}}],
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
                         'rgba(54, 162, 235, 0.2)',
@@ -101,56 +98,55 @@
                 }]
             },
             options: {
-                scales: {
-                    yAxes: [{
-                        stacked: true
-                    }]
-                },
+
+
                 onresize: beforePrintHandler(),
                 //responsive: false for manual resize
             }
         }
         //var chart2 = new Chart(ctx, dataOBJ);
-        window.myLiny = new Chart(ctx, dataOBJ);
-        window.myLiny.canvas.parentNode.style.minWidth = '200px';
-        window.myLiny.canvas.parentNode.style.minHeight = '200px';
+        myLine = new Chart(ctx, dataOBJ);
+        myLine.canvas.parentNode.style.minWidth = '200px';
+        myLine.canvas.parentNode.style.minHeight = '200px';
 
+        let myLine2 = null
 
         var ctx = document.getElementById('thirdChart').getContext('2d');
 
 
         let dataOBJ2 = {
-            type: 'bar',
+            type: 'line',
             data: {
-                labels: [],
+                labels: [{% for s in salario %} '{{ s.fecha_deposito|date:'m-Y'}}', {% endfor %}],
                 datasets: [{
                     label: "Salario",
-                    data: [],
-                    backgroundColor: [
-                        {% for sal in salario %}
-                            'rgba(255, 99, 132, 0.2)',
-                        {% endfor %}
+                    data: [{% for s in salario %} {{s.amount}}, {% endfor %}],
+                    backgroundColor: 'rgba(53, 4, 2, 0.1)',
+                    borderColor: 'rgba(54, 162, 235, 0.5)',
+                    borderWidth: 4,
+                    fill: false,
+                    pointBorderColor: 'rgba(0, 0, 0, 1)',
 
-
-                    ],
-                    borderColor: [
-                        {% for sal in salario %}
-                            'rgba(255, 99, 132, 0.2)',
-                        {% endfor %}
-                    ],
-                    borderWidth: 3,
                 },
                 ]
             },
             options: {
-
+                scales: {
+                    yAxes: [{
+                        stacked: true,
+                        ticks: {
+                            min: 0,
+                            setpSize: 3,
+                        }
+                    }]
+                },
                 onresize: beforePrintHandler(),
                 //responsive: false for manual resize
             }
         };
-        window.myLiny2 = new Chart(ctx, dataOBJ2);
-        window.myLiny2.canvas.parentNode.style.minWidth = '200px';
-        window.myLiny2.canvas.parentNode.style.minHeight = '200px';
+        myLine2 = new Chart(ctx, dataOBJ2);
+        myLine2.canvas.parentNode.style.minWidth = '200px';
+        myLine2.canvas.parentNode.style.minHeight = '200px';
 
 
         function beforePrintHandler() {
@@ -167,29 +163,64 @@
 
 
         socket.onopen = function (e) {
-            socket.send(JSON.stringify({
-                'value': 'data',
-            }));
+
         }
 
         socket.onmessage = function (e) {
             const data = JSON.parse(e.data);
             //document.getElementById('con').value = (data['sal']);
-            //console.log(data)
-            let dataObjectNew = dataOBJ2['data']['datasets'][0]['data']
-            let dataObjectLabel = dataOBJ2['data']['labels']
-            //console.log(dataObjectLabel)
-            dataObjectNew.length = 0
-            dataObjectLabel.length = 0
-            for (let [key, value] of Object.entries(data.sal))
-                dataObjectNew.push(value)
+            // console.log(dataOBJ2['data']['datasets'][0]['data'])
+            //let dataObjectNew = dataOBJ2['data']['datasets'][0]['data']
+            //let dataObjectLabel = dataOBJ2['data']['labels']
+            //dataObjectNew.length = 0
+            // dataObjectLabel.length = 0
+            //for (let [key, value] of Object.entries(data.sal)) {
+            //     dataObjectNew.push(value)
+            // }
 
-            for (let [key, value] of Object.entries(data.fech))
-                dataObjectLabel.push(value)
+            // for (let [key, value] of Object.entries(data.fech))
+            //     dataObjectLabel.push(value)
 
-            dataOBJ2['data']['datasets'][0]['data'] = dataObjectNew
-            dataOBJ2['data']['labels'] = dataObjectLabel
-            window.myLiny2.update()
+
+            // dataOBJ2['data']['datasets'][0]['data'] = dataObjectNew
+            //dataOBJ2['data']['labels'] = dataObjectLabel
+            if (data['sal'] != 0 && data['fech'] != 0) {
+                dataOBJ2['data']['datasets'][0]['data'].push(data['sal'])
+                dataOBJ2['data']['labels'].push(data['fech'])
+                myLine2.update()
+            }
+
+
+            {% comment %}            console.log('Salario')
+                        console.log(data.sal['salario'])
+                        console.log('fecha')
+                        console.log(data.fech['fecha'])
+                        dataOBJ2['data']['datasets'][0]['data'].push(data.sal['salario'])
+                        dataOBJ2['data']['labels'].push(data.fech['fecha'])
+                        window.myLiny2.update(){% endcomment %}
+            /// Deudas
+            console.log(myLine.data.datasets[0].data[2])
+            //console.log(data.deuda['pendiente'])
+            if (data['deuda'] != 0) {
+                let dataObjectNewDeuda = dataOBJ['data']['datasets'][0]['data']
+                if (data['deuda'].toLowerCase() == 'liquidada') {
+                    dataOBJ['data']['datasets'][0]['data'][1] += 1
+                    //dataObjectNewDeuda.push(data.deuda['liquidado'])
+                } else {
+                    dataOBJ['data']['datasets'][0]['data'][0] += 1
+                    //dataObjectNewDeuda.push(data.deuda['pendiente'])
+                }
+
+
+                //
+
+                //dataOBJ['data']['datasets'][0]['data'] = dataObjectNewDeuda
+                myLine.update()
+            }
+
+
+            //socket.close()
+
         };
 
         socket.onclose = function (e) {

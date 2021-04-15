@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect
-
+import json
 from django.views.generic.edit import DeleteView, CreateView, UpdateView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
@@ -32,8 +32,19 @@ class ListaCreateView(LoginRequiredMixin, CreateView):
     model = Lista
 
     def form_valid(self, form):
+        custom_field_array = []
         object = form.save(commit=False)
         object.user = self.request.user
+        names = self.request.POST.getlist('customText')
+        tipes = self.request.POST.getlist('customType')
+        for idx,n in enumerate(names):
+            in_field_array = []
+            in_field_array.append(n)
+            in_field_array.append(tipes[idx])
+            custom_field_array.append(in_field_array)
+
+        print(custom_field_array)
+        object.custom_Test2 = custom_field_array
         object.save()
         return super(ListaCreateView, self).form_valid(form)
 
@@ -62,6 +73,7 @@ class ListaDetailView(LoginRequiredMixin, DetailView):
         context['item'] = Item.objects.filter(list__id=self.kwargs['pk'])
         context['state'] = State.objects.all()
         context['list_a'] = Lista.objects.filter(id=self.kwargs['pk']).first()
+
         return context
 
 @login_required

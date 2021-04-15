@@ -5,26 +5,80 @@
 {% block content %}
     <div class="container">
         <div class="row" style="width: 40%">
-                <form method="post"  enctype="multipart/form-data">
+            <form method="post" enctype="multipart/form-data">
 
-                    {% crispy form %}
+                {% crispy form %}
 
-                    <br>
+                <br>
+                <div id="extraField"></div>
+                <div id="warning" class="alert alert-warning alert-dismissible fade show hide" role="alert">
+                    No se pueden agregar más campos
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
                 <input type="submit" class="btn btn-outline-primary" value="Annadir Tipo">
-
-                </form>
+                <input id="addBTN" type="button" onclick="addFields()"  class="btn btn-outline-primary" value="Annadir Campo">
+            </form>
         </div>
     </div>
 {% endblock %}
 
 {% block js %}
     <script type="text/javascript">
-        document.addEventListener('DOMContentLoaded', function() {
+
+        let cantCampos = 0;
+        document.addEventListener('DOMContentLoaded', function () {
             let elems = document.querySelectorAll('select');
             let instances = M.FormSelect.init(elems);
-          });
+        });
 
-                    let del = document.getElementById("delete_btn");
-            del.classList.add("disabled")
+        let del = document.getElementById("delete_btn");
+        del.classList.add("disabled")
+
+        function addFields() {
+            if (cantCampos < 5) {
+                cantCampos++;
+                let extraField = document.getElementById('extraField');
+                let inputName = document.createElement('input');
+                inputName.type = 'text';
+                inputName.id = 'customText';
+                inputName.name = 'customText';
+                inputName.className = 'form-control';
+                inputName.placeholder = "Nombre del campo";
+                let inputType = document.createElement('select');
+                inputType.className = 'select form-control';
+                inputType.id = 'customType';
+                inputType.name = 'customType'
+                let option1 = document.createElement('option');
+                option1.text = "texto";
+                option1.value = 'text';
+                let option2 = document.createElement('option');
+                option2.text = "numero";
+                option2.value = "number";
+                let option3 = document.createElement('option');
+                option3.text = "Descripcion";
+                option3.value = "textarea";
+                inputType.add(option1, inputType[0]);
+                inputType.add(option2, inputType[1]);
+                inputType.add(option3, inputType[2]);
+                let div = document.createElement('div');
+                div.className = 'form-row';
+                let row1 = document.createElement('div');
+                row1.className = 'col';
+                let row2 = document.createElement('div');
+                row2.className = 'col';
+                row1.appendChild(inputName);
+                row2.appendChild(inputType)
+                div.appendChild(row1);
+                div.appendChild(row2);
+                extraField.appendChild(div);
+            } else {
+                let warning = document.getElementById('warning');
+                warning.classList.remove('hide')
+                let btn = document.getElementById('addBTN')
+                btn.disabled = true;
+            }
+        }
     </script>
 {% endblock %}
