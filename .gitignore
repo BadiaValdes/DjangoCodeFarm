@@ -5,3 +5,5 @@
 /hogar/compra/migrations
 /hogar/economia/migrations
 /hogar/listas/migrations
+/hogar/dashboard/migrations
+/hogar/media
