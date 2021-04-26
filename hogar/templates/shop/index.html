@@ -1,0 +1,55 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+
+{% block content %}
+
+    <div class="width_90">
+    <div class="row test_aign">
+        <div class="top_to_middle">
+            <div class="row">
+                {% for cat in category %}
+                    <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                        <div class="card text-white box_shows_test rounded_20">
+                            <img src="{{ cat.photo.url }}" class="card-img rounded_20" alt="...">
+                            <div class="card-img-overlay category_text ">
+                                <div class="text_container">
+                                    <div class="text_in_category">
+                                        <h5 class="card-title">{{ cat.nombre }}</h5>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <h3>No category</h3>
+                {% endfor %}
+
+
+            </div>
+
+
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript">
+
+    </script>
+
+    <script type="text/javascript">
+        {% if not producto %}
+            let del = document.getElementById("delete_btn");
+            del.classList.add("disabled")
+        {% endif %}
+    </script>
+{% endblock %}
+
+
+
+
+

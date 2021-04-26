@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'rolepermissions',
     'analytical',
+    'tienda',
 
     # 'almacen.apps.AlmacenConfig',
     'django.contrib.admin',

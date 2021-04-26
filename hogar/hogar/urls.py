@@ -30,6 +30,7 @@ urlpatterns = [
     path('notifications/', include('notifications.urls', namespace='notifications')),
     path('accounts/', include('allauth.urls')),
     path('dashboard/', include('dashboard.urls')),
+    path('tienda/', include('tienda.urls'))
 ]
 
 urlpatterns += staticfiles_urlpatterns()

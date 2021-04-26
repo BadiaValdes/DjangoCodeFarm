@@ -5,6 +5,8 @@ import json
 from django.views.generic.edit import DeleteView, CreateView, UpdateView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
+from rolepermissions.mixins import HasRoleMixin
+
 from ..models import Item, Lista
 from ..forms import ItemForm
 from django.contrib.auth.decorators import login_required

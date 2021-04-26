@@ -1,0 +1,52 @@
+{% extends 'layout.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+    <div class="container">
+        <div class="row" style="width: 40%">
+            <form method="post" enctype="multipart/form-data">{% csrf_token %}
+                {% crispy form %}
+                <br>
+                <input type="submit" class="btn btn-outline-primary" value="{{ text }}">
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript">
+        let slug = document.getElementById("id_slug");
+        let default_slug = slug.value;
+        let count = 0;
+        let characters = 0;
+        $('#id_nombre').keypress(function (e) {
+            if (count == 0) {
+                slug.value = "";
+                count++;
+            }
+            if (characters < 20) {
+                if (e.key != " ")
+                    slug.value += e.key.toLowerCase();
+                else
+                    slug.value += "_";
+                characters++;
+            }
+
+        })
+
+        $('#id_nombre').keydown(function (e) {
+            if (e.keyCode == 8) {
+                slug.value = slug.value.substr(0, slug.value.length - 1);
+                characters--;
+                 if (!$(this).val()) {
+                    slug.value = " ";
+                    characters = 0;
+                }
+            }
+
+
+        })
+
+    </script>
+{% endblock %}
