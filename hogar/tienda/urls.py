@@ -1,7 +1,8 @@
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import path, re_path
 from . import views
-from .views_ext import category, shipping, tags, sli, typeMemory, chipset, color, socket, typeProduct, formFactor, manufacturer
+from .views_ext import category, shipping, tags, sli, typeMemory, chipset, color, socket, typeProduct, formFactor, \
+    manufacturer, case
 
 app_name = "tienda"
 
@@ -28,6 +29,29 @@ urlpatterns = [
     path('tags/delete', tags.ItemEliminar, name="tags_eliminar"),
 
     # Case
+    # -- TYPE CASE
+    path('type_case/', case.ListTypeCase.as_view(), name="type_case_list"),
+    path('type_case/add', case.CreateTypeCase.as_view(), name="type_case_add"),
+    re_path('type_case/update/(?P<pk>[0-9a-f]{10})', case.UpdateTypeCase.as_view(), name="type_case_update"),
+    path('type_case/delete', case.ItemEliminar, name="type_case_eliminar"),
+
+    # -- Power Supply
+    path('power_supply/', case.ListPowerSupply.as_view(), name="power_supply_list"),
+    path('power_supply/add', case.CreatePowerSupply.as_view(), name="power_supply_add"),
+    re_path('power_supply/update/(?P<pk>[0-9a-f]{10})', case.UpdatePowerSupply.as_view(), name="power_supply_update"),
+    path('power_supply/delete', case.EliminarPowerSupply, name="power_supply_eliminar"),
+
+    # -- Side Panel Window
+    path('side_panel/', case.ListSidePanelWindow.as_view(), name="side_panel_list"),
+    path('side_panel/add', case.CreateSidePanelWindow.as_view(), name="side_panel_add"),
+    re_path('side_panel/update/(?P<pk>[0-9a-f]{10})', case.UpdateSidePanelWindow.as_view(), name="side_panel_update"),
+    path('side_panel/delete', case.EliminarSidePanelWindow, name="side_panel_eliminar"),
+
+    # -- Front Panel USB
+    path('front_panel/', case.ListFrontPanelUSB.as_view(), name="front_panel_list"),
+    path('front_panel/add', case.CreateFrontPanelUSB.as_view(), name="front_panel_add"),
+    re_path('front_panel/update/(?P<pk>[0-9a-f]{10})', case.UpdateFrontPanelUSB.as_view(), name="front_panel_update"),
+    path('front_panel/delete', case.EliminarFrontPanelUSB, name="front_panel_eliminar"),
 
     # CPU
 
@@ -75,7 +99,8 @@ urlpatterns = [
     # Type Product
     path('type_product/', typeProduct.ListTypeProduct.as_view(), name="type_product_list"),
     path('type_product/add', typeProduct.CreateTypeProduct.as_view(), name="type_product_add"),
-    re_path('type_product/update/(?P<pk>[0-9a-f]{10})', typeProduct.UpdateTypeProduct.as_view(), name="type_product_update"),
+    re_path('type_product/update/(?P<pk>[0-9a-f]{10})', typeProduct.UpdateTypeProduct.as_view(),
+            name="type_product_update"),
     path('type_product/delete', typeProduct.ItemEliminar, name="type_product_eliminar"),
 
     # Form Factor

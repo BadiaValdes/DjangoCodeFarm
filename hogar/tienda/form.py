@@ -1,6 +1,7 @@
 from django import forms
 from .models import Category, Shipping, Tags
 from .model_ext.generales import SLI, TypeMemory, Chipset, Color, Socket, TypeProduct, FormFactor, Manufacturer
+from .model_ext.case import TypeCase, PowerSupply, FrontPanelUSB, SidePanelWindow
 from crispy_forms.helper import FormHelper
 from dal import autocomplete
 from crispy_forms.layout import Layout, Row, Column, Field
@@ -210,5 +211,78 @@ class ManufacturerForm(forms.ModelForm):
             ),
             Row(
                 Column('type')
+            ),
+        )
+
+
+class TypeCaseForm(forms.ModelForm):
+    class Meta:
+        model = TypeCase
+        fields = ('nombre','slug')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.layout = Layout(
+            Row(
+                Column('nombre')
+            ),
+            Row(
+                Column('slug')
+            ),
+        )
+
+class SidePanelWindowForm(forms.ModelForm):
+    class Meta:
+        model = SidePanelWindow
+        fields = ('nombre','slug')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.layout = Layout(
+            Row(
+                Column('nombre')
+            ),
+            Row(
+                Column('slug')
+            ),
+        )
+
+class FrontPanelUSBForm(forms.ModelForm):
+    class Meta:
+        model = FrontPanelUSB
+        fields = ('nombre','slug')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.layout = Layout(
+            Row(
+                Column('nombre')
+            ),
+            Row(
+                Column('slug')
+            ),
+        )
+
+class PowerSupplyForm(forms.ModelForm):
+    class Meta:
+        model = PowerSupply
+        fields = ('capacidad','slug')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.layout = Layout(
+            Row(
+                Column('capacidad')
+            ),
+            Row(
+                Column('slug')
             ),
         )
