@@ -1,12 +1,14 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.views.generic.edit import DeleteView, CreateView, UpdateView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from django.contrib.auth.decorators import login_required
 from rolepermissions.mixins import HasRoleMixin
 from tienda.model_ext.case import TypeCase, SidePanelWindow, PowerSupply, FrontPanelUSB
-from tienda.form import TypeCaseForm, PowerSupplyForm, SidePanelWindowForm, FrontPanelUSBForm
+from tienda.model_ext.generales import Manufacturer, TypeProduct, Color, FormFactor
+from tienda.models import Case, Category, Tags, Shipping
+from tienda.form import TypeCaseForm, PowerSupplyForm, SidePanelWindowForm, FrontPanelUSBForm, CaseForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from notifications.signals import notify
 from django.contrib.auth import authenticate
@@ -22,6 +24,7 @@ from weasyprint import HTML, CSS
 from django.conf import settings
 from django.utils.timezone import now
 
+
 ######################################
 #           Navegacion               #
 #                                    #
@@ -30,6 +33,8 @@ from django.utils.timezone import now
 #   3- Side Panel Window Clases      #
 #   4- Front Panel USB Clases        #
 #   5- Case Clases                   #
+#   6- Auto Complete Clases          #
+#   7- AJAX Petition                 #
 #                                    #
 ######################################
 
@@ -84,6 +89,7 @@ def ItemEliminar(request):
         for dat in datos:
             TypeCase.objects.filter(id=dat).delete()
     return redirect(reverse_lazy('tienda:type_case_list'))
+
 
 ##########################
 # 2- Power Supply Clases #
@@ -190,6 +196,7 @@ def EliminarSidePanelWindow(request):
             SidePanelWindow.objects.filter(id=dat).delete()
     return redirect(reverse_lazy('tienda:side_panel_list'))
 
+
 ################################
 # 4- Front Panel USB Clases    #
 ################################
@@ -242,6 +249,211 @@ def EliminarFrontPanelUSB(request):
             FrontPanelUSB.objects.filter(id=dat).delete()
     return redirect(reverse_lazy('tienda:front_panel_list'))
 
+
 ################################
 # 5- Case Clases               #
 ################################
+
+class CreateCase(LoginRequiredMixin, HasRoleMixin, CreateView):
+    allowed_roles = ['admin']
+    success_url = reverse_lazy("tienda:front_panel_list")
+    template_name = "shop/case/case_form.html"
+    model = Case
+    form_class = CaseForm
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['text'] = "Adicionar Panel Frontal"
+
+        return context
+
+
+class ListCase(LoginRequiredMixin, HasRoleMixin, ListView):
+    allowed_roles = ['admin']
+    template_name = "shop/case/case_list.html"
+    model = Case
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        return context
+
+
+class UpdateCase(LoginRequiredMixin, HasRoleMixin, UpdateView):
+    allowed_roles = ['admin']
+    success_url = reverse_lazy("tienda:front_panel_list")
+    template_name = "shop/case/int_form.html"
+    model = Case
+    form_class = CaseForm
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['text'] = "Modificar Panel Frontal"
+        return context
+
+
+@login_required
+def EliminarCase(request):
+    if (request.POST.getlist('delete')):
+        datos = request.POST.getlist('delete')
+        for dat in datos:
+            Case.objects.filter(id=dat).delete()
+    return redirect(reverse_lazy('tienda:front_panel_list'))
+
+
+###########################
+# 6- Auto Complate Clases #
+###########################
+
+from dal import autocomplete
+
+
+class CategoryAutoComplete(autocomplete.Select2QuerySetView):
+    def create_object(self, text):
+        slug = text.lower()
+        slug = slug.replace(" ", "_")
+        return self.get_queryset().get_or_create(**{self.create_field: text, 'slug': slug})[0]
+
+    def get_queryset(self):
+        if not self.request.user.is_authenticated:
+            return Category.objects.none()
+        qs = Category.objects.all()
+        if self.q:
+            qs = qs.filter(nombre__contains=self.q)
+        return qs
+
+
+class ShippingAutoComplete(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        if not self.request.user.is_authenticated:
+            return Shipping.objects.none()
+        qs = Shipping.objects.all()
+        if self.q:
+            qs = qs.filter(nombre__contains=self.q)
+        return qs
+
+
+class TagsAutoComplete(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        if not self.request.user.is_authenticated:
+            return Tags.objects.none()
+        qs = Tags.objects.all()
+        if self.q:
+            qs = qs.filter(nombre__contains=self.q)
+        return qs
+
+
+class ManufacturerAutoComplete(autocomplete.Select2QuerySetView):
+
+    def get_queryset(self):
+        if not self.request.user.is_authenticated:
+            return Manufacturer.objects.none()
+        # tp = TypeProduct.objects.get(nombre__exact='GPU')
+        # qs = Manufacturer.objects.filter(type__id=tp.id)
+        qs = Manufacturer.objects.all()
+        if self.q:
+            qs = qs.filter(nombre__contains=self.q)
+        return qs
+
+
+class TypeCaseAutoComplete(autocomplete.Select2QuerySetView):
+
+    def get_queryset(self):
+        if not self.request.user.is_authenticated:
+            return TypeCase.objects.none()
+        qs = TypeCase.objects.all()
+        if self.q:
+            qs = qs.filter(nombre__contains=self.q)
+        return qs
+
+
+class PowerSupplyAutoComplete(autocomplete.Select2QuerySetView):
+
+    def get_queryset(self):
+        if not self.request.user.is_authenticated:
+            return PowerSupply.objects.none()
+        qs = PowerSupply.objects.all()
+        if self.q:
+            qs = qs.filter(nombre__contains=self.q)
+        return qs
+
+
+class SidePanelWindowAutoComplete(autocomplete.Select2QuerySetView):
+
+    def get_queryset(self):
+        if not self.request.user.is_authenticated:
+            return SidePanelWindow.objects.none()
+        qs = SidePanelWindow.objects.all()
+        if self.q:
+            qs = qs.filter(nombre__contains=self.q)
+        return qs
+
+
+class FrontPanelUSBAutoComplete(autocomplete.Select2QuerySetView):
+
+    def get_queryset(self):
+        if not self.request.user.is_authenticated:
+            return FrontPanelUSB.objects.none()
+        qs = FrontPanelUSB.objects.all()
+        if self.q:
+            qs = qs.filter(nombre__contains=self.q)
+        return qs
+
+
+class ColorAutoComplete(autocomplete.Select2QuerySetView):
+
+    def get_queryset(self):
+        if not self.request.user.is_authenticated:
+            return Color.objects.none()
+        qs = Color.objects.all()
+        if self.q:
+            qs = qs.filter(nombre__contains=self.q)
+        return qs
+
+
+class FormFactorAutoComplete(autocomplete.Select2QuerySetView):
+
+    def get_queryset(self):
+        if not self.request.user.is_authenticated:
+            return FormFactor.objects.none()
+        qs = FormFactor.objects.all()
+        if self.q:
+            qs = qs.filter(nombre__contains=self.q)
+        return qs
+
+
+################################
+# 7- AJAX Petition             #
+################################
+
+@login_required
+def CaseDetail(request):
+    if request.method == 'GET':
+        item_id = request.GET['item_id']
+        case = Case.objects.get(id=item_id)
+        data = {
+            "nb": case.nombre,
+            "slug": case.slug,
+            "tags" : case.Tags(),
+            "category": case.category.nombre,
+            "precio": case.precio,
+            "precio_descuento": case.precioDescuento(),
+            "img": case.photo.url,
+            "shipping": case.shipping.nombre,
+            "manufacturer": case.manufacturer.nombre,
+            "type": case.type_case.nombre,
+            "power_supply": case.power_supply.Capacidad(),
+            "side_panel": case.side_panel_window.nombre,
+            "front_panel": case.front_panel_USB.nombre,
+            "color": case.color.nombre,
+            "from_factor": case.formFactor.nombre,
+            "external_bays_5": case.external_bays_5,
+            "external_bays_3": case.external_bays_3,
+            "internal_bays_3": case.internal_bays_3,
+            "internal_bays_2": case.internal_bays_2,
+            "full_h_expansion_slot": case.full_h_expansion_slot,
+            "half_h_expansion_slot": case.half_h_expansion_slot,
+        }
+        return JsonResponse(data)
+    else:
+        return HttpResponse("Bad!")

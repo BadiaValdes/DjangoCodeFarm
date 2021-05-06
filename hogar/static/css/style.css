@@ -472,11 +472,10 @@ Usar transition para un visual mas bonito
     opacity: 0;
     color: whitesmoke;
     bottom: -10px;
-    transition:  all 500ms ease-in;
+    transition: all 500ms ease-in;
     transition-delay: 50ms;
 
 }
-
 
 
 .box_shows_test:hover .category_text:before {
@@ -494,9 +493,59 @@ Usar transition para un visual mas bonito
 
 }
 
+.form_icon {
+    font-size: 0.7em !important;
+    transition: all 0.5s ease-in-out;
+}
+
+.form_icon:hover {
+    color: red;
+    cursor: pointer;
+}
+
+.check_circle {
+    font-size: 1.8em;
+     color: green;
+}
+
+.check_circle:hover {
+
+    /*background: -webkit-linear-gradient(#048a00, #04ba00);*/
+    /*-webkit-background-clip: text;*/
+    /*-webkit-text-fill-color: transparent;*/
+    /*animation: color-change 1s linear infinite;*/
+}
+
+/*@keyframes color-change {*/
+/*    to {*/
+/*        background-: 200% center;*/
+/*    }*/
+/*}*/
 
 
+.x_circle {
+    font-size: 1.8em;
+     color: red;
+}
 
+.x_circle:hover {
+   }
 
+.box{
+    height: 20px !important;
+    width: 50px !important;
+    border: 1.5px solid gray;
+    padding:0 20px 0 0;
+    margin-left: 10px;
+}
 
+.img_gray_filter{
+    filter: grayscale(100%);
+}
+.img_gray_filter:hover{
+    filter: grayscale(0%);
+}
 
+.pd_top_50{
+    padding-top: 10vh;
+}

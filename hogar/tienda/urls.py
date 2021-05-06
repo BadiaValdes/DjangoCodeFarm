@@ -29,6 +29,12 @@ urlpatterns = [
     path('tags/delete', tags.ItemEliminar, name="tags_eliminar"),
 
     # Case
+    path('case/', case.ListCase.as_view(), name="case_list"),
+    path('case/details', case.CaseDetail, name="case_details"),
+    path('case/add', case.CreateCase.as_view(), name="case_add"),
+    re_path('case/update/(?P<pk>[0-9a-f]{10})', case.UpdateCase.as_view(), name="case_update"),
+    path('case/delete', case.EliminarCase, name="case_eliminar"),
+
     # -- TYPE CASE
     path('type_case/', case.ListTypeCase.as_view(), name="type_case_list"),
     path('type_case/add', case.CreateTypeCase.as_view(), name="type_case_add"),
@@ -116,4 +122,26 @@ urlpatterns = [
     re_path('manufacturer/update/(?P<pk>[0-9a-f]{10})', manufacturer.UpdateManufacturer.as_view(),
             name="manufacturer_update"),
     path('manufacturer/delete', manufacturer.ItemEliminar, name="manufacturer_eliminar"),
+
+    # AutoComplete URL
+    re_path('categoryAutoComplete/', case.CategoryAutoComplete.as_view(create_field='nombre'),
+            name="ac_category"),
+    re_path('shippingAutoComplete/', case.ShippingAutoComplete.as_view(),
+            name="ac_shipping"),
+    re_path('tagsAutoComplete/', case.TagsAutoComplete.as_view(create_field='nombre'),
+            name="ac_tags"),
+    re_path('manufacturerAutoComplete/', case.ManufacturerAutoComplete.as_view(),
+            name="ac_manufacturer"),
+    re_path('typeCaseAutoComplete/', case.TypeCaseAutoComplete.as_view(),
+            name="ac_type_case"),
+    re_path('powerSupplyAutoComplete/', case.PowerSupplyAutoComplete.as_view(),
+            name="ac_power_supply"),
+    re_path('sidePanelWindowAutoComplete/', case.SidePanelWindowAutoComplete.as_view(),
+            name="ac_side_panel"),
+    re_path('frontPanelAutoComplete/', case.FrontPanelUSBAutoComplete.as_view(),
+            name="ac_front_panel"),
+    re_path('colorAutoComplete/', case.ColorAutoComplete.as_view(),
+            name="ac_color"),
+    re_path('formFactorAutoComplete/', case.FormFactorAutoComplete.as_view(),
+            name="ac_form_factor"),
 ]

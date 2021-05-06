@@ -57,7 +57,7 @@
                             <div class="btn-group-toggle btn-group" data-toggle="buttons">
                                 <a class="btn detalles btn-outline-secondary" id="{{ it.id }}" href="#"
                                    data-catid="{{ it.id }}"
-                                   data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Destalles</a>
+                                   data-toggle="modal" data-target="#exampleModal">Destalles</a>
                                 <label class="btn btn-outline-danger">
                                     <input type="checkbox" form="delete_form" name="delete" onchange="check(this)"
                                            value="{{ it.id }}"> Seleccionar
@@ -116,6 +116,8 @@
             </div>
         </div>
     </div>
+
+
 {% endblock %}
 
 
@@ -198,19 +200,11 @@
             })
         })
 
-        {#function sleep(ms) {#}
-        {#    return new Promise(resolve => setTimeout(resolve, ms))#}
-        {#}#}
-        {##}
-        {#function clean() {#}
-        {#    sleep(500).then(() => {#}
-        {#        propiedades.innerHTML = ""#}
-        {#    })#}
-        {#}#}
+
 
         $('#exampleModal').on('hidden.bs.modal', function (e) {
  propiedades.innerHTML = ""
-})
+});
 
     </script>
 {% endblock %}

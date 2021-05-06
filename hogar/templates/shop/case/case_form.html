@@ -1,0 +1,164 @@
+{% extends 'layout.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+    <div class="container">
+        <div class="row" style="width: 40%">
+            <form method="post" enctype="multipart/form-data">{% csrf_token %}
+                {% crispy form %}
+                <br>
+                <input type="submit" class="btn btn-outline-primary" value="{{ text }}">
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript">
+        var descuento = document.getElementById("id_descuento");
+        $(document).ready(function () {
+            $("#id_descuento").attr({
+                "max": 90,        // substitute your own
+                "min": 0          // values (or variables) here
+            });
+
+            $("#id_external_bays_5").blur(function () {
+                let example = "<div class=\"alert alert-danger alert-dismissible fade show\" id=\"eb5_error\" role=\"alert\">\n" +
+                    "  El valor debe estar entre 0 y 12 \n" +
+                    "  <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">\n" +
+                    "    <span aria-hidden=\"true\">&times;</span>\n" +
+                    "  </button>\n" +
+                    "</div>";
+
+                if (this.value > 12 || this.value < 0 ) {
+                    {#let node1 = document.createElement('div')#}
+                    {#node1.classList.add('alert')#}
+                    {#node1.classList.add('alert-danger')#}
+                    {#node1.innerText = "Error"#}
+                    $('#eb5_error').remove()
+                    $(this).after(example);
+                }
+                else
+                {
+
+                    $('#eb5_error').remove()
+                }
+
+            })
+
+             $("#id_external_bays_3").blur(function () {
+                let example = "<div class=\"alert alert-danger alert-dismissible fade show\" id=\"eb3_error\" role=\"alert\">\n" +
+                    "  El valor debe estar entre 0 y 15 \n" +
+                    "  <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">\n" +
+                    "    <span aria-hidden=\"true\">&times;</span>\n" +
+                    "  </button>\n" +
+                    "</div>";
+                if (this.value > 15 || this.value < 0) {
+                    {#let node1 = document.createElement('div')#}
+                    {#node1.classList.add('alert')#}
+                    {#node1.classList.add('alert-danger')#}
+                    {#node1.innerText = "Error"#}
+                    $('#eb3_error').remove()
+                    $(this).after(example);
+                }
+                else
+                {
+                    $('#eb3_error').remove()
+                }
+
+            })
+
+             $("#id_internal_bays_3").blur(function () {
+                let example = "<div class=\"alert alert-danger alert-dismissible fade show\" id=\"ib3_error\" role=\"alert\">\n" +
+                    "  El valor debe estar entre 0 y 20 \n" +
+                    "  <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">\n" +
+                    "    <span aria-hidden=\"true\">&times;</span>\n" +
+                    "  </button>\n" +
+                    "</div>";
+                if (this.value > 20 || this.value < 0) {
+                    {#let node1 = document.createElement('div')#}
+                    {#node1.classList.add('alert')#}
+                    {#node1.classList.add('alert-danger')#}
+                    {#node1.innerText = "Error"#}
+                    $('#ib3_error').remove()
+                    $(this).after(example);
+                }
+                else
+                {
+                    $('#ib3_error').remove()
+                }
+
+            })
+
+             $("#id_internal_bays_2").blur(function () {
+                let example = "<div class=\"alert alert-danger alert-dismissible fade show\" id=\"ib2_error\" role=\"alert\">\n" +
+                    "  El valor debe estar entre 0 y 17 \n" +
+                    "  <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">\n" +
+                    "    <span aria-hidden=\"true\">&times;</span>\n" +
+                    "  </button>\n" +
+                    "</div>";
+                if (this.value > 17 || this.value < 0) {
+                    {#let node1 = document.createElement('div')#}
+                    {#node1.classList.add('alert')#}
+                    {#node1.classList.add('alert-danger')#}
+                    {#node1.innerText = "Error"#}
+                    $('#ib2_error').remove()
+                    $(this).after(example);
+                }
+                else
+                {
+                    $('#ib2_error').remove()
+                }
+
+            })
+
+             $("#id_full_h_expansion_slot").blur(function () {
+                let example = "<div class=\"alert alert-danger alert-dismissible fade show\" id=\"fhes_error\" role=\"alert\">\n" +
+                    "  El valor debe estar entre 0 y 11 \n" +
+                    "  <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">\n" +
+                    "    <span aria-hidden=\"true\">&times;</span>\n" +
+                    "  </button>\n" +
+                    "</div>";
+                if (this.value > 11 || this.value < 0) {
+                    {#let node1 = document.createElement('div')#}
+                    {#node1.classList.add('alert')#}
+                    {#node1.classList.add('alert-danger')#}
+                    {#node1.innerText = "Error"#}
+                    $('#fhes_error').remove()
+                    $(this).after(example);
+                }
+                else
+                {
+                    $('#fhes_error').remove()
+                }
+
+            })
+
+             $("#id_half_h_expansion_slot").blur(function () {
+                let example = "<div class=\"alert alert-danger alert-dismissible fade show\" id=\"hhes_error\" role=\"alert\">\n" +
+                    "  El valor debe estar entre 0 y 6 \n" +
+                    "  <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">\n" +
+                    "    <span aria-hidden=\"true\">&times;</span>\n" +
+                    "  </button>\n" +
+                    "</div>";
+                if (this.value > 6 || this.value < 0) {
+                    {#let node1 = document.createElement('div')#}
+                    {#node1.classList.add('alert')#}
+                    {#node1.classList.add('alert-danger')#}
+                    {#node1.innerText = "Error"#}
+                    $('#hhes_error').remove()
+                    $(this).after(example);
+                }
+                else
+                {
+                    $('#hhes_error').remove()
+                }
+
+            })
+
+        });
+
+
+    </script>
+{% endblock %}

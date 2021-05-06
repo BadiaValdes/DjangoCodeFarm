@@ -2,14 +2,17 @@ from django import forms
 from .models import Category, Shipping, Tags
 from .model_ext.generales import SLI, TypeMemory, Chipset, Color, Socket, TypeProduct, FormFactor, Manufacturer
 from .model_ext.case import TypeCase, PowerSupply, FrontPanelUSB, SidePanelWindow
+from .models import Case
 from crispy_forms.helper import FormHelper
 from dal import autocomplete
 from crispy_forms.layout import Layout, Row, Column, Field
+from crispy_forms.bootstrap import PrependedAppendedText
+
 
 class CategoryForm(forms.ModelForm):
     class Meta:
         model = Category
-        fields = ('nombre','slug','photo')
+        fields = ('nombre', 'slug', 'photo')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -27,10 +30,11 @@ class CategoryForm(forms.ModelForm):
             )
         )
 
+
 class ShippingForm(forms.ModelForm):
     class Meta:
         model = Shipping
-        fields = ('nombre','precio')
+        fields = ('nombre', 'precio')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -44,6 +48,7 @@ class ShippingForm(forms.ModelForm):
                 Column('precio')
             ),
         )
+
 
 class TagsForm(forms.ModelForm):
     class Meta:
@@ -60,11 +65,12 @@ class TagsForm(forms.ModelForm):
             ),
         )
 
+
 # Common
 class SLIForm(forms.ModelForm):
     class Meta:
         model = SLI
-        fields = ('nombre','slug')
+        fields = ('nombre', 'slug')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -78,11 +84,12 @@ class SLIForm(forms.ModelForm):
                 Column('slug')
             ),
         )
+
 
 class TypeMemoryForm(forms.ModelForm):
     class Meta:
         model = TypeMemory
-        fields = ('nombre','slug')
+        fields = ('nombre', 'slug')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -96,11 +103,12 @@ class TypeMemoryForm(forms.ModelForm):
                 Column('slug')
             ),
         )
+
 
 class ChipsetForm(forms.ModelForm):
     class Meta:
         model = Chipset
-        fields = ('nombre','slug', 'type')
+        fields = ('nombre', 'slug', 'type')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -117,11 +125,12 @@ class ChipsetForm(forms.ModelForm):
                 Column('type')
             ),
         )
+
 
 class ColorForm(forms.ModelForm):
     class Meta:
         model = Color
-        fields = ('nombre','slug',)
+        fields = ('nombre', 'slug',)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -135,11 +144,12 @@ class ColorForm(forms.ModelForm):
                 Column('slug')
             ),
         )
+
 
 class SocketForm(forms.ModelForm):
     class Meta:
         model = Socket
-        fields = ('nombre','slug',)
+        fields = ('nombre', 'slug',)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -153,11 +163,12 @@ class SocketForm(forms.ModelForm):
                 Column('slug')
             ),
         )
+
 
 class TypeProductForm(forms.ModelForm):
     class Meta:
         model = TypeProduct
-        fields = ('nombre','slug',)
+        fields = ('nombre', 'slug',)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -172,10 +183,11 @@ class TypeProductForm(forms.ModelForm):
             ),
         )
 
+
 class FormFactorForm(forms.ModelForm):
     class Meta:
         model = FormFactor
-        fields = ('nombre','slug','type')
+        fields = ('nombre', 'slug', 'type')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -193,10 +205,11 @@ class FormFactorForm(forms.ModelForm):
             ),
         )
 
+
 class ManufacturerForm(forms.ModelForm):
     class Meta:
         model = Manufacturer
-        fields = ('nombre','slug','type')
+        fields = ('nombre', 'slug', 'type')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -218,7 +231,7 @@ class ManufacturerForm(forms.ModelForm):
 class TypeCaseForm(forms.ModelForm):
     class Meta:
         model = TypeCase
-        fields = ('nombre','slug')
+        fields = ('nombre', 'slug')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -232,11 +245,12 @@ class TypeCaseForm(forms.ModelForm):
                 Column('slug')
             ),
         )
+
 
 class SidePanelWindowForm(forms.ModelForm):
     class Meta:
         model = SidePanelWindow
-        fields = ('nombre','slug')
+        fields = ('nombre', 'slug')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -250,11 +264,12 @@ class SidePanelWindowForm(forms.ModelForm):
                 Column('slug')
             ),
         )
+
 
 class FrontPanelUSBForm(forms.ModelForm):
     class Meta:
         model = FrontPanelUSB
-        fields = ('nombre','slug')
+        fields = ('nombre', 'slug')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -269,10 +284,11 @@ class FrontPanelUSBForm(forms.ModelForm):
             ),
         )
 
+
 class PowerSupplyForm(forms.ModelForm):
     class Meta:
         model = PowerSupply
-        fields = ('capacidad','slug')
+        fields = ('capacidad', 'slug')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -285,4 +301,189 @@ class PowerSupplyForm(forms.ModelForm):
             Row(
                 Column('slug')
             ),
+        )
+
+
+class CaseForm(forms.ModelForm):
+    category = forms.ModelChoiceField(
+        queryset=Category.objects.all(),
+        label="Categoría",
+        widget=autocomplete.ModelSelect2(url='tienda:ac_category', attrs={
+            # Set some placeholder
+            'data-placeholder': 'Autocomplete ...',
+            # Only trigger autocompletion after 3 characters have been typed
+            'minimumResultsForSearch': 1,
+        }, )
+    )
+
+    shipping = forms.ModelChoiceField(
+        queryset=Shipping.objects.all(),
+        label="Método de entrega",
+        widget=autocomplete.ModelSelect2(url='tienda:ac_shipping', attrs={
+            # Set some placeholder
+            'data-placeholder': 'Autocomplete ...',
+            # Only trigger autocompletion after 3 characters have been typed
+            'minimumResultsForSearch': 1,
+        }, )
+    )
+
+    manufacturer = forms.ModelChoiceField(
+        queryset=Manufacturer.objects.all(),
+        label="Compañia",
+        widget=autocomplete.ModelSelect2(url='tienda:ac_manufacturer', attrs={
+            # Set some placeholder
+            'data-placeholder': 'Autocomplete ...',
+            # Only trigger autocompletion after 3 characters have been typed
+            'minimumResultsForSearch': 1,
+        }, )
+    )
+
+    type_case = forms.ModelChoiceField(
+        queryset=TypeCase.objects.all(),
+        label="Tipo de Chasis",
+        widget=autocomplete.ModelSelect2(url='tienda:ac_type_case', attrs={
+            # Set some placeholder
+            'data-placeholder': 'Autocomplete ...',
+            # Only trigger autocompletion after 3 characters have been typed
+            'minimumResultsForSearch': 1,
+        }, )
+    )
+
+    power_supply = forms.ModelChoiceField(
+        queryset=PowerSupply.objects.all(),
+        label="Capacidad para la fuente",
+        widget=autocomplete.ModelSelect2(url='tienda:ac_power_supply', attrs={
+            # Set some placeholder
+            'data-placeholder': 'Autocomplete ...',
+            # Only trigger autocompletion after 3 characters have been typed
+            'minimumResultsForSearch': 1,
+        }, )
+    )
+
+    side_panel_window = forms.ModelChoiceField(
+        queryset=SidePanelWindow.objects.all(),
+        label="Panel Lateral",
+        widget=autocomplete.ModelSelect2(url='tienda:ac_side_panel', attrs={
+            # Set some placeholder
+            'data-placeholder': 'Autocomplete ...',
+            # Only trigger autocompletion after 3 characters have been typed
+            'minimumResultsForSearch': 1,
+        }, )
+    )
+    front_panel_USB = forms.ModelChoiceField(
+        queryset=FrontPanelUSB.objects.all(),
+        label="Panel Frontal",
+        widget=autocomplete.ModelSelect2(url='tienda:ac_front_panel', attrs={
+            # Set some placeholder
+            'data-placeholder': 'Autocomplete ...',
+            # Only trigger autocompletion after 3 characters have been typed
+            'minimumResultsForSearch': 1,
+        }, )
+    )
+
+    color = forms.ModelChoiceField(
+        queryset=Color.objects.all(),
+        label="Colores",
+        widget=autocomplete.ModelSelect2(url='tienda:ac_color', attrs={
+            # Set some placeholder
+            'data-placeholder': 'Autocomplete ...',
+            # Only trigger autocompletion after 3 characters have been typed
+            'minimumResultsForSearch': 1,
+        }, )
+    )
+
+    formFactor = forms.ModelChoiceField(
+        queryset=FormFactor.objects.all(),
+        label="Tamaño",
+        widget=autocomplete.ModelSelect2(url='tienda:ac_form_factor', attrs={
+            # Set some placeholder
+            'data-placeholder': 'Autocomplete ...',
+            # Only trigger autocompletion after 3 characters have been typed
+            'minimumResultsForSearch': 1,
+        }, )
+    )
+
+    tags = forms.ModelMultipleChoiceField(
+        queryset=Tags.objects.all(),
+        label="Etiquetas",
+        widget=autocomplete.ModelSelect2Multiple(url='tienda:ac_tags', attrs={
+            # Set some placeholder
+            'data-placeholder': 'Autocomplete ...',
+            # Only trigger autocompletion after 3 characters have been typed
+            'minimumResultsForSearch': 1,
+        }, )
+    )
+
+    external_bays_5 = forms.IntegerField(label="Baías externas de 5.25 pulgadas",
+                                         max_value=12, min_value=0,
+                                         # error_messages={'invalid':'Introduzca un numero entre 0 y 12'},
+                                         widget=forms.NumberInput(attrs={
+                                             # 'id': 'form_homework',
+                                             # 'step': "0.01"
+                                             'placeholder': 0,
+                                         })
+                                         )
+    external_bays_3 = forms.IntegerField(label="Baías externas de 3.5 pulgadas",
+                                         max_value=15, min_value=0,
+                                         # error_messages={'invalid':'Introduzca un numero entre 0 y 12'},
+                                         widget=forms.NumberInput(attrs={
+                                             # 'id': 'form_homework',
+                                             # 'step': "0.01"
+                                             'placeholder': 0,
+                                         })
+                                         )
+
+    internal_bays_3 = forms.IntegerField(label="Baías internas de 3.5 pulgadas",
+                                         max_value=20, min_value=0,
+                                         # error_messages={'invalid':'Introduzca un numero entre 0 y 12'},
+                                         widget=forms.NumberInput(attrs={
+                                             # 'id': 'form_homework',
+                                             # 'step': "0.01"
+                                             'placeholder': 0,
+                                         })
+                                         )
+    internal_bays_2 = forms.IntegerField(label="Baías internas de 2.5 pulgadas",
+                                         max_value=17, min_value=0,
+                                         # error_messages={'invalid':'Introduzca un numero entre 0 y 12'},
+                                         widget=forms.NumberInput(attrs={
+                                             # 'id': 'form_homework',
+                                             # 'step': "0.01"
+                                             'placeholder': 0,
+                                         })
+                                         )
+
+    full_h_expansion_slot = forms.IntegerField(label="Conectores de expansión de tamaño completo",
+                                               max_value=11, min_value=0,
+                                               # error_messages={'invalid':'Introduzca un numero entre 0 y 12'},
+                                               widget=forms.NumberInput(attrs={
+                                                   # 'id': 'form_homework',
+                                                   # 'step': "0.01"
+                                                   'placeholder': 0,
+                                               })
+                                               )
+
+    half_h_expansion_slot = forms.IntegerField(label="Conectores de expansión de tamaño medio",
+                                               max_value=6, min_value=0,
+                                               # error_messages={'invalid':'Introduzca un numero entre 0 y 12'},
+                                               widget=forms.NumberInput(attrs={
+                                                   # 'id': 'form_homework',
+                                                   # 'step': "0.01"
+                                                   'placeholder': 0,
+                                               })
+                                               )
+
+    class Meta:
+        model = Case
+        fields = "__all__"
+        exclude = ("id",)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.layout = Layout(
+            # Row(
+            #     Column(PrependedAppendedText('category', '<i class="bi-alarm form_icon"></i>'))
+            # ),
+
         )
