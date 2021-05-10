@@ -33,8 +33,7 @@ from django.utils.timezone import now
 #   3- Side Panel Window Clases      #
 #   4- Front Panel USB Clases        #
 #   5- Case Clases                   #
-#   6- Auto Complete Clases          #
-#   7- AJAX Petition                 #
+#   6- AJAX Petition                 #
 #                                    #
 ######################################
 
@@ -301,129 +300,9 @@ def EliminarCase(request):
     return redirect(reverse_lazy('tienda:front_panel_list'))
 
 
-###########################
-# 6- Auto Complate Clases #
-###########################
-
-from dal import autocomplete
-
-
-class CategoryAutoComplete(autocomplete.Select2QuerySetView):
-    def create_object(self, text):
-        slug = text.lower()
-        slug = slug.replace(" ", "_")
-        return self.get_queryset().get_or_create(**{self.create_field: text, 'slug': slug})[0]
-
-    def get_queryset(self):
-        if not self.request.user.is_authenticated:
-            return Category.objects.none()
-        qs = Category.objects.all()
-        if self.q:
-            qs = qs.filter(nombre__contains=self.q)
-        return qs
-
-
-class ShippingAutoComplete(autocomplete.Select2QuerySetView):
-    def get_queryset(self):
-        if not self.request.user.is_authenticated:
-            return Shipping.objects.none()
-        qs = Shipping.objects.all()
-        if self.q:
-            qs = qs.filter(nombre__contains=self.q)
-        return qs
-
-
-class TagsAutoComplete(autocomplete.Select2QuerySetView):
-    def get_queryset(self):
-        if not self.request.user.is_authenticated:
-            return Tags.objects.none()
-        qs = Tags.objects.all()
-        if self.q:
-            qs = qs.filter(nombre__contains=self.q)
-        return qs
-
-
-class ManufacturerAutoComplete(autocomplete.Select2QuerySetView):
-
-    def get_queryset(self):
-        if not self.request.user.is_authenticated:
-            return Manufacturer.objects.none()
-        # tp = TypeProduct.objects.get(nombre__exact='GPU')
-        # qs = Manufacturer.objects.filter(type__id=tp.id)
-        qs = Manufacturer.objects.all()
-        if self.q:
-            qs = qs.filter(nombre__contains=self.q)
-        return qs
-
-
-class TypeCaseAutoComplete(autocomplete.Select2QuerySetView):
-
-    def get_queryset(self):
-        if not self.request.user.is_authenticated:
-            return TypeCase.objects.none()
-        qs = TypeCase.objects.all()
-        if self.q:
-            qs = qs.filter(nombre__contains=self.q)
-        return qs
-
-
-class PowerSupplyAutoComplete(autocomplete.Select2QuerySetView):
-
-    def get_queryset(self):
-        if not self.request.user.is_authenticated:
-            return PowerSupply.objects.none()
-        qs = PowerSupply.objects.all()
-        if self.q:
-            qs = qs.filter(nombre__contains=self.q)
-        return qs
-
-
-class SidePanelWindowAutoComplete(autocomplete.Select2QuerySetView):
-
-    def get_queryset(self):
-        if not self.request.user.is_authenticated:
-            return SidePanelWindow.objects.none()
-        qs = SidePanelWindow.objects.all()
-        if self.q:
-            qs = qs.filter(nombre__contains=self.q)
-        return qs
-
-
-class FrontPanelUSBAutoComplete(autocomplete.Select2QuerySetView):
-
-    def get_queryset(self):
-        if not self.request.user.is_authenticated:
-            return FrontPanelUSB.objects.none()
-        qs = FrontPanelUSB.objects.all()
-        if self.q:
-            qs = qs.filter(nombre__contains=self.q)
-        return qs
-
-
-class ColorAutoComplete(autocomplete.Select2QuerySetView):
-
-    def get_queryset(self):
-        if not self.request.user.is_authenticated:
-            return Color.objects.none()
-        qs = Color.objects.all()
-        if self.q:
-            qs = qs.filter(nombre__contains=self.q)
-        return qs
-
-
-class FormFactorAutoComplete(autocomplete.Select2QuerySetView):
-
-    def get_queryset(self):
-        if not self.request.user.is_authenticated:
-            return FormFactor.objects.none()
-        qs = FormFactor.objects.all()
-        if self.q:
-            qs = qs.filter(nombre__contains=self.q)
-        return qs
-
 
 ################################
-# 7- AJAX Petition             #
+# 6- AJAX Petition             #
 ################################
 
 @login_required

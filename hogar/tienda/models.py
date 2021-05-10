@@ -181,7 +181,7 @@ class GPU(Producto):
     inteface = models.ForeignKey(Interface, on_delete=models.CASCADE, null=False, blank=False,
                                  verbose_name="Interfaz")
     frame_sync = models.ForeignKey(FrameSync, on_delete=models.CASCADE, null=False, blank=False,
-                                   verbose_name="Interfaz")
+                                   verbose_name="Frame Suync")
     color = models.ForeignKey(Color, on_delete=models.CASCADE, null=False, blank=False, verbose_name="Color")
     sli = models.ForeignKey(SLI, on_delete=models.CASCADE, null=False, blank=False, verbose_name="CrossFire / SLI")
     length = models.IntegerField(blank=False, null=False, default=333, verbose_name="Tamaño mm")

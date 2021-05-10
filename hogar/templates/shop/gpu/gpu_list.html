@@ -1,0 +1,241 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block content %}
+    <div class="width_90 pd_top_50">
+        <table class="table table-hover" id="table_pos">
+            <thead>
+            <tr>
+                <th>Numero</th>
+                <th>Nombre</th>
+                <th>Tags</th>
+                <th>Categoría</th>
+                <th>Precio</th>
+                <th>Entrega</th>
+                <th>Compañía</th>
+                <th>Disponible</th>
+                <th>
+
+                    <form action="{% url 'tienda:case_eliminar' %}" method="post" name="delete_form" id="delete_form">
+                        {% csrf_token %}
+                        Acciones:
+                        <button class="btn btn-outline-danger" disabled name="delete" id="delete_btn"
+                                aria-label="Eliminar">
+                            <i class="bi-trash"></i></button>
+                    </form>
+                </th>
+
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for object in object_list %}
+                <tr>
+                <td class="align-middle">{{ forloop.counter }}</td>
+                <td class="align-middle">{{ object.nombre }}</td>
+                <td class="align-middle">
+                    {% for tag in object.tags.all %}
+                        <span class="badge badge-secondary white-text left">{{ tag }}</span>
+                    {% empty %}
+                        No existen tags para esta entrada
+                    {% endfor %}
+                </td>
+                <td class="align-middle">{{ object.category }}</td>
+                <td class="align-middle">{{ object.precio }}</td>
+                <td class="align-middle">{{ object.shipping }}</td>
+                <td class="align-middle">{{ object.manufacturer }}</td>
+                <td class="align-middle center-align">
+                    {% if object.available %}
+                        <i class="bi-check-circle check_circle"></i>
+                    {% else %}
+                        <i class="bi-x-circle x_circle"></i>
+                    {% endif %}
+                </td>
+                <td class="align-middle">
+
+
+                    <div class="btn-group-toggle">
+                        <a href="#" class="btn btn-outline-info detalles" id="detalles" aria-label="Detalles"
+                           data-id="{{ object.id }}"
+                           data-toggle="modal" data-target="#detallesModal"><i class="bi-eye"></i></a>
+                        <a href="{% url "tienda:case_update" object.id %}" class="btn btn-outline-primary"
+                           aria-label="Modificar"><i class="bi-pencil-square"></i></a>
+                        <label class="btn btn-outline-danger">
+                            <input type="checkbox" form="delete_form" name="delete" onchange="check(this)"
+                                   value="{{ object.id }}" aria-label="Seleccionar"> <i class="bi-trash2"></i>
+                        </label>
+                    </div>
+
+
+                </td>
+
+            {% empty %}
+                <td>No hay tipos de torres registrados</td>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="container">
+        <a href="{% url 'tienda:case_add' %}" class="btn btn-outline-primary btn-block"> Adicionar</a>
+
+    </div>
+
+
+    <div class="modal fade" id="detallesModal" tabindex="-1" role="dialog" aria-labelledby="detallesModal"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6 col-lg-6 center-align">
+                            <img id="img_modal" src="" class="img-thumbnail img_modal img_gray_filter"/>
+                        </div>
+                        <div class="col-md-6 col-lg-6">
+                            <ul class="list-group list-group-flush">
+
+                                <li id="category" class="list-group-item list-group-item-action">Categoría:</li>
+                                <li id="precio" class="list-group-item list-group-item-action">Precio:</li>
+                                <li id="company" class="list-group-item list-group-item-action">Compañía:</li>
+                                <li id="color" class="list-group-item list-group-item-action">Color:</li>
+                                <li id="tipo" class="list-group-item list-group-item-action">Tipo:</li>
+                                <br class="list-group-item">
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12">
+                            <ul class="list-group list-group-flush">
+
+                                <li id="form_factory" class="list-group-item list-group-item-action">Forma de Fábrica:
+                                </li>
+                                <li id="power_supply" class="list-group-item list-group-item-action">Caja de batería:
+                                </li>
+                                <li id="side_panel" class="list-group-item list-group-item-action">Panel Lateral:</li>
+                                <li id="front_panel" class="list-group-item list-group-item-action">Panel Frontal:</li>
+                                <li id="be5" class="list-group-item list-group-item-action">Bías externas 5:</li>
+                                <li id="be3" class="list-group-item list-group-item-action">Bías externas 3:</li>
+                                <li id="bi3" class="list-group-item list-group-item-action">Bías internas 3:</li>
+                                <li id="bi2" class="list-group-item list-group-item-action">Bías internas 2:</li>
+                                <li id="pec" class="list-group-item list-group-item-action">Puertos de expansión
+                                    completo:
+                                </li>
+                                <li id="pem" class="list-group-item list-group-item-action">Puertos de expansión
+                                    mitad:
+                                </li>
+                                <li id="tag" class="list-group-item list-group-item-action">Tags:
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block js %}
+    <script type="text/javascript">
+        var count = 0
+
+
+        function check(e) {
+            if (e.checked) {
+                count++
+
+            } else if (count > 0)
+                count--
+            if (count > 0) {
+                let del = document.getElementById("delete_btn");
+                del.disabled = false
+            } else {
+                let del = document.getElementById("delete_btn");
+                del.disabled = true
+
+            }
+            console.log(count)
+        }
+
+        $(document).ready(function () {
+            $('#table_pos').DataTable();
+        });
+
+        $('.detalles').click(function () {
+            let id = $(this).attr("data-id");
+            $.ajax(
+                {
+                    type: "GET",
+                    url: "details",
+                    data: {
+                        item_id: id,
+                    },
+                    success: function (data) {
+                        $('#ModalLabel').text(data.nb)
+                        document.getElementById('img_modal').src = data.img;
+                        document.getElementById('category').innerText = "Categoría: " + data.category;
+
+                        if (data.precio == data.precio_descuento) {
+                            document.getElementById('precio').innerText = "Precio: " + data.precio;
+
+                        } else {
+                            document.getElementById('precio').innerText = "Precio: " + data.precio_descuento;
+                        }
+
+                        document.getElementById('company').innerText = "Compañía: " + data.manufacturer;
+
+                        let colour = data.color.replaceAll(" ", "").split("/");
+                        let colr = document.getElementById('color');
+                        colr.innerText = "Color: ";
+                        for (const col in colour) {
+                            let d = document.createElement('span');
+                            d.style.backgroundColor = colour[col];
+                            d.setAttribute("data-toggle", "tooltip");
+                            d.setAttribute("data-placement", "top");
+                            d.title = colour[col];
+                            d.classList.add("box");
+                            colr.appendChild(d);
+                        }
+
+                        document.getElementById('tipo').innerText = "Tipo: " + data.type;
+                        document.getElementById('form_factory').innerText = "Tamaño: " + data.from_factor;
+                        document.getElementById('power_supply').innerText = "Cada de batería: " + data.power_supply;
+                        document.getElementById('side_panel').innerText = "Panel lateral: " + data.side_panel;
+                        document.getElementById('front_panel').innerText = "Panel frontal: " + data.front_panel;
+                        document.getElementById('be5').innerText = "Bías externas 5: " + data.external_bays_5;
+                        document.getElementById('be3').innerText = "Bías externas 3: " + data.external_bays_3;
+                        document.getElementById('bi3').innerText = "Bías internas 3: " + data.internal_bays_3;
+                        document.getElementById('bi2').innerText = "Bías internas 2: " + data.internal_bays_2;
+                        document.getElementById('pec').innerText = "Puertos de expansión completo: " + data.full_h_expansion_slot;
+                        document.getElementById('pem').innerText = "Puertos de expansión medio: " + data.half_h_expansion_slot;
+
+                        let tag = data.tags.split("/");
+                        document.getElementById('tag').innerText = "Tags: "
+                        for (const t in tag) {
+                            let span = document.createElement("span");
+                            span.classList.add('badge', 'badge-secondary', 'white-text');
+                            span.innerText = tag[t];
+                            document.getElementById('tag').appendChild(span);
+                        }
+
+
+                    }
+                }
+            )
+
+        })
+
+        $('#detallesModal').on('hidden.bs.modal', function (e) {
+            document.getElementById('tag').innerHTML = ""
+        });
+    </script>
+
+{% endblock %}

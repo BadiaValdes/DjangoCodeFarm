@@ -2,7 +2,8 @@ from django import forms
 from .models import Category, Shipping, Tags
 from .model_ext.generales import SLI, TypeMemory, Chipset, Color, Socket, TypeProduct, FormFactor, Manufacturer
 from .model_ext.case import TypeCase, PowerSupply, FrontPanelUSB, SidePanelWindow
-from .models import Case
+from .model_ext.gpu import Interface, FrameSync, Cooling, ExternalPower
+from .models import Case, GPU
 from crispy_forms.helper import FormHelper
 from dal import autocomplete
 from crispy_forms.layout import Layout, Row, Column, Field
@@ -485,5 +486,208 @@ class CaseForm(forms.ModelForm):
             # Row(
             #     Column(PrependedAppendedText('category', '<i class="bi-alarm form_icon"></i>'))
             # ),
+
+        )
+
+class InterfaceForm(forms.ModelForm):
+    class Meta:
+        model = Interface
+        fields = ('nombre', 'slug')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.layout = Layout(
+            Row(
+                Column('nombre')
+            ),
+            Row(
+                Column('slug')
+            ),
+        )
+
+class FrameSyncForm(forms.ModelForm):
+    class Meta:
+        model = FrameSync
+        fields = ('nombre', 'slug')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.layout = Layout(
+            Row(
+                Column('nombre')
+            ),
+            Row(
+                Column('slug')
+            ),
+        )
+
+class CoolingForm(forms.ModelForm):
+    class Meta:
+        model = Cooling
+        fields = ('nombre', 'slug')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.layout = Layout(
+            Row(
+                Column('nombre')
+            ),
+            Row(
+                Column('slug')
+            ),
+        )
+
+class ExternalPowerForm(forms.ModelForm):
+    class Meta:
+        model = ExternalPower
+        fields = ('nombre', 'slug')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.layout = Layout(
+            Row(
+                Column('nombre')
+            ),
+            Row(
+                Column('slug')
+            ),
+        )
+
+class GPUForm(forms.ModelForm):
+    tags = forms.ModelMultipleChoiceField(
+        queryset=Tags.objects.all(),
+        label="Etiquetas",
+        widget=autocomplete.ModelSelect2Multiple(url='tienda:ac_tags', attrs={
+            # Set some placeholder
+            'data-placeholder': 'Tags ...',
+            # Only trigger autocompletion after 3 characters have been typed
+            'minimumResultsForSearch': 1,
+        }, )
+    )
+
+    category = forms.ModelChoiceField(
+        queryset=Category.objects.all(),
+        label="Categoría",
+        widget=autocomplete.ModelSelect2(url='tienda:ac_category', attrs={
+            # Set some placeholder
+            'data-placeholder': 'Autocomplete ...',
+            # Only trigger autocompletion after 3 characters have been typed
+            'minimumResultsForSearch': 1,
+        }, )
+    )
+
+    shipping = forms.ModelChoiceField(
+        queryset=Shipping.objects.all(),
+        label="Método de entrega",
+        widget=autocomplete.ModelSelect2(url='tienda:ac_shipping', attrs={
+            # Set some placeholder
+            'data-placeholder': 'Autocomplete ...',
+            # Only trigger autocompletion after 3 characters have been typed
+            'minimumResultsForSearch': 1,
+        }, )
+    )
+
+    manufacturer = forms.ModelChoiceField(
+        queryset=Manufacturer.objects.all(),
+        label="Compañia",
+        widget=autocomplete.ModelSelect2(url='tienda:ac_manufacturer', attrs={
+            # Set some placeholder
+            'data-placeholder': 'Autocomplete ...',
+            # Only trigger autocompletion after 3 characters have been typed
+            'minimumResultsForSearch': 1,
+        }, )
+    )
+
+    color = forms.ModelChoiceField(
+        queryset=Color.objects.all(),
+        label="Colores",
+        widget=autocomplete.ModelSelect2(url='tienda:ac_color', attrs={
+            # Set some placeholder
+            'data-placeholder': 'Autocomplete ...',
+            # Only trigger autocompletion after 3 characters have been typed
+            'minimumResultsForSearch': 1,
+        }, )
+    )
+
+    chipset = forms.ModelChoiceField(
+        queryset=Chipset.objects.all(),
+        label="Chipset",
+        widget=autocomplete.ModelSelect2(url='tienda:ac_chipset', attrs={
+            'data-placeholder' : 'Chipset...',
+            'minimumResultsForSearch': 1,
+        })
+    )
+
+    type = forms.ModelChoiceField(
+        queryset=TypeMemory.objects.all(),
+        label="Tipo de memoria",
+        widget=autocomplete.ModelSelect2(url='tienda:ac_type_memory', attrs={
+            'data-placeholder' : 'Tipo de memoria',
+            'minimumResultsForSearch' : 1,
+        })
+    )
+
+    inteface = forms.ModelChoiceField(
+        queryset=Interface.objects.all(),
+        label="Interfaz",
+        widget=autocomplete.ModelSelect2(url='tienda:ac_interface', attrs={
+            'data-placeholder' : 'Interfaz ...',
+            'minimumResultsForSearch' : 1,
+        })
+    )
+
+    frame_sync = forms.ModelChoiceField(
+        queryset=FrameSync.objects.all(),
+        label="Frame Sync",
+        widget=autocomplete.ModelSelect2(url='tienda:ac_frame_sync', attrs={
+            'data-placeholder' : 'Frame Sync ...',
+            'minimumResultsForSearch' : 1,
+        })
+    )
+
+    sli= forms.ModelChoiceField(
+        queryset=SLI.objects.all(),
+        label="SLI / CROSS FIRE",
+        widget=autocomplete.ModelSelect2(url='tienda:ac_sli', attrs={
+            'data-placeholder' : 'SLI / CROSS FIRE ...',
+            'minimumResultsForSearch' : 1,
+        })
+    )
+
+    cooling = forms.ModelChoiceField(
+        queryset=Cooling.objects.all(),
+        label="Enfriamiento",
+        widget=autocomplete.ModelSelect2(url='tienda:ac_cooling', attrs={
+            'data-placeholder' : 'Enfriamiento ...',
+            'minimumResultsForSearch' : 1,
+        })
+    )
+
+    external_power = forms.ModelChoiceField(
+        queryset=ExternalPower.objects.all(),
+        label="Fuente Externa",
+        widget=autocomplete.ModelSelect2(url='tienda:ac_external_power', attrs={
+            'data-placeholder' : 'Fuente Externa ...',
+            'minimumResultsForSearch' : 1,
+        })
+    )
+
+    class Meta:
+        model = GPU
+        fields = "__all__"
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.layout = Layout(
 
         )
