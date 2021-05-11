@@ -1,3 +1,8 @@
+@font-face {
+  font-family: "bootstrap-icons";
+  src: url("./fonts/bootstrap-icons.woff2?8bd4575acf83c7696dc7a14a966660a3") format("woff2"),
+url("./fonts/bootstrap-icons.woff?8bd4575acf83c7696dc7a14a966660a3") format("woff");
+}
 
 .profile_picture {
     height: 50px !important;
@@ -548,4 +553,33 @@ Usar transition para un visual mas bonito
 
 .pd_top_50{
     padding-top: 10vh;
+}
+
+.gpu_form{
+    position: relative;
+    top: 10vh;
+    margin: 0 auto;
+    width: 80% !important;
+
+}
+
+.form_style{
+    margin: 0 auto;
+
+    width: 80% !important;
+}
+
+.form_style .btn{
+    margin: 0 auto;
+    width: 80% !important;
+}
+
+.card-header a{
+    color: black;
+    text-decoration: none;
+}
+
+
+.card-header a:hover::after{
+    content: "*";
 }

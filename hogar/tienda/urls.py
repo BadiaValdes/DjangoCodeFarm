@@ -128,7 +128,8 @@ urlpatterns = [
     # 6.4- External Power
     path('external_power/', gpu.ListExternalPower.as_view(), name="external_power_list"),
     path('external_power/add', gpu.CreateExternalPower.as_view(), name="external_power_add"),
-    re_path('external_power/update/(?P<pk>[0-9a-f]{10})', gpu.UpdateExternalPower.as_view(), name="external_power_update"),
+    re_path('external_power/update/(?P<pk>[0-9a-f]{10})', gpu.UpdateExternalPower.as_view(),
+            name="external_power_update"),
     path('external_power/delete', gpu.EliminarExternalPower, name="external_power_eliminar"),
 
     ######################################################################################################
@@ -194,7 +195,6 @@ urlpatterns = [
 
     ######################################################################################################
 
-    # 11- AutoComplete URL
     re_path('categoryAutoComplete/', autocomplete.CategoryAutoComplete.as_view(create_field='nombre'),
             name="ac_category"),
     re_path('shippingAutoComplete/', autocomplete.ShippingAutoComplete.as_view(),

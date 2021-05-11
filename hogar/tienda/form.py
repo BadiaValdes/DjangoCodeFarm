@@ -3,11 +3,12 @@ from .models import Category, Shipping, Tags
 from .model_ext.generales import SLI, TypeMemory, Chipset, Color, Socket, TypeProduct, FormFactor, Manufacturer
 from .model_ext.case import TypeCase, PowerSupply, FrontPanelUSB, SidePanelWindow
 from .model_ext.gpu import Interface, FrameSync, Cooling, ExternalPower
+from .model_ext.cpu import Serie
 from .models import Case, GPU
 from crispy_forms.helper import FormHelper
 from dal import autocomplete
-from crispy_forms.layout import Layout, Row, Column, Field
-from crispy_forms.bootstrap import PrependedAppendedText
+from crispy_forms.layout import Layout, Row, Column, HTML, Button, Submit
+from crispy_forms.bootstrap import Accordion, AccordionGroup, PrependedAppendedText, AppendedText, PrependedText
 
 
 class CategoryForm(forms.ModelForm):
@@ -489,6 +490,7 @@ class CaseForm(forms.ModelForm):
 
         )
 
+
 class InterfaceForm(forms.ModelForm):
     class Meta:
         model = Interface
@@ -506,6 +508,7 @@ class InterfaceForm(forms.ModelForm):
                 Column('slug')
             ),
         )
+
 
 class FrameSyncForm(forms.ModelForm):
     class Meta:
@@ -525,6 +528,7 @@ class FrameSyncForm(forms.ModelForm):
             ),
         )
 
+
 class CoolingForm(forms.ModelForm):
     class Meta:
         model = Cooling
@@ -543,6 +547,7 @@ class CoolingForm(forms.ModelForm):
             ),
         )
 
+
 class ExternalPowerForm(forms.ModelForm):
     class Meta:
         model = ExternalPower
@@ -560,6 +565,7 @@ class ExternalPowerForm(forms.ModelForm):
                 Column('slug')
             ),
         )
+
 
 class GPUForm(forms.ModelForm):
     tags = forms.ModelMultipleChoiceField(
@@ -621,7 +627,7 @@ class GPUForm(forms.ModelForm):
         queryset=Chipset.objects.all(),
         label="Chipset",
         widget=autocomplete.ModelSelect2(url='tienda:ac_chipset', attrs={
-            'data-placeholder' : 'Chipset...',
+            'data-placeholder': 'Chipset...',
             'minimumResultsForSearch': 1,
         })
     )
@@ -630,8 +636,8 @@ class GPUForm(forms.ModelForm):
         queryset=TypeMemory.objects.all(),
         label="Tipo de memoria",
         widget=autocomplete.ModelSelect2(url='tienda:ac_type_memory', attrs={
-            'data-placeholder' : 'Tipo de memoria',
-            'minimumResultsForSearch' : 1,
+            'data-placeholder': 'Tipo de memoria',
+            'minimumResultsForSearch': 1,
         })
     )
 
@@ -639,8 +645,8 @@ class GPUForm(forms.ModelForm):
         queryset=Interface.objects.all(),
         label="Interfaz",
         widget=autocomplete.ModelSelect2(url='tienda:ac_interface', attrs={
-            'data-placeholder' : 'Interfaz ...',
-            'minimumResultsForSearch' : 1,
+            'data-placeholder': 'Interfaz ...',
+            'minimumResultsForSearch': 1,
         })
     )
 
@@ -648,17 +654,17 @@ class GPUForm(forms.ModelForm):
         queryset=FrameSync.objects.all(),
         label="Frame Sync",
         widget=autocomplete.ModelSelect2(url='tienda:ac_frame_sync', attrs={
-            'data-placeholder' : 'Frame Sync ...',
-            'minimumResultsForSearch' : 1,
+            'data-placeholder': 'Frame Sync ...',
+            'minimumResultsForSearch': 1,
         })
     )
 
-    sli= forms.ModelChoiceField(
+    sli = forms.ModelChoiceField(
         queryset=SLI.objects.all(),
         label="SLI / CROSS FIRE",
         widget=autocomplete.ModelSelect2(url='tienda:ac_sli', attrs={
-            'data-placeholder' : 'SLI / CROSS FIRE ...',
-            'minimumResultsForSearch' : 1,
+            'data-placeholder': 'SLI / CROSS FIRE ...',
+            'minimumResultsForSearch': 1,
         })
     )
 
@@ -666,8 +672,8 @@ class GPUForm(forms.ModelForm):
         queryset=Cooling.objects.all(),
         label="Enfriamiento",
         widget=autocomplete.ModelSelect2(url='tienda:ac_cooling', attrs={
-            'data-placeholder' : 'Enfriamiento ...',
-            'minimumResultsForSearch' : 1,
+            'data-placeholder': 'Enfriamiento ...',
+            'minimumResultsForSearch': 1,
         })
     )
 
@@ -675,8 +681,8 @@ class GPUForm(forms.ModelForm):
         queryset=ExternalPower.objects.all(),
         label="Fuente Externa",
         widget=autocomplete.ModelSelect2(url='tienda:ac_external_power', attrs={
-            'data-placeholder' : 'Fuente Externa ...',
-            'minimumResultsForSearch' : 1,
+            'data-placeholder': 'Fuente Externa ...',
+            'minimumResultsForSearch': 1,
         })
     )
 
@@ -688,6 +694,119 @@ class GPUForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
+        # Orders Matter
         self.helper.layout = Layout(
+            Accordion(
+                AccordionGroup('General Info',
+                               Row(
+                                   Column(AppendedText('slug', '<i class="bi bi-link"></i>'),
+                                          css_class='form-group col-md-6 col-sm-12'),
+                                   Column('tags', css_class='form-group col-md-6 col-sm-12'),
+                                   Row(
 
+
+
+
+
+
+
+
+
+
+
+
+                                   ),
+
+                               ),
+                               Row(
+                                   Column(PrependedText('precio', '<i class="bi bi-cash"></i>'),
+                                          css_class='form-group col-md-6 col-sm-12'),
+                                   Column(PrependedText('nombre', '<i class="bi bi-fonts"></i>'),
+                                          css_class='form-group col-md-6 col-sm-12'),
+
+                               ),
+                               Row(
+                                   Column(AppendedText('descuento', '<i class="bi bi-cash"></i>'),
+                                          css_class='form-group col-md-6 col-sm-12'),
+                                   Column('photo', css_class='form-group col-md-6 '),
+                               ),
+                               Row(
+                                   Column('available', css_class='form-group col-md-12'),
+                                   Column('category', css_class='form-group col-md-12'),
+                               ),
+                               Row(
+                                   Column('shipping', css_class='form-group col-md-6 col-sm-12'),
+                                   Column('manufacturer', css_class='form-group col-md-6 col-sm-12'),
+                               ),
+                               active=False,
+                               ),
+                AccordionGroup('GPU INFO',
+                               Row(
+                                   Column('core_clock', css_class='form-group col-md-6 col-sm-12'),
+                                   Column('boost_clock', css_class='form-group col-md-6 col-sm-12'),
+                               ),
+                               Row(
+                                   Column('length', css_class='form-group col-md-6 col-sm-12'),
+                                   Column('tdp', css_class='form-group col-md-6 col-sm-12'),
+                               ),
+                               Row(
+                                   Column('dvi_port', css_class='form-group col-md-6 col-sm-12'),
+                                   Column('hdmi_port', css_class='form-group col-md-6 col-sm-12'),
+                                   Column('display_port', css_class='form-group col-md-4 col-sm-12'),
+                                   Column('mini_display_port', css_class='form-group col-md-4 col-sm-12'),
+                                   Column('expansion_width', css_class='form-group col-md-4 col-sm-12'),
+                               ),
+                               Row(
+                                   Column('chipset', css_class='form-group col-md-6 col-sm-12'),
+                                   Column('color', css_class='form-group col-md-6 col-sm-12'),
+
+                               ),
+                               ),
+                AccordionGroup('Core Speed',
+                               Row(
+                                   Column('cooling', css_class='form-group col-md-6 col-sm-12'),
+                                   Column('external_power', css_class='form-group col-md-6 col-sm-12'),
+                               ),
+                               ),
+                AccordionGroup('Ports',
+                               Row(
+                                   Column('frame_sync', css_class='form-group col-md-6 col-sm-12'),
+                                   Column('inteface', css_class='form-group col-md-6 col-sm-12'),
+                               ),
+                               Row(
+                                   Column('sli', css_class='form-group col-md-6 col-sm-12'),
+                                   Column('type', css_class='form-group col-md-6 col-sm-12'),
+                               ),
+                               ),
+                AccordionGroup('Others',
+                               Row(
+
+                               ),
+
+                               Row(
+
+                               ), ),
+            ),
+
+        )
+
+
+
+
+class SerieForm(forms.ModelForm):
+    class Meta:
+        model = Serie
+        fields = ('nombre', 'slug')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.layout = Layout(
+            Row(
+                Column('nombre')
+            ),
+            Row(
+                Column('slug')
+            ),
         )
