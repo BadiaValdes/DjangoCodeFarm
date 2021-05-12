@@ -107,6 +107,7 @@ urlpatterns = [
     re_path('gpu/update/(?P<pk>[0-9a-f]{10})', gpu.UpdateGPU.as_view(), name="gpu_update"),
     path('gpu/delete', gpu.EliminarGPU, name="gpu_eliminar"),
     path('gpu/available', gpu.AvailableGPU, name="gpu_available"),
+    path('gpu/details', gpu.GPUDetail, name="gpu_details"),
 
     # 6.1- Interface
     path('interface/', gpu.ListInterface.as_view(), name="interface_list"),

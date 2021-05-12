@@ -322,3 +322,41 @@ def AvailableGPU(request):
 
     else:
         return HttpResponse("Bad!")
+
+@login_required
+def GPUDetail(request):
+    if request.method == 'GET':
+        item_id = request.GET['item_id']
+        gpu = GPU.objects.get(id=item_id)
+        data = {
+            "nb": gpu.nombre,
+            "slug": gpu.slug,
+            "available": gpu.available,
+            "tags" : gpu.Tags(),
+            "category": gpu.category.nombre,
+            "precio": gpu.precio,
+            "precio_descuento": gpu.precioDescuento(),
+            "img": gpu.photo.url,
+            "shipping": gpu.shipping.nombre,
+            "manufacturer": gpu.manufacturer.nombre,
+            "chipset": gpu.chipset.nombre,
+            "type": gpu.type.nombre,
+            "core_clock": gpu.core_clock,
+            "boost_clock": gpu.boost_clock,
+            "inteface": gpu.inteface.nombre,
+            "frame_sync": gpu.frame_sync.nombre,
+            "color": gpu.color.nombre,
+            "sli": gpu.sli.nombre,
+            "cooling": gpu.cooling.nombre,
+            "external_power": gpu.external_power.nombre,
+            "length_gpu": gpu.length,
+            "tdp": gpu.tdp,
+            "dvi_port": gpu.dvi_port,
+            "hdmi_port": gpu.hdmi_port,
+            "display_port": gpu.display_port,
+            "mini_display_port": gpu.mini_display_port,
+            "expansion_width": gpu.expansion_width,
+        }
+        return JsonResponse(data)
+    else:
+        return HttpResponse("Bad!")

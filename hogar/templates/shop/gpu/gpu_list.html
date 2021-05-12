@@ -81,13 +81,11 @@
     </div>
     <div class="container">
         <a href="{% url 'tienda:gpu_add' %}" class="btn btn-outline-primary btn-block"> Adicionar</a>
-
     </div>
 
-
-    <div class="modal fade" id="detallesModal" tabindex="-1" role="dialog" aria-labelledby="detallesModal"
+    <div class="modal fade " id="detallesModal" tabindex="-1" role="dialog" aria-labelledby="detallesModal"
          aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="ModalLabel">Modal title</h5>
@@ -95,19 +93,21 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body width_99">
                     <div class="row">
                         <div class="col-md-6 col-lg-6 center-align">
                             <img id="img_modal" src="" class="img-thumbnail img_modal img_gray_filter"/>
                         </div>
                         <div class="col-md-6 col-lg-6">
                             <ul class="list-group list-group-flush">
-
+                                <li class="list-group-item list-group-item-action center-align bg-dark">Información
+                                    General
+                                </li>
                                 <li id="category" class="list-group-item list-group-item-action">Categoría:</li>
                                 <li id="precio" class="list-group-item list-group-item-action">Precio:</li>
                                 <li id="company" class="list-group-item list-group-item-action">Compañía:</li>
                                 <li id="color" class="list-group-item list-group-item-action">Color:</li>
-                                <li id="tipo" class="list-group-item list-group-item-action">Tipo:</li>
+                                <li id="type" class="list-group-item list-group-item-action">Type:</li>
                                 <br class="list-group-item">
                             </ul>
                         </div>
@@ -115,24 +115,45 @@
                     <div class="row">
                         <div class="col-lg-12 col-md-12">
                             <ul class="list-group list-group-flush">
-
-                                <li id="form_factory" class="list-group-item list-group-item-action">Forma de Fábrica:
+                                <li class="list-group-item list-group-item-action center-align bg-dark">Información de
+                                    la GPU
                                 </li>
-                                <li id="power_supply" class="list-group-item list-group-item-action">Caja de batería:
+                                <li id="chipset" class="list-group-item list-group-item-action">Chipset:
                                 </li>
-                                <li id="side_panel" class="list-group-item list-group-item-action">Panel Lateral:</li>
-                                <li id="front_panel" class="list-group-item list-group-item-action">Panel Frontal:</li>
-                                <li id="be5" class="list-group-item list-group-item-action">Bías externas 5:</li>
-                                <li id="be3" class="list-group-item list-group-item-action">Bías externas 3:</li>
-                                <li id="bi3" class="list-group-item list-group-item-action">Bías internas 3:</li>
-                                <li id="bi2" class="list-group-item list-group-item-action">Bías internas 2:</li>
-                                <li id="pec" class="list-group-item list-group-item-action">Puertos de expansión
-                                    completo:
+                                <li id="enfriamiento" class="list-group-item list-group-item-action">Enfriamiento:
                                 </li>
-                                <li id="pem" class="list-group-item list-group-item-action">Puertos de expansión
-                                    mitad:
+                                <li id="fuente_externa" class="list-group-item list-group-item-action">Fuente
+                                    Externa:
                                 </li>
+                                <li id="frame_sync" class="list-group-item list-group-item-action">Frame Sync:</li>
+                                <li id="interfaz" class="list-group-item list-group-item-action">Interfaz:</li>
+                                <li id="sli" class="list-group-item list-group-item-action">SLI / CrossFire:</li>
+                                <li class="list-group-item list-group-item-action center-align bg-dark">Velocidades,
+                                    Puertos y Tamaño
+                                </li>
+                                <li id="vmhz" class="list-group-item list-group-item-action">Velocidad (Mhz):</li>
+                                <li id="vomhz" class="list-group-item list-group-item-action">Velocidad OverClock
+                                    (Mhz):
+                                </li>
+                                <li id="tamano" class="list-group-item list-group-item-action">Tamaño (mm):</li>
+                                <li id="tdp" class="list-group-item list-group-item-action">Potencia eléctrica:</li>
+                                <li id="dvi" class="list-group-item list-group-item-action">Puertos DVI:
+                                </li>
+                                <li id="hdmi" class="list-group-item list-group-item-action">Puertos HDMI:
+                                </li>
+                                <li id="dp" class="list-group-item list-group-item-action">Puertos DisplayPort:
+                                </li>
+                                <li id="miniport" class="list-group-item list-group-item-action">Puertos
+                                    Mini-DisplayPort:
+                                </li>
+                                <li id="ancho" class="list-group-item list-group-item-action">Ancho:
+                                </li>
+                                <li class="list-group-item list-group-item-action center-align bg-dark">Otros</li>
                                 <li id="tag" class="list-group-item list-group-item-action">Tags:
+                                </li>
+                                <li class="list-group-item list-group-item-action align-middle">Disponible: <i
+                                        id="disponible"
+                                        class="align-middle"></i>
                                 </li>
                             </ul>
                         </div>
@@ -145,6 +166,7 @@
             </div>
         </div>
     </div>
+
 {% endblock %}
 
 
@@ -174,8 +196,8 @@
             $('#table_pos').DataTable();
         });
 
-        function hel(e){
-             let id = $(e).attr("data-id");
+        function hel(e) {
+            let id = $(e).attr("data-id");
             $.ajax(
                 {
                     type: "GET",
@@ -200,6 +222,7 @@
                 }
             )
         }
+
         $('#available').click(function (e) {
 
         })
@@ -240,17 +263,23 @@
                             colr.appendChild(d);
                         }
 
-                        document.getElementById('tipo').innerText = "Tipo: " + data.type;
-                        document.getElementById('form_factory').innerText = "Tamaño: " + data.from_factor;
-                        document.getElementById('power_supply').innerText = "Cada de batería: " + data.power_supply;
-                        document.getElementById('side_panel').innerText = "Panel lateral: " + data.side_panel;
-                        document.getElementById('front_panel').innerText = "Panel frontal: " + data.front_panel;
-                        document.getElementById('be5').innerText = "Bías externas 5: " + data.external_bays_5;
-                        document.getElementById('be3').innerText = "Bías externas 3: " + data.external_bays_3;
-                        document.getElementById('bi3').innerText = "Bías internas 3: " + data.internal_bays_3;
-                        document.getElementById('bi2').innerText = "Bías internas 2: " + data.internal_bays_2;
-                        document.getElementById('pec').innerText = "Puertos de expansión completo: " + data.full_h_expansion_slot;
-                        document.getElementById('pem').innerText = "Puertos de expansión medio: " + data.half_h_expansion_slot;
+                        document.getElementById('type').innerText = "Memoria: " + data.type;
+                        document.getElementById('chipset').innerText = "Chipset: " + data.chipset;
+                        document.getElementById('enfriamiento').innerText = "Enfriamiento: " + data.cooling;
+                        document.getElementById('fuente_externa').innerText = "Panel lateral: " + data.external_power;
+                        document.getElementById('frame_sync').innerText = "Panel frontal: " + data.frame_sync;
+                        document.getElementById('interfaz').innerText = "Interfaz: " + data.inteface;
+                        document.getElementById('sli').innerText = "Sli/CrossFire: " + data.sli;
+                        document.getElementById('vmhz').innerText = "Velocidad (mhz): " + data.core_clock;
+                        document.getElementById('vomhz').innerText = "Velocidad OverClock (mhz): " + data.boost_clock;
+                        document.getElementById('tamano').innerText = "Tamaño (mm): " + data.length_gpu;
+                        document.getElementById('tdp').innerText = "Potencia eléctrica: " + data.tdp;
+                        document.getElementById('dvi').innerText = "Puertos DVI: " + data.dvi_port;
+                        document.getElementById('hdmi').innerText = "Puertos HDMI: " + data.hdmi_port;
+                        document.getElementById('dp').innerText = "Puertos DisplayPort: " + data.display_port;
+                        document.getElementById('miniport').innerText = "Puertos Mini-DisplayPort: " + data.mini_display_port;
+                        document.getElementById('ancho').innerText = "Puertos Mini-DisplayPort: " + data.expansion_width;
+
 
                         let tag = data.tags.split("/");
                         document.getElementById('tag').innerText = "Tags: "
@@ -259,6 +288,20 @@
                             span.classList.add('badge', 'badge-secondary', 'white-text');
                             span.innerText = tag[t];
                             document.getElementById('tag').appendChild(span);
+                        }
+
+                        if (data.available == true) {
+                            $('#disponible').removeClass('bi-x-circle')
+                            $('#disponible').removeClass('x_circle')
+                            $('#disponible').addClass('bi-check-circle')
+                            $('#disponible').addClass('check_circle')
+
+                        } else {
+                            $('#disponible').removeClass('bi-check-circle')
+                            $('#disponible').removeClass('check-circle')
+                            $('#disponible').addClass('bi-x-circle')
+                            $('#disponible').addClass('x_circle')
+
                         }
 
 
