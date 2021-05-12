@@ -702,37 +702,21 @@ class GPUForm(forms.ModelForm):
                                    Column(AppendedText('slug', '<i class="bi bi-link"></i>'),
                                           css_class='form-group col-md-6 col-sm-12'),
                                    Column('tags', css_class='form-group col-md-6 col-sm-12'),
-                                   Row(
-
-
-
-
-
-
-
-
-
-
-
-
-                                   ),
-
                                ),
                                Row(
                                    Column(PrependedText('precio', '<i class="bi bi-cash"></i>'),
                                           css_class='form-group col-md-6 col-sm-12'),
                                    Column(PrependedText('nombre', '<i class="bi bi-fonts"></i>'),
                                           css_class='form-group col-md-6 col-sm-12'),
-
                                ),
                                Row(
                                    Column(AppendedText('descuento', '<i class="bi bi-cash"></i>'),
                                           css_class='form-group col-md-6 col-sm-12'),
-                                   Column('photo', css_class='form-group col-md-6 '),
+                                   Column('photo', css_class='form-group col-md-6 col-sm-12'),
                                ),
                                Row(
-                                   Column('available', css_class='form-group col-md-12'),
-                                   Column('category', css_class='form-group col-md-12'),
+                                   Column('available', css_class='form-group col-md-6 col-sm-12'),
+                                   Column('category', css_class='form-group col-md-6 col-sm-12'),
                                ),
                                Row(
                                    Column('shipping', css_class='form-group col-md-6 col-sm-12'),
@@ -740,7 +724,7 @@ class GPUForm(forms.ModelForm):
                                ),
                                active=False,
                                ),
-                AccordionGroup('GPU INFO',
+                AccordionGroup('GPU Ports and Speed',
                                Row(
                                    Column('core_clock', css_class='form-group col-md-6 col-sm-12'),
                                    Column('boost_clock', css_class='form-group col-md-6 col-sm-12'),
@@ -756,19 +740,18 @@ class GPUForm(forms.ModelForm):
                                    Column('mini_display_port', css_class='form-group col-md-4 col-sm-12'),
                                    Column('expansion_width', css_class='form-group col-md-4 col-sm-12'),
                                ),
+
+                               ),
+                AccordionGroup('GPU Info',
                                Row(
                                    Column('chipset', css_class='form-group col-md-6 col-sm-12'),
                                    Column('color', css_class='form-group col-md-6 col-sm-12'),
 
                                ),
-                               ),
-                AccordionGroup('Core Speed',
                                Row(
                                    Column('cooling', css_class='form-group col-md-6 col-sm-12'),
                                    Column('external_power', css_class='form-group col-md-6 col-sm-12'),
                                ),
-                               ),
-                AccordionGroup('Ports',
                                Row(
                                    Column('frame_sync', css_class='form-group col-md-6 col-sm-12'),
                                    Column('inteface', css_class='form-group col-md-6 col-sm-12'),
@@ -778,19 +761,10 @@ class GPUForm(forms.ModelForm):
                                    Column('type', css_class='form-group col-md-6 col-sm-12'),
                                ),
                                ),
-                AccordionGroup('Others',
-                               Row(
 
-                               ),
-
-                               Row(
-
-                               ), ),
             ),
 
         )
-
-
 
 
 class SerieForm(forms.ModelForm):

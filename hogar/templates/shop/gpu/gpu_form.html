@@ -8,7 +8,11 @@
             <form method="post" enctype="multipart/form-data" id="form_gpu">{% csrf_token %}
                 {% crispy form %}
                 <br>
-                <input type="submit" id="submit" class="btn btn_gpu btn-outline-primary btn-block" value="{{ text }}">
+                <div class="btn-group btn-block" role="group" aria-label="buttonss">
+                <input type="button" id="comprobar" class="btn btn_gpu btn-outline-primary btn-block" value="Comprobar">
+                <input type="submit" id="submit" class="btn btn_gpu btn-outline-success btn-block disabled" value="{{ text }}">
+                </div>
+
             </form>
         </div>
     </div>
@@ -29,6 +33,8 @@
                 "max": 90,        // substitute your own
                 "min": 0          // values (or variables) here
             });
+
+            document.getElementById('submit').disabled = true;
             //$('#id_nombre').val()
             //$('#id_tags').children("option:selected").val()
             let good = "<span class=\"badge  \"><i class=\"bi bi-check-circle-fill \" id=\"good\" style='color:green; font-size: 2em'></i></span>";
@@ -42,77 +48,67 @@
 
 
             let all_is_well = false;
-            {#$('#submit').submit(async function (e) {#}
-            {##}
-            {#    if ($('#id_nombre').val()#}
-            {#        && $('#id_slug').val()#}
-            {#        && $('#id_tags').children("option:selected").val()#}
-            {#        && $('#id_precio').val() && $('#id_descuento').val()#}
-            {#        && $('#id_shipping').children("option:selected").val()#}
-            {#        && $('#id_manufacturer').children("option:selected").val()) {#}
-            {#        $('a[href="#general-info"]').children().remove()#}
-            {#        $('a[href="#general-info"]').append(good);#}
-            {#        all_is_well = true;#}
-            {##}
-            {#    } else {#}
-            {#        $('a[href="#general-info"]').children().remove()#}
-            {#        $('a[href="#general-info"]').append(bad);#}
-            {#        all_is_well = false;#}
-            {##}
-            {##}
-            {#    }#}
-            {#    await sleep(500);#}
-            {#    if ($('#id_chipset').children("option:selected").val()#}
-            {#        && $('#id_type').children("option:selected").val()#}
-            {#        && $('#id_inteface').children("option:selected").val()#}
-            {#        && $('#id_frame_sync').children("option:selected").val()#}
-            {#        && $('#id_color').children("option:selected").val()#}
-            {#        && $('#id_sli').children("option:selected").val()#}
-            {#        && $('#id_cooling').children("option:selected").val()#}
-            {#        && $('#id_external_power').children("option:selected").val()) {#}
-            {#        $('a[href="#gpu-info"]').children().remove()#}
-            {#        $('a[href="#gpu-info"]').append(good);#}
-            {#                            all_is_well = true;#}
-            {##}
-            {#    } else {#}
-            {#        $('a[href="#gpu-info"]').children().remove()#}
-            {#        $('a[href="#gpu-info"]').append(bad);#}
-            {#                            all_is_well = false;#}
-            {##}
-            {#    }#}
-            {#    await sleep(500);#}
-            {#    if ($('#id_core_clock').val() != 0#}
-            {#        && $('#id_boost_clock').val() != 0) {#}
-            {#        $('a[href="#core-speed"]').children().remove()#}
-            {#        $('a[href="#core-speed"]').append(good);#}
-            {#                            all_is_well = true;#}
-            {##}
-            {#    } else {#}
-            {#        $('a[href="#ports"]').children().remove()#}
-            {#        $('a[href="#ports"]').append(bad);#}
-            {#                            all_is_well = false;#}
-            {##}
-            {#    }#}
-            {#    await sleep(500);#}
-            {#    $('a[href="#ports"]').children().remove()#}
-            {#    $('a[href="#ports"]').append(good);#}
-            {#    await sleep(500);#}
-            {#    if ($('#id_length').val() != 0#}
-            {#        && $('#id_tdp').val() != 0) {#}
-            {#        $('a[href="#others"]').children().remove()#}
-            {#        $('a[href="#others"]').append(good);#}
-            {#                            all_is_well = true;#}
-            {##}
-            {#    } else {#}
-            {#        $('a[href="#others"]').children().remove()#}
-            {#        $('a[href="#others]').append(bad);#}
-            {#                            all_is_well = false;#}
-            {##}
-            {#    }#}
-            {#    if(all_is_well){#}
-            {#        document.getElementById('form_gpu').submit();#}
-            {#    }#}
-            //{#})#}
+            $('#comprobar').click(async function (e) {
+
+                if ($('#id_nombre').val()
+                    && $('#id_slug').val()
+                    && $('#id_tags').children("option:selected").val()
+                    && $('#id_precio').val()
+                    && $('#id_descuento').val()
+                    && $('#id_shipping').children("option:selected").val()
+                    && $('#id_category').children("option:selected").val()
+                    && $('#id_manufacturer').children("option:selected").val()) {
+                    $('a[href="#general-info"]').children().remove()
+                    $('a[href="#general-info"]').append(good);
+                    all_is_well = true;
+
+                } else {
+                    $('a[href="#general-info"]').children().remove()
+                    $('a[href="#general-info"]').append(bad);
+                    all_is_well = false;
+
+
+                }
+                await sleep(500);
+                if ($('#id_length').val() != 0
+                    && $('#id_tdp').val() != 0
+                    && $('#id_core_clock').val() != 0
+                    && $('#id_boost_clock').val() != 0) {
+                    $('a[href="#gpu-ports-and-speed"]').children().remove()
+                    $('a[href="#gpu-ports-and-speed"]').append(good);
+                    all_is_well = true;
+
+                } else {
+                    $('a[href="#gpu-ports-and-speed"]').children().remove()
+                    $('a[href="#gpu-ports-and-speed"]').append(bad);
+                    all_is_well = false;
+
+                }
+                await sleep(500);
+                if ($('#id_chipset').children("option:selected").val()
+                    && $('#id_type').children("option:selected").val()
+                    && $('#id_inteface').children("option:selected").val()
+                    && $('#id_frame_sync').children("option:selected").val()
+                    && $('#id_color').children("option:selected").val()
+                    && $('#id_sli').children("option:selected").val()
+                    && $('#id_cooling').children("option:selected").val()
+                    && $('#id_external_power').children("option:selected").val()) {
+                    $('a[href="#gpu-info"]').children().remove()
+                    $('a[href="#gpu-info"]').append(good);
+                    all_is_well = true;
+
+                } else {
+                    $('a[href="#gpu-info"]').children().remove();
+                    $('a[href="#gpu-info"]').append(bad);
+                    all_is_well = false;
+                }
+                if(all_is_well == true)
+                {
+                    document.getElementById('submit').classList.remove('disabled');
+                    document.getElementById('submit').disabled = false;
+                }
+
+            })
 
 
         })

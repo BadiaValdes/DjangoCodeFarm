@@ -15,7 +15,7 @@
                 <th>Disponible</th>
                 <th>
 
-                    <form action="{% url 'tienda:case_eliminar' %}" method="post" name="delete_form" id="delete_form">
+                    <form action="{% url 'tienda:gpu_eliminar' %}" method="post" name="delete_form" id="delete_form">
                         {% csrf_token %}
                         Acciones:
                         <button class="btn btn-outline-danger" disabled name="delete" id="delete_btn"
@@ -57,12 +57,15 @@
                         <a href="#" class="btn btn-outline-info detalles" id="detalles" aria-label="Detalles"
                            data-id="{{ object.id }}"
                            data-toggle="modal" data-target="#detallesModal"><i class="bi-eye"></i></a>
-                        <a href="{% url "tienda:case_update" object.id %}" class="btn btn-outline-primary"
+                        <a href="{% url "tienda:gpu_update" object.id %}" class="btn btn-outline-primary"
                            aria-label="Modificar"><i class="bi-pencil-square"></i></a>
-                        <label class="btn btn-outline-danger">
+
+                            <label class="btn btn-outline-danger" data-toggle="buttons">
                             <input type="checkbox" form="delete_form" name="delete" onchange="check(this)"
                                    value="{{ object.id }}" aria-label="Seleccionar"> <i class="bi-trash2"></i>
                         </label>
+
+
                     </div>
 
 
@@ -75,7 +78,7 @@
         </table>
     </div>
     <div class="container">
-        <a href="{% url 'tienda:case_add' %}" class="btn btn-outline-primary btn-block"> Adicionar</a>
+        <a href="{% url 'tienda:gpu_add' %}" class="btn btn-outline-primary btn-block"> Adicionar</a>
 
     </div>
 
