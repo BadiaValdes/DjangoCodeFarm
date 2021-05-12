@@ -1,14 +1,24 @@
+############### FROMS IMPORT ################
 from django import forms
-from .models import Category, Shipping, Tags
+############### ENDS FROMS IMPORT ###########
+
+############### MODEL IMPORT ################
+from .models import Category, Shipping, Tags, Case, GPU, CPU, MotherBoard, ListaCompra, ListaDeseos, CaseFan, RAM
 from .model_ext.generales import SLI, TypeMemory, Chipset, Color, Socket, TypeProduct, FormFactor, Manufacturer
 from .model_ext.case import TypeCase, PowerSupply, FrontPanelUSB, SidePanelWindow
 from .model_ext.gpu import Interface, FrameSync, Cooling, ExternalPower
-from .model_ext.cpu import Serie
-from .models import Case, GPU
+from .model_ext.cpu import Serie, MicroArch, IntegrateGraphic, CoreFamily
+############### ENDS MODEL IMPORT ###########
+
+############### CRISPY FORM IMPORT ################
 from crispy_forms.helper import FormHelper
-from dal import autocomplete
 from crispy_forms.layout import Layout, Row, Column, HTML, Button, Submit
 from crispy_forms.bootstrap import Accordion, AccordionGroup, PrependedAppendedText, AppendedText, PrependedText
+############### ENDS CRISPY FORM IMPORT ###########
+
+############### DAL IMPORT ################
+from dal import autocomplete
+############### ENDS DAL IMPORT ###########
 
 
 class CategoryForm(forms.ModelForm):
@@ -778,9 +788,225 @@ class SerieForm(forms.ModelForm):
         self.helper.form_tag = False
         self.helper.layout = Layout(
             Row(
-                Column('nombre')
+                Column('nombre', css_class='form-group col-md-6 col-sm-12'),
+                Column('slug', css_class='form-group col-md-6 col-sm-12'),
             ),
+
+        )
+
+
+class MicroArchForm(forms.ModelForm):
+    class Meta:
+        model = MicroArch
+        fields = ('nombre', 'slug')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.layout = Layout(
             Row(
-                Column('slug')
+                Column('nombre', css_class='form-group col-md-6 col-sm-12'),
+                Column('slug', css_class='form-group col-md-6 col-sm-12'),
             ),
+
+        )
+
+
+class IntegrateGraphicForm(forms.ModelForm):
+    class Meta:
+        model = IntegrateGraphic
+        fields = ('nombre', 'slug')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.layout = Layout(
+            Row(
+                Column('nombre', css_class='form-group col-md-6 col-sm-12'),
+                Column('slug', css_class='form-group col-md-6 col-sm-12'),
+            ),
+
+        )
+
+
+class CoreFamilyForm(forms.ModelForm):
+    class Meta:
+        model = CoreFamily
+        fields = ('nombre', 'slug')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.layout = Layout(
+            Row(
+                Column('nombre', css_class='form-group col-md-6 col-sm-12'),
+                Column('slug', css_class='form-group col-md-6 col-sm-12'),
+            ),
+
+        )
+
+
+class CPUForm(forms.ModelForm):
+    tags = forms.ModelMultipleChoiceField(
+        queryset=Tags.objects.all(),
+        label="Etiquetas",
+        widget=autocomplete.ModelSelect2Multiple(url='tienda:ac_tags', attrs={
+            # Set some placeholder
+            'data-placeholder': 'Tags ...',
+            # Only trigger autocompletion after 3 characters have been typed
+            'minimumResultsForSearch': 1,
+        }, )
+    )
+
+    category = forms.ModelChoiceField(
+        queryset=Category.objects.all(),
+        label="Categoría",
+        widget=autocomplete.ModelSelect2(url='tienda:ac_category', attrs={
+            # Set some placeholder
+            'data-placeholder': 'Autocomplete ...',
+            # Only trigger autocompletion after 3 characters have been typed
+            'minimumResultsForSearch': 1,
+        }, )
+    )
+
+    shipping = forms.ModelChoiceField(
+        queryset=Shipping.objects.all(),
+        label="Método de entrega",
+        widget=autocomplete.ModelSelect2(url='tienda:ac_shipping', attrs={
+            # Set some placeholder
+            'data-placeholder': 'Autocomplete ...',
+            # Only trigger autocompletion after 3 characters have been typed
+            'minimumResultsForSearch': 1,
+        }, )
+    )
+
+    manufacturer = forms.ModelChoiceField(
+        queryset=Manufacturer.objects.all(),
+        label="Compañia",
+        widget=autocomplete.ModelSelect2(url='tienda:ac_manufacturer', attrs={
+            # Set some placeholder
+            'data-placeholder': 'Autocomplete ...',
+            # Only trigger autocompletion after 3 characters have been typed
+            'minimumResultsForSearch': 1,
+        }, )
+    )
+
+    socket = forms.ModelChoiceField(
+        queryset=Socket.objects.all(),
+        label="Socket",
+        widget=autocomplete.ModelSelect2(url='tienda:ac_socket', attrs={
+            # Set some placeholder
+            'data-placeholder': 'Socket ...',
+            # Only trigger autocompletion after 3 characters have been typed
+            'minimumResultsForSearch': 1,
+        }, )
+    )
+
+    serie = forms.ModelChoiceField(
+        queryset=Serie.objects.all(),
+        label="Serie",
+        widget=autocomplete.ModelSelect2(url='tienda:ac_serie', attrs={
+            # Set some placeholder
+            'data-placeholder': 'Serie ...',
+            # Only trigger autocompletion after 3 characters have been typed
+            'minimumResultsForSearch': 1,
+        }, )
+    )
+
+    microArch = forms.ModelChoiceField(
+        queryset=MicroArch.objects.all(),
+        label="Micro Arquitectura",
+        widget=autocomplete.ModelSelect2(url='tienda:ac_microArch', attrs={
+            # Set some placeholder
+            'data-placeholder': 'Micro Arquitectura ...',
+            # Only trigger autocompletion after 3 characters have been typed
+            'minimumResultsForSearch': 1,
+        }, )
+    )
+
+    coreFamy = forms.ModelChoiceField(
+        queryset=CoreFamily.objects.all(),
+        label="Generación del nucleo",
+        widget=autocomplete.ModelSelect2(url='tienda:ac_coreFamy', attrs={
+            # Set some placeholder
+            'data-placeholder': 'Generación del nucleo ...',
+            # Only trigger autocompletion after 3 characters have been typed
+            'minimumResultsForSearch': 1,
+        }, )
+    )
+
+    graphics = forms.ModelChoiceField(
+        queryset=IntegrateGraphic.objects.all(),
+        label="Grafica Integrada",
+        widget=autocomplete.ModelSelect2(url='tienda:ac_graphics', attrs={
+            # Set some placeholder
+            'data-placeholder': 'Gráfica integrada ...',
+            # Only trigger autocompletion after 3 characters have been typed
+            'minimumResultsForSearch': 1,
+        }, )
+    )
+
+    class Meta:
+        model = CPU
+        fields = "__all__"
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        # Orders Matter
+        self.helper.layout = Layout(
+            Accordion(
+                AccordionGroup('General Info',
+                               Row(
+                                   Column(AppendedText('slug', '<i class="bi bi-link"></i>'),
+                                          css_class='form-group col-md-6 col-sm-12'),
+                                   Column('tags', css_class='form-group col-md-6 col-sm-12'),
+                               ),
+                               Row(
+                                   Column(PrependedText('precio', '<i class="bi bi-cash"></i>'),
+                                          css_class='form-group col-md-6 col-sm-12'),
+                                   Column(PrependedText('nombre', '<i class="bi bi-fonts"></i>'),
+                                          css_class='form-group col-md-6 col-sm-12'),
+                               ),
+                               Row(
+                                   Column(AppendedText('descuento', '<i class="bi bi-cash"></i>'),
+                                          css_class='form-group col-md-6 col-sm-12'),
+                                   Column('photo', css_class='form-group col-md-6 col-sm-12'),
+                               ),
+                               Row(
+                                   Column('available', css_class='form-group col-md-6 col-sm-12'),
+                                   Column('category', css_class='form-group col-md-6 col-sm-12'),
+                               ),
+                               Row(
+                                   Column('shipping', css_class='form-group col-md-6 col-sm-12'),
+                                   Column('manufacturer', css_class='form-group col-md-6 col-sm-12'),
+                               ),
+                               active=False,
+                               ),
+                AccordionGroup('CPU Info',
+                               Row(
+                                   Column('socket', css_class='form-group col-md-6 col-sm-12'),
+                                   Column('coreCount', css_class='form-group col-md-6 col-sm-12'),
+                               ),
+                               Row(
+                                   Column('coreClok', css_class='form-group col-md-6 col-sm-12'),
+                                   Column('tdp', css_class='form-group col-md-6 col-sm-12'),
+                               ),
+                               Row(
+                                   Column('serie', css_class='form-group col-md-6 col-sm-12'),
+                                   Column('microArch', css_class='form-group col-md-6 col-sm-12'),
+                                   Column('coreFamy', css_class='form-group col-md-4 col-sm-12'),
+                                   Column('graphics', css_class='form-group col-md-4 col-sm-12'),
+                                   Column('suportECC', css_class='form-group col-md-4 col-sm-12'),
+                               ),
+
+                               ),
+
+
+            ),
+
         )

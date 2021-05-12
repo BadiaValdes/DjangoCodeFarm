@@ -255,7 +255,7 @@ def EliminarFrontPanelUSB(request):
 
 class CreateCase(LoginRequiredMixin, HasRoleMixin, CreateView):
     allowed_roles = ['admin']
-    success_url = reverse_lazy("tienda:front_panel_list")
+    success_url = reverse_lazy("tienda:cpu_list")
     template_name = "shop/case/case_form.html"
     model = Case
     form_class = CaseForm
@@ -280,7 +280,7 @@ class ListCase(LoginRequiredMixin, HasRoleMixin, ListView):
 
 class UpdateCase(LoginRequiredMixin, HasRoleMixin, UpdateView):
     allowed_roles = ['admin']
-    success_url = reverse_lazy("tienda:front_panel_list")
+    success_url = reverse_lazy("tienda:case_list")
     template_name = "shop/case/int_form.html"
     model = Case
     form_class = CaseForm
@@ -297,7 +297,7 @@ def EliminarCase(request):
         datos = request.POST.getlist('delete')
         for dat in datos:
             Case.objects.filter(id=dat).delete()
-    return redirect(reverse_lazy('tienda:front_panel_list'))
+    return redirect(reverse_lazy('tienda:case_list'))
 
 
 

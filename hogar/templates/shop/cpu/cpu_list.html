@@ -1,0 +1,284 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block content %}
+    <div class="width_90 pd_top_50">
+        <table class="table table-hover" id="table_pos">
+            <thead>
+            <tr>
+                <th>Numero</th>
+                <th>Nombre</th>
+                <th>Tags</th>
+                <th>Categoría</th>
+                <th>Precio</th>
+                <th>Entrega</th>
+                <th>Compañía</th>
+                <th>Disponible</th>
+                <th>
+
+                    <form action="{% url 'tienda:cpu_eliminar' %}" method="post" name="delete_form" id="delete_form">
+                        {% csrf_token %}
+                        Acciones:
+                        <button class="btn btn-outline-danger" disabled name="delete" id="delete_btn"
+                                aria-label="Eliminar">
+                            <i class="bi-trash"></i></button>
+                    </form>
+                </th>
+
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for object in object_list %}
+                <tr>
+                <td class="align-middle">{{ forloop.counter }}</td>
+                <td class="align-middle">{{ object.nombre }}</td>
+                <td class="align-middle">
+                    {% for tag in object.tags.all %}
+                        <span class="badge badge-secondary white-text left">{{ tag }}</span>
+                    {% empty %}
+                        No existen tags para esta entrada
+                    {% endfor %}
+                </td>
+                <td class="align-middle">{{ object.category }}</td>
+                <td class="align-middle">{{ object.precio }}</td>
+                <td class="align-middle">{{ object.shipping }}</td>
+                <td class="align-middle">{{ object.manufacturer }}</td>
+                <td class="align-middle center-align">
+                    <a id="available" onclick="hel(this)" data-id="{{ object.id }}"
+                            {% if object.available %}
+                       class="bi-check-circle check_circle"
+                            {% else %}
+                       class="bi-x-circle x_circle"
+                            {% endif %}
+                    ></a>
+                </td>
+                <td class="align-middle">
+
+
+                    <div class="btn-group-toggle">
+                        <a href="#" class="btn btn-outline-info detalles" id="detalles" aria-label="Detalles"
+                           data-id="{{ object.id }}"
+                           data-toggle="modal" data-target="#detallesModal"><i class="bi-eye"></i></a>
+                        <a href="{% url "tienda:cpu_update" object.id %}" class="btn btn-outline-primary"
+                           aria-label="Modificar"><i class="bi-pencil-square"></i></a>
+
+                        <label class="btn btn-outline-danger" data-toggle="buttons">
+                            <input type="checkbox" form="delete_form" name="delete" onchange="check(this)"
+                                   value="{{ object.id }}" aria-label="Seleccionar"> <i class="bi-trash2"></i>
+                        </label>
+
+
+                    </div>
+
+
+                </td>
+
+            {% empty %}
+                <td>No hay tipos de torres registrados</td>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="container">
+        <a href="{% url 'tienda:cpu_add' %}" class="btn btn-outline-primary btn-block"> Adicionar</a>
+    </div>
+
+    <div class="modal fade " id="detallesModal" tabindex="-1" role="dialog" aria-labelledby="detallesModal"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body width_99">
+                    <div class="row">
+                        <div class="col-md-6 col-lg-6 center-align">
+                            <img id="img_modal" src="" class="img-thumbnail img_modal img_gray_filter"/>
+                        </div>
+                        <div class="col-md-6 col-lg-6">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item list-group-item-action center-align bg-dark">Información
+                                    General
+                                </li>
+                                <li id="category" class="list-group-item list-group-item-action">Categoría:</li>
+                                <li id="precio" class="list-group-item list-group-item-action">Precio:</li>
+                                <li id="company" class="list-group-item list-group-item-action">Compañía:</li>
+                                <li id="socket" class="list-group-item list-group-item-action">Socket:</li>
+                                <li id="coreFamy" class="list-group-item list-group-item-action">Famila:</li>
+
+                                <br class="list-group-item">
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item list-group-item-action center-align bg-dark">Información de
+                                    la CPU
+                                </li>
+                                <li id="serie" class="list-group-item list-group-item-action">Serie:</li>
+                                <li id="coreCount" class="list-group-item list-group-item-action">Cantidad de Núcleos:</li>
+                                <li id="coreClok" class="list-group-item list-group-item-action">Velocidad del Núcleo (mhz):</li>
+                                <li id="microArch" class="list-group-item list-group-item-action">microArch:</li>
+                                <li id="tdp" class="list-group-item list-group-item-action">Potencia eléctrica:</li>
+                                <li id="graphic" class="list-group-item list-group-item-action">Gráfica Integrada:</li>
+                                <li id="soportECC" class="list-group-item list-group-item-action">Soporta Memorias ECC: <i
+                                        id="ecc"
+                                        class="align-middle"></i></li>
+
+                                <li class="list-group-item list-group-item-action center-align bg-dark">Otros</li>
+                                <li id="tag" class="list-group-item list-group-item-action">Tags:
+                                </li>
+                                <li class="list-group-item list-group-item-action align-middle">Disponible: <i
+                                        id="disponible"
+                                        class="align-middle"></i>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+{% block js %}
+    <script type="text/javascript">
+        var count = 0
+
+
+        function check(e) {
+            if (e.checked) {
+                count++
+
+            } else if (count > 0)
+                count--
+            if (count > 0) {
+                let del = document.getElementById("delete_btn");
+                del.disabled = false
+            } else {
+                let del = document.getElementById("delete_btn");
+                del.disabled = true
+
+            }
+            console.log(count)
+        }
+
+        $(document).ready(function () {
+            $('#table_pos').DataTable();
+        });
+
+        function hel(e) {
+            let id = $(e).attr("data-id");
+            $.ajax(
+                {
+                    type: "GET",
+                    url: 'available',
+                    data: {
+                        item_id: id,
+                    },
+                    success: function (data) {
+                        if (data.available == true) {
+                            $(e).removeClass('bi-x-circle')
+                            $(e).removeClass('x_circle')
+                            $(e).addClass('bi-check-circle')
+                            $(e).addClass('check_circle')
+                        } else {
+                            $(e).removeClass('bi-check-circle')
+                            $(e).removeClass('check_circle')
+                            $(e).addClass('bi-x-circle')
+                            $(e).addClass('x_circle')
+
+                        }
+                    }
+                }
+            )
+        }
+
+        $('.detalles').click(function () {
+            let id = $(this).attr("data-id");
+            $.ajax(
+                {
+                    type: "GET",
+                    url: "details",
+                    data: {
+                        item_id: id,
+                    },
+                    success: function (data) {
+                        $('#ModalLabel').text(data.nb)
+                        document.getElementById('img_modal').src = data.img;
+                        document.getElementById('category').innerText = "Categoría: " + data.category;
+
+                        if (data.precio == data.precio_descuento) {
+                            document.getElementById('precio').innerText = "Precio: " + data.precio;
+
+                        } else {
+                            document.getElementById('precio').innerText = "Precio: " + data.precio_descuento;
+                        }
+
+                        document.getElementById('company').innerText = "Compañía: " + data.manufacturer;
+
+                         document.getElementById('socket').innerText += " "+data.socket;
+                         document.getElementById('coreFamy').innerText += " "+data.coreFamy;
+                         document.getElementById('serie').innerText += " "+data.serie;
+                         document.getElementById('coreCount').innerText += " "+data.coreCount;
+                         document.getElementById('coreClok').innerText += " "+data.coreClock;
+                         document.getElementById('microArch').innerText += " "+data.microArch;
+                         document.getElementById('tdp').innerText += " "+data.tdp;
+                         document.getElementById('graphic').innerText += " "+data.graphics;
+
+                          if (data.suportECC == true) {
+                            $('#ecc').addClass('bi-check-circle')
+                            $('#ecc').addClass('check_circle')
+
+                        } else {
+                            $('#ecc').addClass('bi-x-circle')
+                            $('#ecc').addClass('x_circle')
+
+                        }
+
+                        let tag = data.tags.split("/");
+                        document.getElementById('tag').innerText = "Tags: "
+                        for (const t in tag) {
+                            let span = document.createElement("span");
+                            span.classList.add('badge', 'badge-secondary', 'white-text');
+                            span.innerText = tag[t];
+                            document.getElementById('tag').appendChild(span);
+                        }
+
+                        if (data.available == true) {
+                            $('#disponible').removeClass('bi-x-circle')
+                            $('#disponible').removeClass('x_circle')
+                            $('#disponible').addClass('bi-check-circle')
+                            $('#disponible').addClass('check_circle')
+
+                        } else {
+                            $('#disponible').removeClass('bi-check-circle')
+                            $('#disponible').removeClass('check-circle')
+                            $('#disponible').addClass('bi-x-circle')
+                            $('#disponible').addClass('x_circle')
+
+                        }
+
+
+                    }
+                }
+            )
+
+        })
+
+        $('#detallesModal').on('hidden.bs.modal', function (e) {
+            document.getElementById('tag').innerHTML = ""
+        });
+    </script>
+
+{% endblock %}

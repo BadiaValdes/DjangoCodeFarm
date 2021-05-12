@@ -3,15 +3,16 @@
 
 
 {% block content %}
-    <div class="container">
-        <div class="row" style="width: 40%">
-            <form method="post" enctype="multipart/form-data">{% csrf_token %}
-                {% crispy form %}
-                <br>
+    <div class="gpu_form">
+        <form method="post" enctype="multipart/form-data">{% csrf_token %}
+            {% crispy form %}
+            <br>
+            <div class="btn-group btn-block" role="group" aria-label="buttonss">
                 <input type="submit" class="btn btn-outline-primary" value="{{ text }}">
-            </form>
-        </div>
+            </div>
+        </form>
     </div>
+
 {% endblock %}
 
 {% block js %}
@@ -29,10 +30,10 @@
                 if (e.key != " ")
                     if (e.key == "/")
                         slug.value += 'and';
-                    else if(e.keyCode >= 65 && e.keyCode <= 90 || e.keyCode >= 97 && e.keyCode <= 122 || e.keyCode >= 48 && e.keyCode <= 57 )
+                    else if (e.keyCode >= 65 && e.keyCode <= 90 || e.keyCode >= 97 && e.keyCode <= 122 || e.keyCode >= 48 && e.keyCode <= 57)
                         slug.value += e.key.toLowerCase();
                     else
-                        slug.value +="";
+                        slug.value += "";
                 else
                     slug.value += "_";
                 characters++;
@@ -42,12 +43,12 @@
 
         $('#id_nombre').keydown(function (e) {
             if (e.keyCode == 8) {
-                if (this.value.length == slug.value.length){
+                if (this.value.length == slug.value.length) {
                     slug.value = slug.value.substr(0, slug.value.length - 1);
                 }
 
                 characters--;
-                 if (this.value === "") {
+                if (this.value === "") {
                     slug.value = "";
                     characters = 0;
                 }

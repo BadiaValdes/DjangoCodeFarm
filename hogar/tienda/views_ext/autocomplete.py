@@ -1,7 +1,8 @@
 ############### MODELS IMPORT ###################
 from tienda.model_ext.case import TypeCase, SidePanelWindow, PowerSupply, FrontPanelUSB
 from tienda.model_ext.gpu import Interface, FrameSync, Cooling, ExternalPower
-from tienda.model_ext.generales import Manufacturer, TypeProduct, Color, FormFactor, Chipset, TypeMemory, SLI
+from tienda.model_ext.cpu import Serie, MicroArch, IntegrateGraphic, CoreFamily
+from tienda.model_ext.generales import Manufacturer, TypeProduct, Color, FormFactor, Chipset, TypeMemory, SLI, Socket
 from tienda.models import Case, Category, Tags, Shipping, GPU
 ############### ENDS MODEL IMPORT ###############
 
@@ -194,6 +195,56 @@ class ExternalPowerAutoComplete(autocomplete.Select2QuerySetView):
         if not self.request.user.is_authenticated:
             return ExternalPower.objects.none()
         qs = ExternalPower.objects.all()
+        if self.q:
+            qs = qs.filter(nombre__contains=self.q)
+        return qs
+
+class SerieAutoComplete(autocomplete.Select2QuerySetView):
+
+    def get_queryset(self):
+        if not self.request.user.is_authenticated:
+            return Serie.objects.none()
+        qs = Serie.objects.all()
+        if self.q:
+            qs = qs.filter(nombre__contains=self.q)
+        return qs
+
+class MicroArchAutoComplete(autocomplete.Select2QuerySetView):
+
+    def get_queryset(self):
+        if not self.request.user.is_authenticated:
+            return MicroArch.objects.none()
+        qs = MicroArch.objects.all()
+        if self.q:
+            qs = qs.filter(nombre__contains=self.q)
+        return qs
+
+class IntegrateGraphicAutoComplete(autocomplete.Select2QuerySetView):
+
+    def get_queryset(self):
+        if not self.request.user.is_authenticated:
+            return IntegrateGraphic.objects.none()
+        qs = IntegrateGraphic.objects.all()
+        if self.q:
+            qs = qs.filter(nombre__contains=self.q)
+        return qs
+
+class CoreFamilyAutoComplete(autocomplete.Select2QuerySetView):
+
+    def get_queryset(self):
+        if not self.request.user.is_authenticated:
+            return CoreFamily.objects.none()
+        qs = CoreFamily.objects.all()
+        if self.q:
+            qs = qs.filter(nombre__contains=self.q)
+        return qs
+
+class SocketAutoComplete(autocomplete.Select2QuerySetView):
+
+    def get_queryset(self):
+        if not self.request.user.is_authenticated:
+            return Socket.objects.none()
+        qs = Socket.objects.all()
         if self.q:
             qs = qs.filter(nombre__contains=self.q)
         return qs

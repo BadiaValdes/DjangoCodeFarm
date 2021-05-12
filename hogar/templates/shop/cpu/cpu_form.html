@@ -1,0 +1,107 @@
+{% extends 'layout.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+    <div class="gpu_form">
+        <div class="form_style" style="width: 40%">
+            <form method="post" enctype="multipart/form-data" id="form_gpu">{% csrf_token %}
+                {% crispy form %}
+                <br>
+                <div class="btn-group btn-block" role="group" aria-label="buttonss">
+                    <input type="button" id="comprobar" class="btn btn_gpu btn-outline-primary btn-block"
+                           value="Comprobar">
+                    <input type="submit" id="submit" class="btn btn_gpu btn-outline-success btn-block disabled"
+                           value="{{ text }}">
+                </div>
+
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript">
+
+        function sleep(ms) {
+            return new Promise(resolve => {
+                setTimeout(resolve, ms)
+            });
+        }
+
+        var descuento = document.getElementById("id_descuento");
+        $(document).ready(function () {
+            $("#id_descuento").attr({
+                "max": 90,        // substitute your own
+                "min": 0          // values (or variables) here
+            });
+
+            document.getElementById('submit').disabled = true;
+            //$('#id_nombre').val()
+            //$('#id_tags').children("option:selected").val()
+            let good = "<span class=\"badge  \"><i class=\"bi bi-check-circle-fill \" id=\"good\" style='color:green; font-size: 2em'></i></span>";
+            let bad = "<span class=\"badge  \"><i class=\"bi bi-x-circle-fill \" id=\"bad\" style='color:red; font-size: 2em'></i></span>";
+            let aler = "<div class=\"alert alert-warning alert-dismissible fade show\" role=\"alert\">\n" +
+                "  <strong>Holy guacamole!</strong> You should check in on some of those fields below.\n" +
+                "  <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">\n" +
+                "    <span aria-hidden=\"true\">&times;</span>\n" +
+                "  </button>\n" +
+                "</div>";
+
+
+            let all_is_well = false;
+            $('#comprobar').click(async function (e) {
+
+                if ($('#id_nombre').val()
+                    && $('#id_slug').val()
+                    && $('#id_tags').children("option:selected").val()
+                    && $('#id_precio').val()
+                    && $('#id_descuento').val()
+                    && $('#id_shipping').children("option:selected").val()
+                    && $('#id_category').children("option:selected").val()
+                    && $('#id_manufacturer').children("option:selected").val()) {
+                    $('a[href="#general-info"]').children().remove()
+                    $('a[href="#general-info"]').append(good);
+                    all_is_well = true;
+
+                } else {
+                    $('a[href="#general-info"]').children().remove()
+                    $('a[href="#general-info"]').append(bad);
+                    all_is_well = false;
+
+
+                }
+                await sleep(500);
+                if ($('#id_socket').children("option:selected").val()
+                    && $('#id_coreCount').val() != 0
+                    && $('#id_coreClock').val() != 0
+                    && $('#id_tdp').val() != 0
+                    && $('#id_serie').children("option:selected").val()
+                    && $('#id_microArch').children("option:selected").val()
+                    && $('#id_coreFamy').children("option:selected").val()
+                    && $('#id_graphics').children("option:selected").val()) {
+                    $('a[href="#cpu-info"]').children().remove()
+                    $('a[href="#cpu-info"]').append(good);
+                    all_is_well = true;
+                } else {
+                    $('a[href="#cpu-info"]').children().remove()
+                    $('a[href="#cpu-info"]').append(bad);
+                    all_is_well = false;
+                }
+                await sleep(500);
+                if (all_is_well == true) {
+                    document.getElementById('submit').classList.remove('disabled');
+                    document.getElementById('submit').disabled = false;
+                    return true;
+                } else {
+                    return false;
+                }
+
+            })
+
+
+        })
+
+
+    </script>
+{% endblock %}

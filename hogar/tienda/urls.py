@@ -2,7 +2,7 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import path, re_path
 from . import views
 from .views_ext import category, shipping, tags, sli, typeMemory, chipset, color, socket, typeProduct, formFactor, \
-    manufacturer, case, gpu, autocomplete
+    manufacturer, case, gpu, autocomplete, cpu
 
 app_name = "tienda"
 
@@ -18,6 +18,10 @@ app_name = "tienda"
 #       4.3- SIDE PANEL WINDOW       #
 #       4.4- FRONT PANEL USB         #
 #   5- CPU                           #
+#       5.1- Serie                   #
+#       5.2- Micro Arquitectura      #
+#       5.3- Integrate Graphic       #
+#       5.4- Core Family             #
 #   6- GPU                           #
 #       6.1- INTERFACE               #
 #       6.2- FRAME SYNC              #
@@ -100,6 +104,37 @@ urlpatterns = [
 
     ######################################################################################################
     # 5- CPU
+    path('cpu/', cpu.ListCPU.as_view(), name="cpu_list"),
+    path('cpu/add', cpu.CreateCPU.as_view(), name="cpu_add"),
+    re_path('cpu/update/(?P<pk>[0-9a-f]{10})', cpu.UpdateCPU.as_view(), name="cpu_update"),
+    path('cpu/delete', cpu.CPUEliminar, name="cpu_eliminar"),
+    path('cpu/available', cpu.AvailableCPU, name="cpu_available"),
+    path('cpu/details', cpu.DetailCPU, name="cpu_detail"),
+
+    # 5.1- Serie
+    path('serie/', cpu.ListSerie.as_view(), name="serie_list"),
+    path('serie/add', cpu.CreateSerie.as_view(), name="serie_add"),
+    re_path('serie/update/(?P<pk>[0-9a-f]{10})', cpu.UpdateSerie.as_view(), name="serie_update"),
+    path('serie/delete', cpu.SerieEliminar, name="serie_eliminar"),
+
+    # 5.2- Micro Arquitectura
+    path('microArch/', cpu.ListMicroArch.as_view(), name="microArch_list"),
+    path('microArch/add', cpu.CreateMicroArch.as_view(), name="microArch_add"),
+    re_path('microArch/update/(?P<pk>[0-9a-f]{10})', cpu.UpdateMicroArch.as_view(), name="microArch_update"),
+    path('microArch/delete', cpu.MicroArchEliminar, name="microArch_eliminar"),
+
+    # 5.3- Integrate Graphic
+    path('graphic/', cpu.ListIntegrateGraphic.as_view(), name="graphic_list"),
+    path('graphic/add', cpu.CreateIntegrateGraphic.as_view(), name="graphic_add"),
+    re_path('graphic/update/(?P<pk>[0-9a-f]{10})', cpu.UpdateIntegrateGraphic.as_view(), name="graphic_update"),
+    path('graphic/delete', cpu.IntegrateGraphicEliminar, name="graphic_eliminar"),
+
+    # 5.4- Core Family
+    path('coreFamily/', cpu.ListCoreFamily.as_view(), name="coreFamy_list"),
+    path('coreFamily/add', cpu.CreateCoreFamily.as_view(), name="coreFamy_add"),
+    re_path('coreFamily/update/(?P<pk>[0-9a-f]{10})', cpu.UpdateCoreFamily.as_view(), name="coreFamy_update"),
+    path('coreFamily/delete', cpu.CoreFamilyEliminar, name="coreFamy_eliminar"),
+
     ######################################################################################################
     # 6- GPU
     path('gpu/', gpu.ListGPU.as_view(), name="gpu_list"),
@@ -231,4 +266,14 @@ urlpatterns = [
             name="ac_cooling"),
     re_path('externalPowerAutoComplete/', autocomplete.ExternalPowerAutoComplete.as_view(),
             name="ac_external_power"),
+    re_path('serieAutoComplete/', autocomplete.SerieAutoComplete.as_view(),
+            name="ac_serie"),
+    re_path('microArchAutoComplete/', autocomplete.MicroArchAutoComplete.as_view(),
+            name="ac_microArch"),
+    re_path('graphicAutoComplete/', autocomplete.IntegrateGraphicAutoComplete.as_view(),
+            name="ac_graphics"),
+    re_path('coreFamilyAutoComplete/', autocomplete.CoreFamilyAutoComplete.as_view(),
+            name="ac_coreFamy"),
+    re_path('socketAutoComplete/', autocomplete.SocketAutoComplete.as_view(),
+            name="ac_socket"),
 ]
