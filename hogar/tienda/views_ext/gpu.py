@@ -25,8 +25,9 @@ from tienda.form import InterfaceForm, FrameSyncForm, CoolingForm, ExternalPower
 from django.urls import reverse_lazy
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-############### ENDS OTHER IMPORT ################
 
+
+############### ENDS OTHER IMPORT ################
 
 
 ######################################
@@ -45,7 +46,7 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 # 1 - Interface Clases #
 ########################
 
-class CreateInterface (LoginRequiredMixin, HasRoleMixin, CreateView):
+class CreateInterface(LoginRequiredMixin, HasRoleMixin, CreateView):
     template_name = "shop/gpu/string_form.html"
     model = Interface
     success_url = reverse_lazy("tienda:interface_list")
@@ -57,7 +58,8 @@ class CreateInterface (LoginRequiredMixin, HasRoleMixin, CreateView):
         context['text'] = "Adicionar Interfaz"
         return context
 
-class ListInterface (LoginRequiredMixin, HasRoleMixin, ListView):
+
+class ListInterface(LoginRequiredMixin, HasRoleMixin, ListView):
     allowed_roles = ['admin']
     template_name = "shop/gpu/params_string_list.html"
     model = Interface
@@ -70,7 +72,8 @@ class ListInterface (LoginRequiredMixin, HasRoleMixin, ListView):
 
         return context
 
-class UpdateInterface (LoginRequiredMixin, HasRoleMixin, UpdateView):
+
+class UpdateInterface(LoginRequiredMixin, HasRoleMixin, UpdateView):
     allowed_roles = ['admin']
     template_name = "shop/gpu/string_form.html"
     model = Interface
@@ -91,11 +94,12 @@ def ItemEliminar(request):
             Interface.objects.filter(id=dat).delete()
     return redirect(reverse_lazy('tienda:interface_list'))
 
+
 ########################
 # 2- Frame Sync Clases #
 ########################
 
-class CreateFrameSync (LoginRequiredMixin, HasRoleMixin, CreateView):
+class CreateFrameSync(LoginRequiredMixin, HasRoleMixin, CreateView):
     template_name = "shop/gpu/string_form.html"
     model = FrameSync
     success_url = reverse_lazy("tienda:frame_sync_list")
@@ -107,7 +111,8 @@ class CreateFrameSync (LoginRequiredMixin, HasRoleMixin, CreateView):
         context['text'] = "Adicionar Frame Sync"
         return context
 
-class ListFrameSync (LoginRequiredMixin, HasRoleMixin, ListView):
+
+class ListFrameSync(LoginRequiredMixin, HasRoleMixin, ListView):
     allowed_roles = ['admin']
     template_name = "shop/gpu/params_string_list.html"
     model = FrameSync
@@ -120,7 +125,8 @@ class ListFrameSync (LoginRequiredMixin, HasRoleMixin, ListView):
 
         return context
 
-class UpdateFrameSync (LoginRequiredMixin, HasRoleMixin, UpdateView):
+
+class UpdateFrameSync(LoginRequiredMixin, HasRoleMixin, UpdateView):
     allowed_roles = ['admin']
     template_name = "shop/gpu/string_form.html"
     model = FrameSync
@@ -141,12 +147,13 @@ def EliminarFrameSync(request):
             FrameSync.objects.filter(id=dat).delete()
     return redirect(reverse_lazy('tienda:frame_sync_list'))
 
+
 ########################
 # 3- Cooling Clases    #
 ########################
 
 
-class CreateCooling (LoginRequiredMixin, HasRoleMixin, CreateView):
+class CreateCooling(LoginRequiredMixin, HasRoleMixin, CreateView):
     template_name = "shop/gpu/string_form.html"
     model = Cooling
     success_url = reverse_lazy("tienda:cooling_list")
@@ -158,7 +165,8 @@ class CreateCooling (LoginRequiredMixin, HasRoleMixin, CreateView):
         context['text'] = "Adicionar Cooling"
         return context
 
-class ListCooling (LoginRequiredMixin, HasRoleMixin, ListView):
+
+class ListCooling(LoginRequiredMixin, HasRoleMixin, ListView):
     allowed_roles = ['admin']
     template_name = "shop/gpu/params_string_list.html"
     model = Cooling
@@ -171,7 +179,8 @@ class ListCooling (LoginRequiredMixin, HasRoleMixin, ListView):
 
         return context
 
-class UpdateCooling (LoginRequiredMixin, HasRoleMixin, UpdateView):
+
+class UpdateCooling(LoginRequiredMixin, HasRoleMixin, UpdateView):
     allowed_roles = ['admin']
     template_name = "shop/gpu/string_form.html"
     model = Cooling
@@ -192,11 +201,12 @@ def EliminarCooling(request):
             Cooling.objects.filter(id=dat).delete()
     return redirect(reverse_lazy('tienda:cooling_list'))
 
+
 ###############################
 # 4- External Power Clases    #
 ###############################
 
-class CreateExternalPower (LoginRequiredMixin, HasRoleMixin, CreateView):
+class CreateExternalPower(LoginRequiredMixin, HasRoleMixin, CreateView):
     template_name = "shop/gpu/string_form.html"
     model = ExternalPower
     success_url = reverse_lazy("tienda:external_power_list")
@@ -208,7 +218,8 @@ class CreateExternalPower (LoginRequiredMixin, HasRoleMixin, CreateView):
         context['text'] = "Adicionar External Power"
         return context
 
-class ListExternalPower (LoginRequiredMixin, HasRoleMixin, ListView):
+
+class ListExternalPower(LoginRequiredMixin, HasRoleMixin, ListView):
     allowed_roles = ['admin']
     template_name = "shop/gpu/params_string_list.html"
     model = ExternalPower
@@ -221,7 +232,8 @@ class ListExternalPower (LoginRequiredMixin, HasRoleMixin, ListView):
 
         return context
 
-class UpdateExternalPower (LoginRequiredMixin, HasRoleMixin, UpdateView):
+
+class UpdateExternalPower(LoginRequiredMixin, HasRoleMixin, UpdateView):
     allowed_roles = ['admin']
     template_name = "shop/gpu/string_form.html"
     model = ExternalPower
@@ -242,11 +254,12 @@ def EliminarExternalPower(request):
             ExternalPower.objects.filter(id=dat).delete()
     return redirect(reverse_lazy('tienda:external_power_list'))
 
+
 ###############################
 # 5- GPU Clases               #
 ###############################
 
-class CreateGPU (LoginRequiredMixin, HasRoleMixin, CreateView):
+class CreateGPU(LoginRequiredMixin, HasRoleMixin, CreateView):
     template_name = "shop/gpu/gpu_form.html"
     model = GPU
     success_url = reverse_lazy("tienda:gpu_list")
@@ -258,7 +271,8 @@ class CreateGPU (LoginRequiredMixin, HasRoleMixin, CreateView):
         context['text'] = "Adicionar GPU"
         return context
 
-class ListGPU (LoginRequiredMixin, HasRoleMixin, ListView):
+
+class ListGPU(LoginRequiredMixin, HasRoleMixin, ListView):
     allowed_roles = ['admin']
     template_name = "shop/gpu/gpu_list.html"
     model = GPU
@@ -267,7 +281,8 @@ class ListGPU (LoginRequiredMixin, HasRoleMixin, ListView):
         context = super().get_context_data(**kwargs)
         return context
 
-class UpdateGPU (LoginRequiredMixin, HasRoleMixin, UpdateView):
+
+class UpdateGPU(LoginRequiredMixin, HasRoleMixin, UpdateView):
     allowed_roles = ['admin']
     template_name = "shop/gpu/gpu_form.html"
     model = GPU
@@ -287,3 +302,23 @@ def EliminarGPU(request):
         for dat in datos:
             GPU.objects.filter(id=dat).delete()
     return redirect(reverse_lazy('tienda:gpu_list'))
+
+
+################################
+# 6- AJAX Petition             #
+################################
+
+@login_required
+def AvailableGPU(request):
+    if request.method == 'GET':
+        item_id = request.GET['item_id']
+        gpu = GPU.objects.get(id=item_id)
+        gpu.available = False if (gpu.available == True) else True
+        gpu.save()
+        data = {
+            'available': gpu.available,
+        }
+        return JsonResponse(data)
+
+    else:
+        return HttpResponse("Bad!")

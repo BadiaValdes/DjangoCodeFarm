@@ -44,11 +44,13 @@
                 <td class="align-middle">{{ object.shipping }}</td>
                 <td class="align-middle">{{ object.manufacturer }}</td>
                 <td class="align-middle center-align">
-                    {% if object.available %}
-                        <i class="bi-check-circle check_circle"></i>
-                    {% else %}
-                        <i class="bi-x-circle x_circle"></i>
-                    {% endif %}
+                    <a id="available" onclick="hel(this)" data-id="{{ object.id }}"
+                            {% if object.available %}
+                       class="bi-check-circle check_circle"
+                            {% else %}
+                       class="bi-x-circle x_circle"
+                            {% endif %}
+                    ></a>
                 </td>
                 <td class="align-middle">
 
@@ -60,7 +62,7 @@
                         <a href="{% url "tienda:gpu_update" object.id %}" class="btn btn-outline-primary"
                            aria-label="Modificar"><i class="bi-pencil-square"></i></a>
 
-                            <label class="btn btn-outline-danger" data-toggle="buttons">
+                        <label class="btn btn-outline-danger" data-toggle="buttons">
                             <input type="checkbox" form="delete_form" name="delete" onchange="check(this)"
                                    value="{{ object.id }}" aria-label="Seleccionar"> <i class="bi-trash2"></i>
                         </label>
@@ -171,6 +173,36 @@
         $(document).ready(function () {
             $('#table_pos').DataTable();
         });
+
+        function hel(e){
+             let id = $(e).attr("data-id");
+            $.ajax(
+                {
+                    type: "GET",
+                    url: 'available',
+                    data: {
+                        item_id: id,
+                    },
+                    success: function (data) {
+                        if (data.available == true) {
+                            $(e).removeClass('bi-x-circle')
+                            $(e).removeClass('x_circle')
+                            $(e).addClass('bi-check-circle')
+                            $(e).addClass('check_circle')
+                        } else {
+                            $(e).removeClass('bi-check-circle')
+                            $(e).removeClass('check_circle')
+                            $(e).addClass('bi-x-circle')
+                            $(e).addClass('x_circle')
+
+                        }
+                    }
+                }
+            )
+        }
+        $('#available').click(function (e) {
+
+        })
 
         $('.detalles').click(function () {
             let id = $(this).attr("data-id");
