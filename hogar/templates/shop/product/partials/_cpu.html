@@ -1,0 +1,16 @@
+<li class="list-group-item list-group-item-action center-align white bg-secondary">Información de la CPU</li>
+<li id="serie" class="list-group-item list-group-item-action">Serie: {{ model.serie }}</li>
+<li id="serie" class="list-group-item list-group-item-action">Socket: {{ model.socket }}</li>
+<li id="serie" class="list-group-item list-group-item-action">Familia de procesador: {{ model.coreFamy }}</li>
+<li id="coreCount" class="list-group-item list-group-item-action">Cantidad de Núcleos: {{ model.coreCount }}</li>
+<li id="coreClok" class="list-group-item list-group-item-action">Velocidad del Núcleo (mhz): {{ model.coreClok }}</li>
+<li id="microArch" class="list-group-item list-group-item-action">microArch: {{ model.microArch }}</li>
+<li id="tdp" class="list-group-item list-group-item-action">Potencia eléctrica: {{ model.tdp }}</li>
+<li id="graphic" class="list-group-item list-group-item-action">Gráfica Integrada: {{ model.graphics }}</li>
+<li class="list-group-item  list-group-item-action">Soporta ECC:
+    {% if model.suportECC %}
+        <i class="bi bi-check-circle-fill check_circle_info align-middle"></i>
+    {% else %}
+        <i class="bi bi-x-circle-fill check_circle_info align-middle"></i>
+    {% endif %}
+</li>

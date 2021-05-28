@@ -27,6 +27,7 @@ fabric = "*"
 djangorestframework = "*"
 channels = "*"
 channels-redis = "*"
+prometheus-client = "*"
 
 [dev-packages]
 

@@ -1,0 +1,45 @@
+<li class="list-group-item list-group-item-action center-align white bg-secondary">Información general</li>
+<li class="list-group-item">Tamaño: {{ model.form_Factor }}</li>
+<li class="list-group-item list-group-item-action center-align white bg-secondary">Información sobre el socket</li>
+<li class="list-group-item">Socket: {{ model.socket }}</li>
+<li class="list-group-item">Chipset: {{ model.chipset }}</li>
+<li class="list-group-item list-group-item-action center-align white bg-secondary">Información sobre la RAM</li>
+<li class="list-group-item">Memoria Máxima: {{ model.maxMemory }}</li>
+<li class="list-group-item">Tipo de memoria: {{ model.memoryType }}</li>
+<li class="list-group-item">Cantidad de slots: {{ model.memorySlot }}</li>
+<li class="list-group-item list-group-item-action center-align white bg-secondary">Información sobre la GPU</li>
+<li id="sli" class="list-group-item list-group-item-action">Tipo de SLI / Cross Fire: {{ model.sli }}</li>
+<li id="pciX16Slot" class="list-group-item list-group-item-action">Cantidad de slot PCI x
+    16: {{ model.pciX16Slot }}</li>
+<li id="pciX8Slot" class="list-group-item list-group-item-action">Cantidad de slot PCI x 8: {{ model.pciX8Slot }}</li>
+<li id="pciX4Slot" class="list-group-item list-group-item-action">Cantidad de slot PCI x 4: {{ model.pciX4Slot }}</li>
+<li id="pciX2Slot" class="list-group-item list-group-item-action">Cantidad de slot PCI x 2: {{ model.pciX2Slot }}</li>
+<li id="pciSlot" class="list-group-item list-group-item-action">Cantidad de slot PCI: {{ model.pciSlot }}</li>
+<li class="list-group-item list-group-item-action center-align white bg-secondary">Información sobre el almacenamiento
+</li>
+<li id="sata3Port" class="list-group-item list-group-item-action">Cantidad de puertos Sata 3: {{ model.sata3Port }}</li>
+<li id="sata6Port" class="list-group-item list-group-item-action">Cantidad de puertos Sata 6: {{ model.sata6Port }}</li>
+<li id="m2Slot" class="list-group-item list-group-item-action">Cantidad de puertos M2: {{ model.m2Slot }}</li>
+<li id="mSataSlot" class="list-group-item list-group-item-action">Cantidad de puertos Sata: {{ model.mSataSlot }}</li>
+<li class="list-group-item list-group-item-action center-align white bg-secondary">Información sobre la conectividad
+</li>
+<li id="ethernet" class="list-group-item list-group-item-action">Red cableada: {{ model.ethernet }}</li>
+<li id="wireless" class="list-group-item list-group-item-action">Red inhalambrica: {{ model.wireless }}</li>
+<li id="wireless" class="list-group-item list-group-item-action">Red inhalambrica: {{ model.wireless }}</li>
+<li class="list-group-item list-group-item-action center-align white bg-secondary">Otros</li>
+<li class="list-group-item list-group-item-action">Video en board:
+    {% if model.boarVideo %}
+        <i class="bi bi-check-circle-fill check_circle_info align-middle"></i>
+    {% else %}
+        <i class="bi bi-x-circle-fill check_circle_info align-middle"></i>
+    {% endif %}
+</li>
+<li class="list-group-item  list-group-item-action">Soporta ECC:
+    {% if model.suportECC %}
+        <i class="bi bi-check-circle-fill check_circle_info align-middle"></i>
+    {% else %}
+        <i class="bi bi-x-circle-fill check_circle_info align-middle"></i>
+    {% endif %}
+</li>
+<li id="color" class="list-group-item list-group-item-action">Color: {{ model.color_array|safe }}</li>
+

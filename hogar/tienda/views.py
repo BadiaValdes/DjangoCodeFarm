@@ -20,6 +20,7 @@ from weasyprint import HTML, CSS
 from django.conf import settings
 from django.utils.timezone import now
 
+
 @login_required
 def index(request):
     # notify.send(request.user, recipient=request.user, verb='The items  have been deleted by {}'.format(request.user.username), level='info')
@@ -29,3 +30,9 @@ def index(request):
         return render(request, '../templates/shop/index.html', context)
     else:
         return HttpResponse('Not user found')
+        
+
+
+
+
+

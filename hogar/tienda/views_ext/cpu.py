@@ -25,8 +25,6 @@ from tienda.form import SerieForm, MicroArchForm, IntegrateGraphicForm, CoreFami
 from django.urls import reverse_lazy
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-
-
 ############### ENDS OTHER IMPORT ################
 
 
@@ -261,7 +259,7 @@ def CoreFamilyEliminar(request):
 
 class CreateCPU(LoginRequiredMixin, HasRoleMixin, CreateView):
     allowed_roles = ['admin']
-    success_url = reverse_lazy("tienda:front_panel_list")
+    success_url = reverse_lazy("tienda:cpu_list")
     template_name = "shop/cpu/cpu_form.html"
     model = CPU
     form_class = CPUForm

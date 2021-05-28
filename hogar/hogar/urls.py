@@ -18,6 +18,7 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from . import metrics
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -30,7 +31,8 @@ urlpatterns = [
     path('notifications/', include('notifications.urls', namespace='notifications')),
     path('accounts/', include('allauth.urls')),
     path('dashboard/', include('dashboard.urls')),
-    path('tienda/', include('tienda.urls'))
+    path('tienda/', include('tienda.urls')),
+    path('metrics/', include('metrics.urls')),
 ]
 
 urlpatterns += staticfiles_urlpatterns()

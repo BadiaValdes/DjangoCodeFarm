@@ -33,6 +33,7 @@ INSTALLED_APPS = [
 
     # Installed apps
     'channels',
+    'metrics',
     'channels_redis',
     'chat',
     'dashboard',
@@ -44,6 +45,7 @@ INSTALLED_APPS = [
     'celery',
     'kronos',
     'apscheduler',
+    'prometheus_client',
     # 'django_celery_beat'
     'listas',
     'django.contrib.sites',

@@ -1,0 +1,40 @@
+ <div class="row align-items-center bg_color">
+            <div class="col-md-auto col-sm-12 center-align pd_bottom_10">
+                <img class="img_info" src={{ model.photo.url }}>
+            </div>
+            <div class="col-md-8  col-sm-12 ">
+                <ul class="list-group list-group-flush bg_color_parent">
+                    <li class="list-group-item">Nombre del Producto: <span>{{ model.nombre }}</span></li>
+                    <li class="list-group-item">
+                        Precio:
+                        {% if model.hasDescuento %}
+                            <span class="btn btn-secondary disabled"><s>{{ model.precio }} $</s></span>
+                            <span>{{ model.precioDescuento }} $</span>
+                        {% else %}
+
+
+                            <span>{{ model.precioDescuento }}</span>
+                        {% endif %}
+
+
+                    </li>
+                    <li class="list-group-item">Fabricado por: {{ model.manufacturer }}</li>
+                    <li class="list-group-item align-middle" id="tag">Etiquetas:</li>
+                    <li class="list-group-item">Disponible:
+                        {% if model.available %}
+                            <i class="bi bi-check-circle-fill check_circle_info align-middle"></i>
+                        {% else %}
+                            <i class="bi bi-x-circle-fill x_circle_info align-middle"></i>
+                        {% endif %}
+                    </li>
+                    <li class="list-group-item">
+                        <div class="btn-group btn-block" role="group">
+                            <a href="#" class="btn btn-primary bi-heart"></a>
+                            <a href="#" class="btn btn-primary bi-bag-plus"></a>
+                        </div>
+                    </li>
+
+                </ul>
+            </div>
+
+        </div>

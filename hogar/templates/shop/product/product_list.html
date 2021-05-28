@@ -1,0 +1,43 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block content %}
+    <div class="width_90 pd_top_50">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-5">
+
+
+            {% for obj in product %}
+                <div class="col mb-2">
+                <a href={% url "tienda:product_info" slug=obj.category.slug slug1=obj.slug%}>
+                    <div class="card bg-dark">
+                        <img src={{ obj.photo.url }} class="card-img-top" alt="...">
+                        <div class="product_btns">
+                            <div class="btn-group" role="group">
+                                <a href="#" class="btn btn-primary bi-heart"></a>
+                                <a href="#" class="btn btn-primary bi-cart"></a>
+                            </div>
+
+
+                        </div>
+                        <div class="price_tag ">
+                            <a href="#" class="btn btn-secondary disabled btn-block  "><i
+                                    class="bi-circle-fill circle_tag align-middle"></i> {{ obj.precioDescuento }} <span
+                                    class="">USD</span></a>
+                        </div>
+                    </div>
+                </a>
+
+                </div>
+            {% endfor %}
+        </div>
+
+    </div>
+
+{% endblock %}
+
+
+{% block js %}
+    <script type="text/javascript">
+
+    </script>
+
+{% endblock %}

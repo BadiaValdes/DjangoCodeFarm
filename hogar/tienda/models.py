@@ -11,6 +11,9 @@ from tienda.model_ext.caseFan import Size, LED, Connector, Controller
 from tienda.model_ext.generales import Socket, SLI, TypeProduct, TypeMemory, Manufacturer, FormFactor, Chipset, Color
 from django.utils.text import slugify
 
+from .util_model import color_html
+
+
 from django.contrib.postgres.fields import ArrayField
 
 from django.db import models
@@ -72,6 +75,7 @@ class Producto(models.Model):
     nombre = models.CharField(max_length=20, blank=False, null=False)
     descuento = models.FloatField(default=0, null=False, blank=False,
                                   help_text="Descuento en 0, no tiene")
+    amount_stock = models.IntegerField(default=0, null=False, blank=False)
     photo = models.ImageField(upload_to=get_upload_path)
     shipping = models.ForeignKey(Shipping, on_delete=models.CASCADE, null=False)
     available = models.BooleanField(default=True, null=False, blank=False, verbose_name="Disponible")
@@ -87,11 +91,15 @@ class Producto(models.Model):
     def precioDescuento(self):
         return self.precio - (self.precio * self.descuento / 100) if self.descuento != 0 else self.precio
 
+    def hasDescuento(self):
+        return True if self.descuento != 0 else False
+
     def Tags(self):
         tags_array = ""
         for t in self.tags.all():
             tags_array += t.nombre + "/"
         return tags_array
+
 
 
 class ListaCompra(models.Model):
@@ -119,7 +127,7 @@ class MotherBoard(Producto):
     form_Factor = models.ForeignKey(FormFactor, on_delete=models.CASCADE, null=False, blank=False,
                                     verbose_name="Tamaño")
     maxMemory = models.IntegerField(null=False, blank=False, default=2, verbose_name="Memoria RAM máxima")
-    memoryType = models.ForeignKey(MemoryType, on_delete=models.CASCADE, null=False, blank=False,
+    memoryType = models.ForeignKey(TypeMemory, on_delete=models.CASCADE, null=False, blank=False,
                                    verbose_name="Tipo de RAM")
     memorySlot = models.IntegerField(null=False, blank=False, default=2, verbose_name="Conectores de RAM")
     color = models.ForeignKey(Color, on_delete=models.CASCADE, null=False, blank=False, verbose_name="Color")
@@ -138,6 +146,9 @@ class MotherBoard(Producto):
                                  verbose_name="Conexión Inalámbrica")
     boarVideo = models.BooleanField(default=False, null=False, blank=False, verbose_name="Video en Board")
     suportECC = models.BooleanField(default=False, null=False, blank=False, verbose_name="Soporte para ECC")
+
+    def color_array(self):
+        return color_html(self.color)
 
 
 class CPU(Producto):
@@ -170,6 +181,10 @@ class RAM(Producto):
                             verbose_name="Color")
     heatSpreader = models.BooleanField(default=False, null=False, blank=False, verbose_name="Dicipador")
 
+    def color_array(self):
+
+        return color_html(self.color)
+
 
 class GPU(Producto):
     chipset = models.ForeignKey(Chipset, on_delete=models.CASCADE, null=False, blank=False, verbose_name="Chipset")
@@ -198,6 +213,10 @@ class GPU(Producto):
     external_power = models.ForeignKey(ExternalPower, on_delete=models.CASCADE, null=False, blank=False,
                                        verbose_name="Fuente de alimentación")
 
+    def color_array(self):
+
+        return color_html(self.color)
+
 
 class Case(Producto):
     type_case = models.ForeignKey(TypeCase, on_delete=models.CASCADE, null=False, blank=False,
@@ -223,6 +242,10 @@ class Case(Producto):
     half_h_expansion_slot = models.IntegerField(blank=False, null=False, default=0,
                                                 verbose_name="Conectores de expansión de tamaño medio")
 
+    def color_array(self):
+
+        return color_html(self.color)
+
 
 class CaseFan(Producto):
     size = models.ForeignKey(Size, on_delete=models.CASCADE, null=False, blank=False, verbose_name="Tamaño en mm")
@@ -234,3 +257,9 @@ class CaseFan(Producto):
                                   verbose_name="Tipo de conector")
     controller = models.ForeignKey(Controller, on_delete=models.CASCADE, null=False, blank=False,
                                    verbose_name="Tipo de controlador")
+
+    def color_array(self):
+
+        return color_html(self.color)
+
+

@@ -393,7 +393,7 @@ Usar transition para un visual mas bonito
 .img_modal {
 
     width: 100%;
-    height: 100%;
+    height: 95%;
     border-radius: 20px;
     position: relative;
     transition: all ease-out 500ms;
@@ -545,6 +545,8 @@ Usar transition para un visual mas bonito
 }
 
 .img_gray_filter{
+    position: relative;
+    z-index: 1;
     filter: grayscale(100%);
 }
 .img_gray_filter:hover{
@@ -552,7 +554,7 @@ Usar transition para un visual mas bonito
 }
 
 .pd_top_50{
-    padding-top: 10vh;
+    margin-top: 10vh;
 }
 
 .gpu_form{
@@ -583,3 +585,117 @@ Usar transition para un visual mas bonito
 .card-header a:hover::after{
     content: "*";
 }
+
+.span_tag{
+    color: white !important;
+    z-index: 2;
+    position: absolute;
+    bottom: 5%;
+    font-size: 1.5em;
+    left: 6%;
+    width: 88%;
+    border-radius: 0 0 20px 20px;
+    backdrop-filter: blur(50%);
+    background-color: rgba(92,92,92,0.29);
+}
+
+.redBox{
+    border-bottom: red solid 1px !important;
+}
+
+.my-alert-css{
+margin-top: 5px !important;
+}
+
+.product_btns{
+
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    z-index: 2;
+}
+
+.product_btns a{
+    font-size: 1.5em;
+}
+
+
+
+
+
+
+.price_tag{
+    overflow: hidden;
+    position: absolute;
+    right: 3px;
+    top: 3px;
+    z-index: 3;
+}
+
+.price_tag a {
+    border-radius: 500px 0 0 500px;
+}
+
+.price_tag a::before{
+    content: " ";
+    position: relative;
+    width: 30px !important;
+    height: 30px !important;
+    background-color: red;
+    border-radius: 500px 500px 500px  500px;
+}
+
+.circle_tag{
+    font-size: 0.5em;
+    color:black;
+}
+
+.img_info{
+    margin-top: 10px;
+    width: 300px !important;
+    height: 300px !important;
+     box-shadow: rgba(209,171,164,0.16) 3px 3px 5px 0;
+    border-radius: 10px 10px 10px 10px;
+}
+
+
+
+.centered{
+    margin: 0 auto;
+}
+
+.pd_bottom_10{
+    padding-bottom: 10px;
+}
+
+.text_size_1em{
+    font-size: 1.3em;
+}
+
+.bg_color {
+    background-color: rgba(205,205,205,0.29) !important;
+}
+
+.bg_color_parent > li {
+    background: inherit;
+}
+
+.pd_top_20{
+    margin-top: 20px;
+}
+
+.check_circle_info {
+    font-size: 1.2em;
+     color: green;
+}
+
+.x_circle_info {
+    font-size: 1.2em;
+     color: red;
+}
+
+.mg_rigth_5{
+    margin-right: 5px;
+}
+
+

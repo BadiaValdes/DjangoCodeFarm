@@ -2,7 +2,7 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import path, re_path
 from . import views
 from .views_ext import category, shipping, tags, sli, typeMemory, chipset, color, socket, typeProduct, formFactor, \
-    manufacturer, case, gpu, autocomplete, cpu
+    manufacturer, case, gpu, autocomplete, cpu, motherboard, ram, product
 
 app_name = "tienda"
 
@@ -28,8 +28,12 @@ app_name = "tienda"
 #       6.3- COOLING                 #
 #       6.4- EXTERNAL POWER          #
 #   7- MOTHERBOARD                   #
+#       7.1- Ethernet                #
+#       7.2- Wireless                #
 #   8- FAN                           #
 #   9- RAM                           #
+#       9.1- TiemposRAM              #
+#       9.2- ECCRAM                  #
 #   10- COMMON                       #
 #       10.1- SLI                    #
 #       10.2- TYPE MEMORY            #
@@ -40,6 +44,9 @@ app_name = "tienda"
 #       10.7- FORM FACTORY           #
 #       10.8- MANUFACTURER           #
 #   11- AUTO COMPLETE URL            #
+#   12- CAR                          #
+#   13- Products                     #
+#                                    #
 ######################################
 
 urlpatterns = [
@@ -171,10 +178,50 @@ urlpatterns = [
 
     ######################################################################################################
     # 7- Motherboard
+    path('motherboard/', motherboard.ListMotherBoard.as_view(), name="motherboard_list"),
+    path('motherboard/add', motherboard.CreateMotherBoard.as_view(), name="motherboard_add"),
+    re_path('motherboard/update/(?P<pk>[0-9a-f]{10})', motherboard.UpdateMotherBoard.as_view(),
+            name="motherboard_update"),
+    path('motherboard/delete', motherboard.MotherBoardEliminar, name="motherboard_eliminar"),
+    path('motherboard/available', motherboard.AvailableMotherboard, name="motherboard_available"),
+    path('motherboard/details', motherboard.MotherboardDetail, name="motherboard_details"),
+
+    # 7.1- Ethernet
+    path('ethernet/', motherboard.ListEthernet.as_view(), name="ethernet_list"),
+    path('ethernet/add', motherboard.CreateEthernet.as_view(), name="ethernet_add"),
+    re_path('ethernet/update/(?P<pk>[0-9a-f]{10})', motherboard.UpdateEthernet.as_view(), name="ethernet_update"),
+    path('ethernet/delete', motherboard.EthernetEliminar, name="ethernet_eliminar"),
+
+    # 7.2- Wireless
+    path('wireless/', motherboard.ListWireless.as_view(), name="wireless_list"),
+    path('wireless/add', motherboard.CreateWireless.as_view(), name="wireless_add"),
+    re_path('wireless/update/(?P<pk>[0-9a-f]{10})', motherboard.UpdateWireless.as_view(), name="wireless_update"),
+    path('wireless/delete', motherboard.WirelessEliminar, name="wireless_eliminar"),
+
     ######################################################################################################
     # 8- Fan
     ######################################################################################################
     # 9- RAM
+    path('ram/', ram.ListRAM.as_view(), name="ram_list"),
+    path('ram/add', ram.CreateRAM.as_view(), name="ram_add"),
+    re_path('ram/update/(?P<pk>[0-9a-f]{10})', ram.UpdateRAM.as_view(),
+            name="ram_update"),
+    path('ram/delete', ram.RAMEliminar, name="ram_eliminar"),
+    # path('motherboard/available', motherboard.AvailableMotherboard, name="motherboard_available"),
+    # path('motherboard/details', motherboard.MotherboardDetail, name="motherboard_details"),
+
+    # 9.1- TiemposRAM
+    path('tiemposRAM/', ram.ListTiemposRAM.as_view(), name="tiempos_ram_list"),
+    path('tiemposRAM/add', ram.CreateTiemposRAM.as_view(), name="tiempos_ram_add"),
+    re_path('tiemposRAM/update/(?P<pk>[0-9a-f]{10})', ram.UpdateTiemposRAM.as_view(), name="tiempos_ram_update"),
+    path('tiemposRAM/delete', ram.TiemposRAMEliminar, name="tiempos_ram_eliminar"),
+
+    # 9.2- ECCRAM
+    path('eccRAM/', ram.ListECCRAM.as_view(), name="ecc_ram_list"),
+    path('eccRAM/add', ram.CreateECCRAM.as_view(), name="ecc_ram_add"),
+    re_path('eccRAM/update/(?P<pk>[0-9a-f]{10})', ram.UpdateECCRAM.as_view(), name="ecc_ram_update"),
+    path('eccRAM/delete', ram.ECCRAMEliminar, name="ecc_ram_eliminar"),
+
     ######################################################################################################
     # 10- COMMON
 
@@ -231,6 +278,7 @@ urlpatterns = [
     path('manufacturer/delete', manufacturer.ItemEliminar, name="manufacturer_eliminar"),
 
     ######################################################################################################
+    # 11- Auto Complete URL
 
     re_path('categoryAutoComplete/', autocomplete.CategoryAutoComplete.as_view(create_field='nombre'),
             name="ac_category"),
@@ -276,4 +324,20 @@ urlpatterns = [
             name="ac_coreFamy"),
     re_path('socketAutoComplete/', autocomplete.SocketAutoComplete.as_view(),
             name="ac_socket"),
+    re_path('ethernetAutoComplete/', autocomplete.EthernetAutoComplete.as_view(),
+            name="ac_ethernet"),
+    re_path('wirelessAutoComplete/', autocomplete.WirelessAutoComplete.as_view(),
+            name="ac_wireless"),
+    re_path('ecc/', autocomplete.ECCAutoComplete.as_view(),
+            name="ac_ecc"),
+    re_path('tiempos/', autocomplete.TiemposRAMAutoComplete.as_view(),
+            name="ac_tiempos"),
+
+    ######################################################################################################
+    # 12- CAR
+
+    ######################################################################################################
+    # 13- Product
+    path('<slug:slug>', product.ListProduct.as_view(), name="product_list"),
+    path('<slug:slug>/<slug:slug1>', product.ProductInfo, name="product_info"),
 ]

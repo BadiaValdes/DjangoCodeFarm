@@ -1,0 +1,159 @@
+{% extends 'layout.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+    <div class="gpu_form">
+        <div class="form_style" style="width: 40%">
+            <form method="post" enctype="multipart/form-data" id="form_gpu">{% csrf_token %}
+                {% crispy form %}
+                <br>
+                <div class="btn-group btn-block" role="group" aria-label="buttonss">
+                    <input type="button" id="comprobar" class="btn btn_gpu btn-outline-primary btn-block"
+                           value="Comprobar">
+                    <input type="submit" id="submit" class="btn btn_gpu btn-outline-success btn-block disabled"
+                           value="{{ text }}">
+                </div>
+
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript">
+
+        function sleep(ms) {
+            return new Promise(resolve => {
+                setTimeout(resolve, ms)
+            });
+        }
+
+        var descuento = document.getElementById("id_descuento");
+        $(document).ready(function () {
+            $("#id_descuento").attr({
+                "max": 90,        // substitute your own
+                "min": 0          // values (or variables) here
+            });
+
+            document.getElementById('submit').disabled = true;
+            //$('#id_nombre').val()
+            //$('#id_tags').children("option:selected").val()
+            let ms = "";
+            let aler2 = "";
+            let good = "<span class=\"badge  \"><i class=\"bi bi-check-circle-fill \" id=\"good\" style='color:green; font-size: 2em'></i></span>";
+            let bad = "<span class=\"badge  \"><i class=\"bi bi-x-circle-fill \" id=\"bad\" style='color:red; font-size: 2em'></i></span>";
+            let aler_end = "  <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">\n" +
+                "    <span aria-hidden=\"true\">&times;</span>\n" +
+                "  </button>\n" +
+                "</div>";
+            let aler = "<div class=\"alert alert-danger alert-dismissible fade show my-alert-css\" role=\"alert\">\n";
+
+
+            let all_is_well = false;
+            $('#comprobar').click(async function (e) {
+
+                if ($('#id_nombre').val()
+                    && $('#id_slug').val()
+                    && $('#id_tags').children("option:selected").val()
+                    && $('#id_precio').val()
+                    && $('#id_descuento').val()
+                    && $('#id_shipping').children("option:selected").val()
+                    && $('#id_category').children("option:selected").val()
+                    && $('#id_manufacturer').children("option:selected").val()) {
+                    $('a[href="#general-info"]').children().remove()
+                    $('a[href="#general-info"]').append(good);
+                    all_is_well = true;
+                } else {
+
+                    $('a[href="#general-info"]').children().remove()
+                    $('a[href="#general-info"]').append(bad);
+                    all_is_well = false;
+                    comprobar();
+                }
+                await sleep(500);
+                if ($('#id_form_Factor').children("option:selected").val()
+                    && $('#id_type').children("option:selected").val()
+                    && $('#id_speed').val()
+                    && $('#id_color').children("option:selected").val()
+                    && $('#id_latency').val()
+                    && $('#id_voltage').val()
+                    && $('#id_timing').children("option:selected").val()
+                    && $('#id_ecc').children("option:selected").val()
+                ) {
+                    $('a[href="#ram-info"]').children().remove()
+                    $('a[href="#ram-info"]').append(good);
+                    all_is_well = true;
+                } else {
+                    $('a[href="#ram-info"]').children().remove()
+                    $('a[href="#ram-info"]').append(bad);
+                    all_is_well = false;
+
+                }
+                await sleep(500);
+                if (all_is_well == true) {
+                    document.getElementById('submit').classList.remove('disabled');
+                    document.getElementById('submit').disabled = false;
+                    return true;
+                } else {
+                    return false;
+                }
+
+            })
+
+            function comprobar() {
+
+                    && $('#id_category').children("option:selected").val()
+                    && $('#id_manufacturer').children("option:selected").val()
+
+
+                if (!$('#id_nombre').val()) {
+                    ms = "Debe introducir el nombre"
+                    aler2 = aler + ms + aler_end
+                    $('#id_nombre').parent().after(aler2)
+                }
+
+                if (!$('#id_slug').val()) {
+                    ms = "Debe introducir el valor del slug"
+                    aler2 = aler + ms + aler_end
+                    $('#id_slug').parent().after(aler2)
+                }
+
+                if (!$('#id_descuento').val() < 0) {
+                    ms = "El descuento no puede ser negativo"
+                    aler2 = aler + ms + aler_end
+                    $('#id_descuento').parent().after(aler2)
+                }
+
+                if (!$('#id_precio').val()) {
+                    ms = "Debe introducir el precio"
+                    aler2 = aler + ms + aler_end
+                    $('#id_precio').parent().after(aler2)
+                }
+                else if ($('#id_precio').val() < 0)
+                {
+                    ms = "El precio debe ser mayor a 0"
+                    aler2 = aler + ms + aler_end
+                    $('#id_precio').parent().after(aler2)
+                }
+
+
+                if (!$('#id_shipping').children("option:selected").val()) {
+                    ms = "Debe introducir el tipo de envio"
+                    aler2 = aler + ms + aler_end
+                    $('#id_shipping').parent().after(aler2)
+                }
+
+                if (!$('#id_tags').children("option:selected").val()) {
+                    ms = "Debe introducir las etiquetas"
+                    aler2 = aler + ms + aler_end
+                    $('#id_tags').parent().after(aler2)
+                }
+            }
+
+
+        })
+
+
+    </script>
+{% endblock %}

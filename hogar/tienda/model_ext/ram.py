@@ -9,11 +9,11 @@ from django.utils.crypto import get_random_string
 
 
 def generate_uuid():
-    return uuid.uuid4().hex
+    return uuid.uuid4().hex[:10]
 
 
 def get_RandomString():
-    return get_random_string(40, '0123456789qwrtypsdfghjklzxcvbnmQWRTYPSDFGHJKLZXCVBNM')
+    return get_random_string(7, '0123456789qwrtypsdfghjklzxcvbnmQWRTYPSDFGHJKLZXCVBNM')
 
 
 

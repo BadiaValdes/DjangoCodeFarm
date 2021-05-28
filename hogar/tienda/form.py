@@ -8,6 +8,8 @@ from .model_ext.generales import SLI, TypeMemory, Chipset, Color, Socket, TypePr
 from .model_ext.case import TypeCase, PowerSupply, FrontPanelUSB, SidePanelWindow
 from .model_ext.gpu import Interface, FrameSync, Cooling, ExternalPower
 from .model_ext.cpu import Serie, MicroArch, IntegrateGraphic, CoreFamily
+from .model_ext.motherboard import MemoryType, Ethernet, Wireless
+from .model_ext.ram import TiemposRAM, ECCRAM
 ############### ENDS MODEL IMPORT ###########
 
 ############### CRISPY FORM IMPORT ################
@@ -18,6 +20,8 @@ from crispy_forms.bootstrap import Accordion, AccordionGroup, PrependedAppendedT
 
 ############### DAL IMPORT ################
 from dal import autocomplete
+
+
 ############### ENDS DAL IMPORT ###########
 
 
@@ -722,7 +726,11 @@ class GPUForm(forms.ModelForm):
                                Row(
                                    Column(AppendedText('descuento', '<i class="bi bi-cash"></i>'),
                                           css_class='form-group col-md-6 col-sm-12'),
-                                   Column('photo', css_class='form-group col-md-6 col-sm-12'),
+                                   Column(AppendedText('amount_stock', '<i class="bi bi-archive"></i>'),
+                                          css_class='form-group col-md-6 col-sm-12'),
+                               ),
+                               Row(
+                                   Column('photo', css_class='form-group col-md-12 col-sm-12'),
                                ),
                                Row(
                                    Column('available', css_class='form-group col-md-6 col-sm-12'),
@@ -975,7 +983,11 @@ class CPUForm(forms.ModelForm):
                                Row(
                                    Column(AppendedText('descuento', '<i class="bi bi-cash"></i>'),
                                           css_class='form-group col-md-6 col-sm-12'),
-                                   Column('photo', css_class='form-group col-md-6 col-sm-12'),
+                                   Column(AppendedText('amount_stock', '<i class="bi bi-archive"></i>'),
+                                          css_class='form-group col-md-6 col-sm-12'),
+                               ),
+                               Row(
+                                   Column('photo', css_class='form-group col-md-12 col-sm-12'),
                                ),
                                Row(
                                    Column('available', css_class='form-group col-md-6 col-sm-12'),
@@ -1005,6 +1017,476 @@ class CPUForm(forms.ModelForm):
                                ),
 
                                ),
+
+            ),
+
+        )
+
+
+class MemoryTypeForm(forms.ModelForm):
+    class Meta:
+        model = MemoryType
+        fields = ('nombre', 'slug')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.layout = Layout(
+            Row(
+                Column('nombre', css_class='form-group col-md-6 col-sm-12'),
+                Column('slug', css_class='form-group col-md-6 col-sm-12'),
+            ),
+
+        )
+
+
+class EthernetForm(forms.ModelForm):
+    class Meta:
+        model = Ethernet
+        fields = ('nombre', 'slug')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.layout = Layout(
+            Row(
+                Column('nombre', css_class='form-group col-md-6 col-sm-12'),
+                Column('slug', css_class='form-group col-md-6 col-sm-12'),
+            ),
+
+        )
+
+
+class WirelessForm(forms.ModelForm):
+    class Meta:
+        model = Wireless
+        fields = ('nombre', 'slug')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.layout = Layout(
+            Row(
+                Column('nombre', css_class='form-group col-md-6 col-sm-12'),
+                Column('slug', css_class='form-group col-md-6 col-sm-12'),
+            ),
+
+        )
+
+
+class MotherboardForm(forms.ModelForm):
+    tags = forms.ModelMultipleChoiceField(
+        queryset=Tags.objects.all(),
+        label="Etiquetas",
+        widget=autocomplete.ModelSelect2Multiple(url='tienda:ac_tags', attrs={
+            # Set some placeholder
+            'data-placeholder': 'Tags ...',
+            # Only trigger autocompletion after 3 characters have been typed
+            'minimumResultsForSearch': 1,
+        }, )
+    )
+
+    category = forms.ModelChoiceField(
+        queryset=Category.objects.all(),
+        label="Categoría",
+        widget=autocomplete.ModelSelect2(url='tienda:ac_category', attrs={
+            # Set some placeholder
+            'data-placeholder': 'Autocomplete ...',
+            # Only trigger autocompletion after 3 characters have been typed
+            'minimumResultsForSearch': 1,
+        }, )
+    )
+
+    shipping = forms.ModelChoiceField(
+        queryset=Shipping.objects.all(),
+        label="Método de entrega",
+        widget=autocomplete.ModelSelect2(url='tienda:ac_shipping', attrs={
+            # Set some placeholder
+            'data-placeholder': 'Autocomplete ...',
+            # Only trigger autocompletion after 3 characters have been typed
+            'minimumResultsForSearch': 1,
+        }, )
+    )
+
+    manufacturer = forms.ModelChoiceField(
+        queryset=Manufacturer.objects.all(),
+        label="Compañia",
+        widget=autocomplete.ModelSelect2(url='tienda:ac_manufacturer', attrs={
+            # Set some placeholder
+            'data-placeholder': 'Autocomplete ...',
+            # Only trigger autocompletion after 3 characters have been typed
+            'minimumResultsForSearch': 1,
+        }, )
+    )
+
+    socket = forms.ModelChoiceField(
+        queryset=Socket.objects.all(),
+        label="Socket",
+        widget=autocomplete.ModelSelect2(url='tienda:ac_socket', attrs={
+            # Set some placeholder
+            'data-placeholder': 'Socket ...',
+            # Only trigger autocompletion after 3 characters have been typed
+            'minimumResultsForSearch': 1,
+        }, )
+    )
+
+    chipset = forms.ModelChoiceField(
+        queryset=Chipset.objects.all(),
+        label="Chipset",
+        widget=autocomplete.ModelSelect2(url='tienda:ac_chipset', attrs={
+            'data-placeholder': 'Chipset...',
+            'minimumResultsForSearch': 1,
+        })
+    )
+
+    form_Factor = forms.ModelChoiceField(
+        queryset=FormFactor.objects.all(),
+        label="Tamaño",
+        widget=autocomplete.ModelSelect2(url='tienda:ac_form_factor', attrs={
+            # Set some placeholder
+            'data-placeholder': 'Autocomplete ...',
+            # Only trigger autocompletion after 3 characters have been typed
+            'minimumResultsForSearch': 1,
+        }, )
+    )
+
+    memoryType = forms.ModelChoiceField(
+        queryset=TypeMemory.objects.all(),
+        label="Tipo de memoria",
+        widget=autocomplete.ModelSelect2(url='tienda:ac_type_memory', attrs={
+            'data-placeholder': 'Tipo de memoria',
+            'minimumResultsForSearch': 1,
+        })
+    )
+
+    color = forms.ModelChoiceField(
+        queryset=Color.objects.all(),
+        label="Colores",
+        widget=autocomplete.ModelSelect2(url='tienda:ac_color', attrs={
+            # Set some placeholder
+            'data-placeholder': 'Autocomplete ...',
+            # Only trigger autocompletion after 3 characters have been typed
+            'minimumResultsForSearch': 1,
+        }, )
+    )
+
+    sli = forms.ModelChoiceField(
+        queryset=SLI.objects.all(),
+        label="SLI / CROSS FIRE",
+        widget=autocomplete.ModelSelect2(url='tienda:ac_sli', attrs={
+            'data-placeholder': 'SLI / CROSS FIRE ...',
+            'minimumResultsForSearch': 1,
+        })
+    )
+
+    ethernet = forms.ModelChoiceField(
+        queryset=Ethernet.objects.all(),
+        label="Ethernet",
+        widget=autocomplete.ModelSelect2(url='tienda:ac_ethernet', attrs={
+            'data-placeholder': 'Ethernet ...',
+            'minimumResultsForSearch': 1,
+        })
+    )
+
+    wireless = forms.ModelChoiceField(
+        queryset=Wireless.objects.all(),
+        label="Wireless",
+        widget=autocomplete.ModelSelect2(url='tienda:ac_wireless', attrs={
+            'data-placeholder': 'Wireless ...',
+            'minimumResultsForSearch': 1,
+        })
+    )
+
+    class Meta:
+        model = MotherBoard
+        fields = "__all__"
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        # Orders Matter
+        self.helper.layout = Layout(
+            Accordion(
+                AccordionGroup('General Info',
+                               Row(
+                                   Column(AppendedText('slug', '<i class="bi bi-link"></i>'),
+                                          css_class='form-group col-md-6 col-sm-12'),
+                                   Column('tags', css_class='form-group col-md-6 col-sm-12'),
+                               ),
+                               Row(
+                                   Column(PrependedText('precio', '<i class="bi bi-cash"></i>'),
+                                          css_class='form-group col-md-6 col-sm-12'),
+                                   Column(PrependedText('nombre', '<i class="bi bi-fonts"></i>'),
+                                          css_class='form-group col-md-6 col-sm-12'),
+                               ),
+                               Row(
+                                   Column(AppendedText('descuento', '<i class="bi bi-cash"></i>'),
+                                          css_class='form-group col-md-6 col-sm-12'),
+                                   Column(AppendedText('amount_stock', '<i class="bi bi-archive"></i>'),
+                                          css_class='form-group col-md-6 col-sm-12'),
+                               ),
+                               Row(
+                                   Column('photo', css_class='form-group col-md-12 col-sm-12'),
+                               ),
+                               Row(
+                                   Column('available', css_class='form-group col-md-6 col-sm-12'),
+                                   Column('category', css_class='form-group col-md-6 col-sm-12'),
+                               ),
+                               Row(
+                                   Column('shipping', css_class='form-group col-md-6 col-sm-12'),
+                                   Column('manufacturer', css_class='form-group col-md-6 col-sm-12'),
+                               ),
+                               active=False,
+                               ),
+                AccordionGroup('Micro Procesador y Tamaño',
+                               Row(
+                                   Column('socket', css_class='form-group col-md-4 col-sm-12'),
+                                   Column('chipset', css_class='form-group col-md-4 col-sm-12'),
+                                   Column('form_Factor', css_class='form-group col-md-4 col-sm-12'),
+                               ), ),
+                AccordionGroup('RAM y Color',
+                               Row(
+                                   Column('maxMemory', css_class='form-group col-md-6 col-sm-12'),
+                                   Column('memoryType', css_class='form-group col-md-6 col-sm-12'),
+                               ),
+                               Row(
+                                   Column('memorySlot', css_class='form-group col-md-6 col-sm-12'),
+                                   Column('color', css_class='form-group col-md-4 col-sm-12'),
+                               ), ),
+                AccordionGroup('GPU Info',
+                               Row(
+                                   Column('sli', css_class='form-group col-md-4 col-sm-12'),
+                                   Column('pciX16Slot', css_class='form-group col-md-4 col-sm-12'),
+                                   Column('pciX8Slot', css_class='form-group col-md-4 col-sm-12'),
+                                   Column('pciX4Slot', css_class='form-group col-md-4 col-sm-12'),
+                                   Column('pciX1Slot', css_class='form-group col-md-4 col-sm-12'),
+                                   Column('pciSlot', css_class='form-group col-md-4 col-sm-12'),
+                               ), ),
+                AccordionGroup('Storage',
+                               Row(
+                                   Column('sata3Port', css_class='form-group col-md-6 col-sm-12'),
+                                   Column('sata6Port', css_class='form-group col-md-6 col-sm-12'),
+
+                               ),
+                               Row(
+                                   Column('m2Slot', css_class='form-group col-md-6 col-sm-12'),
+                                   Column('mSataSlot', css_class='form-group col-md-6 col-sm-12'),
+                               ),
+                               ),
+                AccordionGroup('Otros',
+                               Row(
+                                   Column('ethernet', css_class='form-group col-md-6 col-sm-12'),
+                                   Column('wireless', css_class='form-group col-md-6 col-sm-12'),
+
+                               ),
+                               Row(
+                                   Column('boarVideo', css_class='form-group col-md-6 col-sm-12'),
+                                   Column('suportECC', css_class='form-group col-md-6 col-sm-12'),
+                               ),
+
+                               ),
+
+            ),
+
+        )
+
+class TiemposRAMForm(forms.ModelForm):
+    class Meta:
+        model = TiemposRAM
+        fields = ('nombre', 'slug')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.layout = Layout(
+            Row(
+                Column('nombre', css_class='form-group col-md-6 col-sm-12'),
+                Column('slug', css_class='form-group col-md-6 col-sm-12'),
+            ),
+
+        )
+
+class ECCRAMForm(forms.ModelForm):
+    class Meta:
+        model = ECCRAM
+        fields = ('nombre', 'slug')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.layout = Layout(
+            Row(
+                Column('nombre', css_class='form-group col-md-6 col-sm-12'),
+                Column('slug', css_class='form-group col-md-6 col-sm-12'),
+            ),
+
+        )
+
+
+class RAMForm(forms.ModelForm):
+    tags = forms.ModelMultipleChoiceField(
+        queryset=Tags.objects.all(),
+        label="Etiquetas",
+        widget=autocomplete.ModelSelect2Multiple(url='tienda:ac_tags', attrs={
+            # Set some placeholder
+            'data-placeholder': 'Tags ...',
+            # Only trigger autocompletion after 3 characters have been typed
+            'minimumResultsForSearch': 1,
+        }, )
+    )
+
+    category = forms.ModelChoiceField(
+        queryset=Category.objects.all(),
+        label="Categoría",
+        widget=autocomplete.ModelSelect2(url='tienda:ac_category', attrs={
+            # Set some placeholder
+            'data-placeholder': 'Autocomplete ...',
+            # Only trigger autocompletion after 3 characters have been typed
+            'minimumResultsForSearch': 1,
+        }, )
+    )
+
+    shipping = forms.ModelChoiceField(
+        queryset=Shipping.objects.all(),
+        label="Método de entrega",
+        widget=autocomplete.ModelSelect2(url='tienda:ac_shipping', attrs={
+            # Set some placeholder
+            'data-placeholder': 'Autocomplete ...',
+            # Only trigger autocompletion after 3 characters have been typed
+            'minimumResultsForSearch': 1,
+        }, )
+    )
+
+    manufacturer = forms.ModelChoiceField(
+        queryset=Manufacturer.objects.all(),
+        label="Compañia",
+        widget=autocomplete.ModelSelect2(url='tienda:ac_manufacturer', attrs={
+            # Set some placeholder
+            'data-placeholder': 'Autocomplete ...',
+            # Only trigger autocompletion after 3 characters have been typed
+            'minimumResultsForSearch': 1,
+        }, )
+    )
+
+    form_Factor = forms.ModelChoiceField(
+        queryset=FormFactor.objects.all(),
+        label="Tamaño",
+        widget=autocomplete.ModelSelect2(url='tienda:ac_form_factor', attrs={
+            # Set some placeholder
+            'data-placeholder': 'Autocomplete ...',
+            # Only trigger autocompletion after 3 characters have been typed
+            'minimumResultsForSearch': 1,
+        }, )
+    )
+
+    memoryType = forms.ModelChoiceField(
+        queryset=TypeMemory.objects.all(),
+        label="Tipo de memoria",
+        widget=autocomplete.ModelSelect2(url='tienda:ac_type_memory', attrs={
+            'data-placeholder': 'Tipo de memoria',
+            'minimumResultsForSearch': 1,
+        })
+    )
+
+    color = forms.ModelChoiceField(
+        queryset=Color.objects.all(),
+        label="Colores",
+        widget=autocomplete.ModelSelect2(url='tienda:ac_color', attrs={
+            # Set some placeholder
+            'data-placeholder': 'Autocomplete ...',
+            # Only trigger autocompletion after 3 characters have been typed
+            'minimumResultsForSearch': 1,
+        }, )
+    )
+
+    ecc = forms.ModelChoiceField(
+        queryset=ECCRAM.objects.all(),
+        label="Tipo de ECC",
+        widget=autocomplete.ModelSelect2(url='tienda:ac_ecc', attrs={
+            # Set some placeholder
+            'data-placeholder': 'Autocomplete ...',
+            # Only trigger autocompletion after 3 characters have been typed
+            'minimumResultsForSearch': 1,
+        }, )
+    )
+
+    timing  = forms.ModelChoiceField(
+        queryset=TiemposRAM.objects.all(),
+        label="Tipo de la RAM",
+        widget=autocomplete.ModelSelect2(url='tienda:ac_tiempos', attrs={
+            # Set some placeholder
+            'data-placeholder': 'Autocomplete ...',
+            # Only trigger autocompletion after 3 characters have been typed
+            'minimumResultsForSearch': 1,
+        }, )
+    )
+
+    class Meta:
+        model = RAM
+        fields = "__all__"
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        # Orders Matter
+        self.helper.layout = Layout(
+            Accordion(
+                AccordionGroup('General Info',
+                               Row(
+                                   Column(AppendedText('slug', '<i class="bi bi-link"></i>'),
+                                          css_class='form-group col-md-6 col-sm-12'),
+                                   Column('tags', css_class='form-group col-md-6 col-sm-12'),
+                               ),
+                               Row(
+                                   Column(PrependedText('precio', '<i class="bi bi-cash"></i>'),
+                                          css_class='form-group col-md-6 col-sm-12'),
+                                   Column(PrependedText('nombre', '<i class="bi bi-fonts"></i>'),
+                                          css_class='form-group col-md-6 col-sm-12'),
+                               ),
+                               Row(
+                                   Column(AppendedText('descuento', '<i class="bi bi-cash"></i>'),
+                                          css_class='form-group col-md-6 col-sm-12'),
+                                   Column(AppendedText('amount_stock', '<i class="bi bi-archive"></i>'),
+                                          css_class='form-group col-md-6 col-sm-12'),
+                               ),
+                               Row(
+                                   Column('photo', css_class='form-group col-md-12 col-sm-12'),
+                               ),
+                               Row(
+                                   Column('available', css_class='form-group col-md-6 col-sm-12'),
+                                   Column('category', css_class='form-group col-md-6 col-sm-12'),
+                               ),
+                               Row(
+                                   Column('shipping', css_class='form-group col-md-6 col-sm-12'),
+                                   Column('manufacturer', css_class='form-group col-md-6 col-sm-12'),
+                               ),
+                               active=False,
+                               ),
+                AccordionGroup('RAM Info',
+                               Row(
+                                   Column('form_Factor', css_class='form-group col-md-4 col-sm-12'),
+                                   Column('type', css_class='form-group col-md-4 col-sm-12'),),
+                                   Row(
+                                   Column('speed', css_class='form-group col-md-4 col-sm-12'),
+                                   Column('color', css_class='form-group col-md-4 col-sm-12'),),
+                                       Row(
+                                   Column('latency', css_class='form-group col-md-4 col-sm-12'),
+                                   Column('voltage', css_class='form-group col-md-4 col-sm-12'),
+                                       ),
+                                   Row(
+                                   Column('timing', css_class='form-group col-md-4 col-sm-12'),
+                                   Column('ecc', css_class='form-group col-md-4 col-sm-12'),
+                                   Column('heatSpreader', css_class='form-group col-md-4 col-sm-12'),
+                               ), ),
+
+
 
 
             ),

@@ -10,19 +10,25 @@
             <div class="row">
                 {% for cat in category %}
                     <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
-                        <div class="card text-white box_shows_test rounded_20">
-                            <img src="{{ cat.photo.url }}" class="card-img rounded_20" alt="...">
-                            <div class="card-img-overlay category_text ">
-                                <div class="text_container">
-                                    <div class="text_in_category">
-                                        <h5 class="card-title">{{ cat.nombre }}</h5>
+                        <a href={% url "tienda:product_list" slug=cat.slug%} >
+                            <div class="card text-white box_shows_test rounded_20">
+
+
+                                <img src="{{ cat.photo.url }}" class="card-img rounded_20" alt="...">
+
+                                <div class="card-img-overlay category_text ">
+                                    <div class="text_container">
+                                        <div class="text_in_category">
+                                            <h5 class="card-title">{{ cat.nombre }}</h5>
+                                        </div>
                                     </div>
+
+
                                 </div>
-
-
                             </div>
-                        </div>
+                             </a>
                     </div>
+
                 {% empty %}
                     <h3>No category</h3>
                 {% endfor %}

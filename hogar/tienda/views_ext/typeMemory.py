@@ -63,5 +63,5 @@ def ItemEliminar(request):
     if (request.POST.getlist('delete')):
         datos = request.POST.getlist('delete')
         for dat in datos:
-            SLI.objects.filter(id=dat).delete()
+            TypeMemory.objects.filter(id=dat).delete()
     return redirect(reverse_lazy('tienda:tags_list'))

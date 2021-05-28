@@ -1,0 +1,20 @@
+<li class="list-group-item list-group-item-action center-align white bg-secondary">Información de la GPU</li>
+<li id="chipset" class="list-group-item list-group-item-action">Chipset: {{ model.chipset }}</li>
+<li id="chipset" class="list-group-item list-group-item-action">Tipo: {{ model.type }}</li>
+<li id="enfriamiento" class="list-group-item list-group-item-action">Enfriamiento: {{ model.cooling }}</li>
+<li id="fuente_externa" class="list-group-item list-group-item-action">Fuente Externa: {{ model.external_power }}</li>
+<li id="frame_sync" class="list-group-item list-group-item-action">Frame Sync: {{ model.frame_sync }}</li>
+<li id="interfaz" class="list-group-item list-group-item-action">Interfaz: {{ model.inteface }}</li>
+<li id="sli" class="list-group-item list-group-item-action">SLI / CrossFire: {{ model.sli }}</li>
+<li class="list-group-item list-group-item-action center-align white bg-secondary">Velocidades, Puertos y Tamaño</li>
+<li id="vmhz" class="list-group-item list-group-item-action">Velocidad (Mhz): {{ model.core_clock }}</li>
+<li id="vomhz" class="list-group-item list-group-item-action">Velocidad OverClock (Mhz): {{ model.boost_clock }}</li>
+<li id="tamano" class="list-group-item list-group-item-action">Tamaño (mm): {{ model.length }}</li>
+<li id="tdp" class="list-group-item list-group-item-action">Potencia eléctrica: {{ model.tdp }}</li>
+<li id="dvi" class="list-group-item list-group-item-action">Puertos DVI: {{ model.dvi_port }}</li>
+<li id="hdmi" class="list-group-item list-group-item-action">Puertos HDMI: {{ model.hdmi_port }}</li>
+<li id="dp" class="list-group-item list-group-item-action">Puertos DisplayPort: {{ model.display_port }}</li>
+<li id="miniport" class="list-group-item list-group-item-action">Puertos Mini-DisplayPort: {{ model.mini_display_port }}</li>
+<li id="ancho" class="list-group-item list-group-item-action">Ancho: {{ model.expansion_width }}</li>
+<li class="list-group-item list-group-item-action center-align white bg-secondary">Otros</li>
+<li id="color" class="list-group-item list-group-item-action">Colores: {{ model.color_array|safe }}</li>

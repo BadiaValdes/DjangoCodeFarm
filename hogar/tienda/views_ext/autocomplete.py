@@ -2,6 +2,8 @@
 from tienda.model_ext.case import TypeCase, SidePanelWindow, PowerSupply, FrontPanelUSB
 from tienda.model_ext.gpu import Interface, FrameSync, Cooling, ExternalPower
 from tienda.model_ext.cpu import Serie, MicroArch, IntegrateGraphic, CoreFamily
+from tienda.model_ext.motherboard import Wireless, Ethernet
+from tienda.model_ext.ram import TiemposRAM, ECCRAM
 from tienda.model_ext.generales import Manufacturer, TypeProduct, Color, FormFactor, Chipset, TypeMemory, SLI, Socket
 from tienda.models import Case, Category, Tags, Shipping, GPU
 ############### ENDS MODEL IMPORT ###############
@@ -245,6 +247,46 @@ class SocketAutoComplete(autocomplete.Select2QuerySetView):
         if not self.request.user.is_authenticated:
             return Socket.objects.none()
         qs = Socket.objects.all()
+        if self.q:
+            qs = qs.filter(nombre__contains=self.q)
+        return qs
+
+class EthernetAutoComplete(autocomplete.Select2QuerySetView):
+
+    def get_queryset(self):
+        if not self.request.user.is_authenticated:
+            return Ethernet.objects.none()
+        qs = Ethernet.objects.all()
+        if self.q:
+            qs = qs.filter(nombre__contains=self.q)
+        return qs
+
+class WirelessAutoComplete(autocomplete.Select2QuerySetView):
+
+    def get_queryset(self):
+        if not self.request.user.is_authenticated:
+            return Wireless.objects.none()
+        qs = Wireless.objects.all()
+        if self.q:
+            qs = qs.filter(nombre__contains=self.q)
+        return qs
+
+class TiemposRAMAutoComplete(autocomplete.Select2QuerySetView):
+
+    def get_queryset(self):
+        if not self.request.user.is_authenticated:
+            return TiemposRAM.objects.none()
+        qs = TiemposRAM.objects.all()
+        if self.q:
+            qs = qs.filter(nombre__contains=self.q)
+        return qs
+
+class ECCAutoComplete(autocomplete.Select2QuerySetView):
+
+    def get_queryset(self):
+        if not self.request.user.is_authenticated:
+            return ECCRAM.objects.none()
+        qs = ECCRAM.objects.all()
         if self.q:
             qs = qs.filter(nombre__contains=self.q)
         return qs

@@ -1,0 +1,42 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block content %}
+    <div class="container pd_top_50 text_size_1em">
+        {% include 'shop/product/partials/_info.html' %}
+        <div class="row align-items-center ">
+            <div class="col-md-12 col-sm-12 pd_top_20 bg_color">
+                <ul class="list-group list-group-flush bg_color_parent overflow_vertical ">
+
+                     {% include renderToPage %}
+
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}
+
+
+{% block js %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            data = '{{ model.Tags }}';
+            let tag = data.split("/");
+            document.getElementById('tag').innerText = "Etiquetas: "
+            for (const t in tag) {
+                if (tag[t] != "") {
+                    let a = document.createElement("a");
+                    a.classList.add('btn', 'btn-secondary', 'mg_rigth_5');
+                    a.href = '{% url 'tienda:product_list' model.category.slug%}'
+                    a.innerText = tag[t];
+                    document.getElementById('tag').append(a);
+                }
+
+            }
+
+
+        })
+    </script>
+
+{% endblock %}
