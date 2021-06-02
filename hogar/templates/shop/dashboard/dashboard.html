@@ -1,0 +1,99 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+
+{% block content %}
+
+    <div class="width_90">
+                <div class=" ">
+                <h4>
+                    Dashboard
+                </h4>
+                <div class="row">
+
+                    {% for cat in category %}
+                        <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                            <div class="card bg-info">
+                                <div class="card-body">
+                                    <div class="text_white">
+                                        <h4>{{ cat.nombre }}</h4>
+                                    </div>
+                                    <div class="ico">
+                                        <span class="bi bi-alarm-fill"></span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <a href="{% url 'tienda:dashboard' %}{{ cat.nombre|lower }}/"
+                                       class="btn btn-block btn-info">Acceder <span
+                                            class="bi bi-arrow-right-circle-fill"></span></a>
+                                </div>
+
+
+                            </div>
+                        </div>
+
+                    {% empty %}
+                        <h3>No category</h3>
+                    {% endfor %}
+
+
+                </div>
+
+
+            </div>
+            <div class="">
+                <h4>
+                    Nomencladores
+                </h4>
+                <div class="row">
+                    {% for nom in nomencladores %}
+                        <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                            <div class="card bg_orange">
+                                <div class="card-body">
+                                    <div class="text_white">
+                                        <h4>{{ nom }}</h4>
+                                    </div>
+                                    <div class="ico">
+                                        <span class="bi bi-exclude"></span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <a href="{% url 'tienda:dashboard' %}{{ nom }}/" class="btn btn-block btn-info">Acceder
+                                        <span class="bi bi-arrow-right-circle-fill"></span></a>
+                                </div>
+
+
+                            </div>
+                        </div>
+
+                    {% empty %}
+                        <h3>No category</h3>
+                    {% endfor %}
+
+
+                </div>
+
+
+            </div>
+
+    </div>
+
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript">
+
+    </script>
+
+    <script type="text/javascript">
+        {% if not producto %}
+            let del = document.getElementById("delete_btn");
+            del.classList.add("disabled")
+        {% endif %}
+    </script>
+{% endblock %}
+
+
+
+
+

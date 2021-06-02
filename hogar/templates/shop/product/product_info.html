@@ -7,7 +7,7 @@
             <div class="col-md-12 col-sm-12 pd_top_20 bg_color">
                 <ul class="list-group list-group-flush bg_color_parent overflow_vertical ">
 
-                     {% include renderToPage %}
+                    {% include renderToPage %}
 
                 </ul>
             </div>
@@ -21,19 +21,16 @@
 {% block js %}
     <script type="text/javascript">
         $(document).ready(function () {
-            data = '{{ model.Tags }}';
-            let tag = data.split("/");
+            data = "{{ model.Tags }}".split("/");
             document.getElementById('tag').innerText = "Etiquetas: "
-            for (const t in tag) {
-                if (tag[t] != "") {
-                    let a = document.createElement("a");
-                    a.classList.add('btn', 'btn-secondary', 'mg_rigth_5');
-                    a.href = '{% url 'tienda:product_list' model.category.slug%}'
-                    a.innerText = tag[t];
-                    document.getElementById('tag').append(a);
-                }
-
-            }
+            data.map( function (x) {
+                let a = document.createElement("a");
+                a.classList.add('btn', 'btn-secondary', 'mg_rigth_5');
+                a.href = '{% url 'tienda:product_tags' tags='replacable'%}'.replace(/replacable/, x)
+                a.innerText = x;
+                document.getElementById('tag').append(a);
+                return 0;
+            })
 
 
         })

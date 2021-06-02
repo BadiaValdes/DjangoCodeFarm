@@ -3,7 +3,7 @@ from django import forms
 ############### ENDS FROMS IMPORT ###########
 
 ############### MODEL IMPORT ################
-from .models import Category, Shipping, Tags, Case, GPU, CPU, MotherBoard, ListaCompra, ListaDeseos, CaseFan, RAM
+from .models import Category, Shipping, Tags, Case, GPU, CPU, MotherBoard, CaseFan, RAM
 from .model_ext.generales import SLI, TypeMemory, Chipset, Color, Socket, TypeProduct, FormFactor, Manufacturer
 from .model_ext.case import TypeCase, PowerSupply, FrontPanelUSB, SidePanelWindow
 from .model_ext.gpu import Interface, FrameSync, Cooling, ExternalPower

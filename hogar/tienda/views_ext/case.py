@@ -4,6 +4,7 @@ from django.views.generic.edit import DeleteView, CreateView, UpdateView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from django.contrib.auth.decorators import login_required
+
 from rolepermissions.mixins import HasRoleMixin
 from tienda.model_ext.case import TypeCase, SidePanelWindow, PowerSupply, FrontPanelUSB
 from tienda.model_ext.generales import Manufacturer, TypeProduct, Color, FormFactor

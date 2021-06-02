@@ -698,4 +698,44 @@ margin-top: 5px !important;
     margin-right: 5px;
 }
 
+.ico{
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    z-index: 2;
+    font-size: 4em;
+    color: rgba(12,10,7,0.15);
+}
 
+.text_white{
+color: whitesmoke;
+}
+
+.bg_orange{
+    background: #ffb300;
+}
+
+.bg_orange a{
+    background: #ffb300;
+    border-color: #ffb300 !important;
+}
+
+.bg_orange a:active{
+    background: #ffa000 !important;
+    border-color: #ffa000 !important;
+}
+
+.bg_orange a:hover{
+    background: #ffa000 !important;
+    border-color: #ffa000 !important;
+}
+
+.bg_orange a:link{
+    background: #ffa000 !important;
+    border-color: #ffa000 !important;
+}
+
+.bg_orange a:visited{
+    background: #ffa000 !important;
+    border-color: #ffa000 !important;
+}

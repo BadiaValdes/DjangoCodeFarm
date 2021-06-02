@@ -7,26 +7,28 @@
 
             {% for obj in product %}
                 <div class="col mb-2">
-                <a href={% url "tienda:product_info" slug=obj.category.slug slug1=obj.slug%}>
-                    <div class="card bg-dark">
-                        <img src={{ obj.photo.url }} class="card-img-top" alt="...">
-                        <div class="product_btns">
-                            <div class="btn-group" role="group">
-                                <a href="#" class="btn btn-primary bi-heart"></a>
-                                <a href="#" class="btn btn-primary bi-cart"></a>
+                    <a href={% url "tienda:product_info" slug=obj.category.slug slug1=obj.slug %}>
+                        <div class="card bg-dark">
+                            <img src={{ obj.photo.url }} class="card-img-top" alt="...">
+                            <div class="product_btns">
+                                <div class="btn-group" role="group">
+                                    <a href="#" class="btn btn-primary bi-heart"></a>
+                                    <a onclick="shop(this)" data-id="{{ obj.id }}" class="btn btn-primary bi-cart"></a>
+                                </div>
+
+
                             </div>
-
-
+                            <div class="price_tag ">
+                                <a href="#" class="btn btn-secondary disabled btn-block  "><i
+                                        class="bi-circle-fill circle_tag align-middle"></i> {{ obj.precioDescuento }}
+                                    <span
+                                            class="">USD</span></a>
+                            </div>
                         </div>
-                        <div class="price_tag ">
-                            <a href="#" class="btn btn-secondary disabled btn-block  "><i
-                                    class="bi-circle-fill circle_tag align-middle"></i> {{ obj.precioDescuento }} <span
-                                    class="">USD</span></a>
-                        </div>
-                    </div>
-                </a>
+                    </a>
 
                 </div>
+
             {% endfor %}
         </div>
 
@@ -37,7 +39,24 @@
 
 {% block js %}
     <script type="text/javascript">
-
+        function shop(e) {
+            let id = $(e).attr("data-id");
+            $.ajax(
+                {
+                    type: "GET",
+                    url: '{% url 'cart:addToCart' %}',
+                    data: {
+                        product: id,
+                    },
+                    success: function (data) {
+                        console.log(data.ad)
+                        if (data.ad == true) {
+                            alert("Pincho")
+                        }
+                    }
+                }
+            )
+        }
     </script>
 
 {% endblock %}

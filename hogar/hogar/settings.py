@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     'rolepermissions',
     'analytical',
     'tienda',
+    'cart',
 
     # 'almacen.apps.AlmacenConfig',
     'django.contrib.admin',

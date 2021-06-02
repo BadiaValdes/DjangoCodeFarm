@@ -33,6 +33,7 @@ urlpatterns = [
     path('dashboard/', include('dashboard.urls')),
     path('tienda/', include('tienda.urls')),
     path('metrics/', include('metrics.urls')),
+    path('cart/', include('cart.urls')),
 ]
 
 urlpatterns += staticfiles_urlpatterns()

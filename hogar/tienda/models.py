@@ -96,30 +96,11 @@ class Producto(models.Model):
 
     def Tags(self):
         tags_array = ""
-        for t in self.tags.all():
-            tags_array += t.nombre + "/"
+        for (index,t) in enumerate(self.tags.all()):
+            if(index > 0):
+                tags_array += "/"
+            tags_array += t.nombre
         return tags_array
-
-
-
-class ListaCompra(models.Model):
-    id = models.CharField(primary_key=True, default=generate_uuid, editable=False, unique=True, max_length=10)
-    slug = models.SlugField(max_length=10, default=get_RandomString, unique=True, blank=True)
-
-    # producto = models.ManyToManyField(Tags)
-
-    def __str__(self):
-        return self.nombre
-
-
-class ListaDeseos(models.Model):
-    id = models.CharField(primary_key=True, default=generate_uuid, editable=False, unique=True, max_length=10)
-    nombre = models.CharField(max_length=20)
-    slug = models.SlugField(max_length=5, default=get_RandomString, unique=True, blank=True)
-
-    def __str__(self):
-        return self.nombre
-
 
 class MotherBoard(Producto):
     socket = models.ForeignKey(Socket, on_delete=models.CASCADE, null=False, blank=False, verbose_name="Socket")
