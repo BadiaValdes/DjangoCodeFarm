@@ -50,9 +50,16 @@
                     },
                     success: function (data) {
                         console.log(data.ad)
-                        if (data.ad == true) {
+                        if(data.outOfStock == true)
+                        {
+                            alert("outOfStock")
+                        }
+                        else{
+                               if (data.ad == true) {
                             alert("Pincho")
                         }
+                        }
+
                     }
                 }
             )

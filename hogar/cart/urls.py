@@ -26,4 +26,5 @@ urlpatterns = [
                   re_path('addToCart/', addToCart, name="addToCart"),
                   re_path('getProducts/', getProductos, name="getProducts"),
                   re_path('eliminarProducto/', CartDeleteItem, name="eliminarProducto"),
+                  re_path('pagarProducto/', payOut, name="pagarProducto"),
               ]

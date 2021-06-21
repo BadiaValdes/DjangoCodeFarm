@@ -739,3 +739,18 @@ color: whitesmoke;
     background: #ffa000 !important;
     border-color: #ffa000 !important;
 }
+
+.opacity_0{
+    opacity: 0%;
+}
+
+.opacity_100{
+    opacity: 100%;
+}
+
+.spiner_postion{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 5;
+}
